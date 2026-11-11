@@ -78,15 +78,53 @@
   .chip:hover{background:rgba(255,255,255,.18)}
   .trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:26px;font-size:14px;color:rgba(255,255,255,.85);font-weight:500}
   .trust span::before{content:"✓";color:var(--gold);font-weight:800;margin-right:7px}
-  .face{background:#fff;color:var(--ink);border-radius:18px;padding:18px;display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center;justify-self:end;max-width:500px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
-  .face img{width:180px;height:225px;object-fit:cover;object-position:50% 20%;border-radius:12px}
-  .face .who{font-family:var(--display);font-weight:800;font-size:22px;line-height:1.1}
-  .face .role{color:var(--slate);font-size:14px;margin-top:4px}
-  .face q{display:block;font-size:14.5px;margin:12px 0;line-height:1.45;quotes:"“" "”"}
-  .face .btn{width:100%}
+  .hero .alt{margin-top:22px;font-size:14.5px;color:rgba(255,255,255,.8)} .hero .alt a{color:#fff;font-weight:600}
+  .face{background:#fff;color:var(--ink);border-radius:18px;overflow:hidden;justify-self:end;width:100%;max-width:430px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+  .face .ph{position:relative} .face .ph img{width:100%;height:215px;object-fit:cover;object-position:50% 22%}
+  .face .cap{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 12px;background:linear-gradient(transparent,rgba(31,26,58,.88));color:#fff}
+  .face .cap .who{font-family:var(--display);font-weight:800;font-size:21px;line-height:1.1;color:#fff;margin:0}
+  .face .role{font-size:13.5px;margin-top:3px;color:rgba(255,255,255,.88)}
+  .face .demo{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;background:var(--paper)}
+  .face .demo .lbl{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate)}
+  .face .demo .msg{font-size:14px;padding:9px 12px;max-width:90%}
+  .face .lift{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--slate);margin-top:2px}
+  .face .btn{width:100%;margin-top:4px}
+  .spark{display:flex;align-items:flex-end;gap:3px;height:30px;flex:none} .spark i{display:block;width:7px;border-radius:2px;background:var(--plum);min-height:3px} .spark i:last-child{background:var(--gold)}
+
+  /* start here */
+  .start{padding:56px 0 0}
+  .start .top{display:flex;flex-wrap:wrap;gap:18px 32px;align-items:flex-end;justify-content:space-between}
+  .start .lede{color:var(--slate);margin-top:8px;max-width:56ch}
+  .prog{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;font-size:14px}
+  .prog strong{display:block;font-family:var(--display);font-size:18px} .prog small{color:var(--slate);font-size:12.5px}
+  .prog button,.mini button{background:none;border:0;padding:0;color:var(--plum);font:600 12.5px var(--sans);text-decoration:underline;cursor:pointer}
+  .tabs{display:flex;gap:8px;overflow-x:auto;margin:22px 0 16px;padding:3px 3px 6px;scrollbar-width:none}
+  .tab{flex:none;background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:10px 16px;font:600 14.5px var(--sans);cursor:pointer}
+  .tab[aria-selected=true]{background:var(--plum);border-color:var(--plum);color:#fff}
+  .tab:focus-visible,.kc:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
+  .kit{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .kc{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;text-align:left;cursor:pointer;padding:0;font:inherit;color:inherit;transition:border-color .12s,box-shadow .12s}
+  .kc:hover{border-color:var(--plum);box-shadow:0 10px 30px -18px rgba(59,47,107,.5)}
+  .kc .thumb{height:150px;position:relative;display:grid;place-items:center;background:var(--tint)}
+  .kc.video .thumb{background:linear-gradient(rgba(59,46,107,.35),rgba(31,26,58,.7)),url(kim.jpg) 50% 22%/cover}
+  .kc.video.alt .thumb{background:linear-gradient(135deg,var(--plum),var(--ink))}
+  .kc.guide .thumb{background:var(--gold-tint)}
+  .play{width:54px;height:54px;border-radius:50%;background:var(--gold);display:grid;place-items:center} .play::after{content:"";border-left:16px solid var(--ink);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+  .len{position:absolute;right:10px;bottom:10px;background:rgba(20,16,40,.8);color:#fff;font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px}
+  .kc .glyph{font-family:var(--display);font-weight:800;font-size:54px;line-height:1;color:var(--gold-deep)} .kc.tool .glyph svg{width:58px;height:58px;display:block}
+  .kc .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:5px;flex:1}
+  .kc .kind{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep)}
+  .kc .t{font-family:var(--display);font-weight:700;font-size:18px;line-height:1.2} .kc .d{color:var(--slate);font-size:14.5px}
+  .kc .go{margin-top:auto;padding-top:8px;font-weight:700;font-size:14px;color:var(--plum)}
+  .kc .ex{position:absolute;top:10px;left:10px;z-index:1}
+  .vph{aspect-ratio:16/10;border-radius:12px;display:grid;place-items:center;text-align:center;color:#fff;padding:18px;font-size:14px;background:linear-gradient(rgba(59,46,107,.55),rgba(31,26,58,.85)),url(kim.jpg) 50% 22%/cover}
+  .steps-l{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:s} .steps-l li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px;font-size:15.5px}
+  .steps-l li::before{content:counter(s);width:26px;height:26px;border-radius:8px;background:var(--gold);display:grid;place-items:center;font:800 13px var(--display)}
+  .mini{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--slate);font-weight:600;margin:10px 0 0}
+  .lsearch{flex:1;max-width:300px;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);font:14.5px var(--sans);background:#fff}
 
   /* directory */
-  .dir{padding:48px 0 64px}
+  .dir{padding:56px 0 64px}
   .dir .wrap{display:grid;grid-template-columns:270px 1fr;gap:28px;align-items:start}
   .filters{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;position:sticky;top:124px;display:flex;flex-direction:column;gap:18px}
   .filters h3{font-size:16px;display:flex;justify-content:space-between;align-items:center}
@@ -190,7 +228,7 @@
   @media (max-width:980px){
     .hero .wrap{grid-template-columns:1fr} .face{justify-self:start}
     .dir .wrap{grid-template-columns:1fr} .filters{position:static}
-    .steps{grid-template-columns:1fr} .coaches .wrap{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr} .coaches .wrap{grid-template-columns:1fr} .kit{grid-template-columns:1fr 1fr}
     .hdr .wrap{gap:10px} .hdr .wrap>.btn{margin-left:auto} .menu{display:grid}
     .hdr nav{display:none;position:absolute;top:100%;left:0;right:0;margin:0;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 18px 30px -18px rgba(31,26,58,.35);flex-direction:column;gap:0;padding:6px 24px 12px}
     .hdr.open nav{display:flex} .hdr nav a{padding:13px 0;border-top:1px solid var(--line)} .hdr nav a:first-child{border-top:0}
@@ -199,7 +237,7 @@
   }
   @media (max-width:600px){
     .card{grid-template-columns:1fr} .av{width:64px;height:64px} .card .acts{margin-left:0;width:100%;flex-wrap:wrap} .card .acts .btn{flex:1}
-    .face{grid-template-columns:1fr} .face img{width:100%;height:260px} .keep form{flex-wrap:wrap} .keep form .btn{flex:1}
+    .face{max-width:none} .kit{grid-template-columns:1fr} .kc .thumb{height:130px} .lsearch{max-width:none;flex-basis:100%;order:3} .sort{display:none} .keep form{flex-wrap:wrap} .keep form .btn{flex:1}
     .search{flex-direction:column} .chrome .ttl{display:none} .xs-hide{display:none}
     .chip{padding:10px 14px} .fgroup label{padding:5px 0} .sw{padding:4px 0} .dh .x{min-width:44px;min-height:44px}
     .starters button{padding:10px 13px} .conf{display:grid;gap:6px} #confbtns{display:grid;grid-template-columns:repeat(10,1fr);gap:4px} .conf button{width:auto;height:40px}
@@ -226,42 +264,62 @@
   <div class="note" style="top:50px;left:calc(50% - 60px)"><b>Note 1 · The brand</b>Eluvo, "Grow forward". Logo, colours and type follow the brand guide: purple carries, yellow acts, amber points. Kim is the face and co-founder, so her name and photo sit in the hero, but the platform name stays neutral for 2,000 other coaches.</div>
   <div class="wrap">
     <a class="logo" href="#top" aria-label="Eluvo home"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>eluvo</a>
-    <nav id="nav"><a href="#find">Find a coach</a><a href="#how">How it works</a><a href="#forcoaches">For coaches</a><a href="#">Sign in</a></nav>
-    <button class="btn btn-gold sm" type="button" data-chat="kim">Talk to Coach Kim<span class="xs-hide"> · free</span></button>
+    <nav id="nav"><a href="#start">Guides &amp; videos</a><a href="#find">Find a coach</a><a href="#how">How it works</a><a href="#forcoaches">For coaches</a><a href="#">Sign in</a></nav>
+    <button class="btn btn-gold sm" type="button" data-chat="kim"><span>Talk to Coach Kim<span class="xs-hide"> · free</span></span></button>
     <button class="menu" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span></button>
   </div>
 </header>
 
 <section class="hero anno" id="top">
   <button class="pin" type="button" style="top:22px;left:24px" aria-label="Note 2">2</button>
-  <div class="note" style="top:54px;left:24px"><b>Note 2 · Search by problem, not by jargon</b>A 19-year-old does not search for "IFS practitioner". They type "interview tomorrow" or "rejected again". The search and the quick chips use their words, and the directory filters by need.</div>
+  <div class="note" style="top:54px;left:24px"><b>Note 2 · The conversation comes first</b>Someone who just got rejected wants help now, not a list of coaches to compare. The headline is Kim's own opening question, the box under it starts the chat, and the card on the right shows what a chat is like. The directory is one scroll down for people who want a person.</div>
   <div class="wrap">
     <div>
-      <p class="eyebrow" style="color:var(--gold)">Coaching marketplace · Australia</p>
-      <h1 style="margin-top:10px">Find a coach for your <em>next step.</em></h1>
-      <p class="lede">Verified career and life coaches, each with an AI coach you can talk to any hour, and a real person behind it when you need one.</p>
-      <form class="search" onsubmit="event.preventDefault();applyFilters()">
-        <input id="q" type="text" placeholder="What do you need help with? e.g. interview tomorrow" aria-label="What do you need help with">
-        <button class="btn btn-plum" type="submit">Find coaches</button>
+      <p class="eyebrow" style="color:var(--gold)">Free AI coach · real coaches behind it</p>
+      <h1 style="margin-top:10px">What's going on <em>this week?</em></h1>
+      <p class="lede">Tell Coach Kim's AI. It is free, any hour, no sign-up. It works the way Kim does, one step at a time, and you can book a real coach when you want a person.</p>
+      <form class="search" id="heroForm">
+        <input id="say" type="text" placeholder="e.g. I have an interview tomorrow" aria-label="What's going on this week?" autocomplete="off">
+        <button class="btn btn-plum" type="submit">Start talking · free</button>
       </form>
       <div class="quick">
-        <button class="chip" type="button" data-need="interview">Interview tomorrow</button>
-        <button class="chip" type="button" data-need="firstjob">First job</button>
-        <button class="chip" type="button" data-need="confidence">Lost confidence</button>
-        <button class="chip" type="button" data-need="change">Career change</button>
-        <button class="chip" type="button" data-need="study">Exam nerves</button>
+        <button class="chip" type="button" data-say="I have an interview tomorrow">Interview tomorrow</button>
+        <button class="chip" type="button" data-say="I'm trying to get my first job">First job</button>
+        <button class="chip" type="button" data-say="I got rejected again and I've lost confidence">Lost confidence</button>
+        <button class="chip" type="button" data-say="I'm thinking about changing career">Career change</button>
+        <button class="chip" type="button" data-say="I have an exam coming up and I'm nervous">Exam nerves</button>
       </div>
-      <div class="trust"><span>Credentials verified</span><span>AI coach available 24/7</span><span>First chat free</span></div>
+      <div class="trust"><span>No sign-up to start</span><span>Coaching, not therapy</span><span>Verified human coaches</span></div>
+      <p class="alt">Rather talk to a person? <a href="#find">Browse coaches</a></p>
     </div>
     <div class="face">
-      <img src="kim.jpg" alt="Kim Ali" width="800" height="1000">
-      <div>
-        <div class="who">Kim Ali</div>
-        <div class="role">Co-founder · Employment &amp; confidence coach</div>
-        <q>You don't need all the answers today. You just need the confidence to take the next step.</q>
+      <div class="ph"><img src="kim.jpg" alt="Kim Ali" width="800" height="1000">
+        <div class="cap"><div class="who">Kim Ali</div><div class="role">Co-founder · Employment &amp; confidence coach</div></div></div>
+      <div class="demo">
+        <div class="lbl">How a chat with her AI goes</div>
+        <div class="msg me">Interview tomorrow. Freaking out.</div>
+        <div class="msg ai">Okay. The nervous part of you is doing its job. What is the one question you are most worried they will ask?</div>
+        <div class="lift"><span class="spark" aria-hidden="true"><i style="height:40%"></i><i style="height:55%"></i><i style="height:70%"></i></span>Confidence 4 → 7 after one practice answer</div>
         <button class="btn btn-gold sm" type="button" data-chat="kim">Talk to Coach Kim AI</button>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="start anno" id="start">
+  <button class="pin" type="button" style="top:18px;right:24px" aria-label="Note 7">7</button>
+  <div class="note" style="top:50px;right:24px"><b>Note 7 · Content that ends in practice</b>Not a blog. Each situation gets one short video, one guide and one tool, and every one of them ends with "practise this with the AI coach". The same clips run on TikTok and Instagram to bring people in. Videos are not recorded yet; the guides are drafts from Kim's method for her to edit.</div>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <p class="eyebrow">Start here</p>
+        <h2 style="margin-top:8px">Pick what this week looks like</h2>
+        <p class="lede">A short video, a plan you can follow tonight, and something to practise. All free.</p>
+      </div>
+      <div class="prog" id="prog" hidden></div>
+    </div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Situations"></div>
+    <div class="kit" id="kit"></div>
   </div>
 </section>
 
@@ -302,7 +360,7 @@
       <label class="sw">AI coach available <input type="checkbox" id="hasai"></label>
     </aside>
     <div>
-      <div class="listhead"><h2><span id="count">7</span> coaches</h2><span class="sort">Sorted by best match · Online first</span></div>
+      <div class="listhead"><h2><span id="count">7</span> coaches</h2><input class="lsearch" id="q" type="search" placeholder="Search by need, e.g. interview" aria-label="Search coaches by need"><span class="sort">Best match first</span></div>
       <div class="list" id="list"></div>
     </div>
   </div>
@@ -313,8 +371,8 @@
     <p class="eyebrow">How it works</p>
     <h2 style="margin-top:8px">Three steps, the first two are free</h2>
     <div class="steps">
-      <div class="step"><div class="n">1</div><h3>Say what is going on</h3><p>Type it in your own words. Eluvo shows coaches who handle exactly that, nearest and online first.</p></div>
-      <div class="step"><div class="n">2</div><h3>Talk to the coach's AI</h3><p>Every coach has trained an AI version of their method. Practise an interview at midnight, rate your confidence before and after, get one next step.</p></div>
+      <div class="step"><div class="n">1</div><h3>Say what is going on</h3><p>Type it in your own words. A coach's AI answers straight away, any hour, with no sign-up.</p></div>
+      <div class="step"><div class="n">2</div><h3>Practise and watch it move</h3><p>Build one interview answer at midnight. Rate your confidence before and after, and see it climb over the week. One next step each time.</p></div>
       <div class="step"><div class="n">3</div><h3>Book the human when it matters</h3><p>The AI knows when to hand over. A free discovery call, then paid sessions on the coach's own terms.</p></div>
     </div>
   </div>
@@ -357,11 +415,13 @@
     <p class="sub">Pins on the page map to this list. Toggle "Notes" in the top bar to see it clean.</p>
     <ol>
       <li><span class="n">1</span><div><strong>Name: Eluvo.</strong> "Grow forward." The three-bar logo sets the palette: purple #3B2E6B, ink #1F1A3A, yellow #F4B205 on cream #FBF9F5. Fonts Outfit and Figtree. Full rules in the <a href="brand-guide.html">brand guide</a>.</div></li>
-      <li><span class="n">2</span><div><strong>Students search by problem.</strong> Quick chips and filters use the words trainees actually say. Kim's posts gave us those words.</div></li>
+      <li><span class="n">2</span><div><strong>Conversation first.</strong> The hero starts a chat instead of a search. Quick chips use the words trainees actually say; Kim's posts gave us those words.</div></li>
       <li><span class="n">3</span><div><strong>Directory like Oladoc.</strong> Filters left, cards right, free action and paid action on every card, verified badge, price in the same spot.</div></li>
       <li><span class="n">4</span><div><strong>Only Kim is real.</strong> Her credentials come from LinkedIn (ICI Advanced Practitioner, IAP Certified Career Coach, MBA, ex Country Head of HR, Telstra career coach). The other six coaches are invented examples.</div></li>
       <li><span class="n">5</span><div><strong>Coach Kim AI is live when opened in Claude.</strong> Press "Talk to Coach Kim". The first message asks your permission, then it answers using a rulebook built from her method: start where you are, name the feeling, find the strength, STAR answers one at a time, rate confidence 1 to 10, end with one next step. Outside Claude it falls back to demo replies.</div></li>
       <li><span class="n">6</span><div><strong>Coaches join in an hour</strong> and keep their playbook, clients, price and the off switch.</div></li>
+      <li><span class="n">7</span><div><strong>Guides and videos, by situation.</strong> One video, one guide, one tool for each of five situations, each ending in practice with the AI coach. Videos are placeholders; guides are drafts for Kim to edit.</div></li>
+      <li><span class="n">8</span><div><strong>Confidence is saved.</strong> Each 1 to 10 rating in the chat is kept on the device and shown as rising bars, in the chat and in "Start here". It is the reason to come back, and it can be cleared in one tap.</div></li>
     </ol>
   </div>
 </section>
@@ -369,7 +429,7 @@
 <!-- drawers -->
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="profile" aria-label="Coach profile">
-  <div class="dh"><strong>Coach profile</strong><button class="x" type="button" data-close>×</button></div>
+  <div class="dh"><strong id="dtitle">Coach profile</strong><button class="x" type="button" data-close>×</button></div>
   <div class="db" id="pbody"></div>
   <div class="dfoot" id="pfoot"></div>
 </aside>
@@ -389,6 +449,7 @@
       <button type="button">I got rejected again</button>
       <button type="button">I don't know what I want to do</button>
     </div>
+    <div class="mini" id="chatprog" hidden></div>
     <div class="conf" style="margin:10px 0 8px">My confidence right now:
       <span id="confbtns"></span>
     </div>
@@ -462,7 +523,8 @@
   document.querySelectorAll('.filters input').forEach(function(i){i.addEventListener('change',applyFilters)});
   document.getElementById('q').addEventListener('input',applyFilters);
   document.getElementById('clear').addEventListener('click',function(){document.querySelectorAll('.filters input[type=checkbox]').forEach(function(i){i.checked=i.id==='verified'});document.querySelector('input[name=price][value="0"]').checked=true;document.getElementById('q').value='';applyFilters()});
-  document.querySelectorAll('.quick .chip').forEach(function(ch){ch.addEventListener('click',function(){document.querySelectorAll('input[name=need]').forEach(function(i){i.checked=i.value===ch.dataset.need});document.getElementById('q').value='';applyFilters();document.getElementById('find').scrollIntoView({behavior:'smooth'})})});
+  document.querySelectorAll('.quick .chip').forEach(function(ch){ch.addEventListener('click',function(){openChat('kim',ch.dataset.say)})});
+  document.getElementById('heroForm').addEventListener('submit',function(e){e.preventDefault();var i=document.getElementById('say'),v=i.value;i.value='';openChat('kim',v)});
   applyFilters();
 
   // ---------- phone menu + filter toggle ----------
@@ -481,7 +543,7 @@
   function closeAll(){scrim.classList.remove('on');prof.classList.remove('on');chat.classList.remove('on')}
   scrim.addEventListener('click',closeAll);document.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',closeAll)});
   function showProfile(c){
-    var b=document.getElementById('pbody'),f=document.getElementById('pfoot');
+    var b=document.getElementById('pbody'),f=document.getElementById('pfoot');document.getElementById('dtitle').textContent='Coach profile';
     var h='<div class="pf">'+avatar(c)+'<div><div class="name">'+c.name+'</div><div style="color:var(--slate)">'+c.head+'</div><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">'+(c.verified?'<span class="vf">Verified</span>':'')+(c.cofounder?'<span class="tag gold">Co-founder</span>':'')+(c.real?'':'<span class="ex">Example profile</span>')+'</div></div></div>';
     h+='<div class="sec"><h3>Helps with</h3><div class="tags" style="display:flex;flex-wrap:wrap;gap:6px">'+c.tags.map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div></div>';
     if(c.about)h+='<div class="sec"><h3>About</h3><p>'+c.about+'</p></div>';
@@ -499,6 +561,73 @@
   }
   list.querySelectorAll('.card').forEach(function(el){el.addEventListener('click',function(){showProfile(COACHES.filter(function(c){return c.id===el.dataset.id})[0])});el.addEventListener('keydown',function(e){if(e.key==='Enter')el.click()})});
   bindActs(document);
+
+  // ---------- start here: videos, guides, tools ----------
+  var BARS='<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>';
+  var KITS=[
+    {id:'interview',label:'Interview tomorrow',say:'I have an interview tomorrow',
+      video:{t:'“Tell me about yourself” in 45 seconds',by:'Kim Ali',len:'0:45',kim:true,pts:['Now: who you are today, in one line.','Before: one real moment that shows a skill they asked for.','Next: why this job, at this place.']},
+      guide:{t:'Interview tomorrow: a 20-minute plan',mins:3,steps:['Read the job ad once and underline three things they ask for.','Pick one real moment for each. Work, uni, sport and home all count.','Build one answer: situation, task, what you did, what happened. Say it out loud twice.','Write down one question to ask them.','Lay out your clothes, check the route, then stop. Sleep helps more than another hour of prep.']},
+      tool:{t:'STAR answer builder',d:'Turn one real moment into one solid answer, then say it back.',say:'Help me build a STAR answer for my interview.'}},
+    {id:'firstjob',label:'First job',say:"I'm trying to get my first job",
+      video:{t:'No experience? What goes on a first resume',by:'Kim Ali',len:'0:50',kim:true,pts:['School projects, sport, volunteering and helping at home are experience.','Lead with what you did, not the title you had.','One page. Someone will read it in under a minute.']},
+      guide:{t:'Your first resume in 30 minutes',mins:4,steps:['Name, phone, email and suburb at the top. No photo, no date of birth.','Two lines on who you are and the kind of work you want.','List three things you have done, each starting with a verb: organised, served, fixed, built.','Add school or study, and any tickets or licences.','Ask one person to read it for typos, then send it to one job today.']},
+      tool:{t:'Find your three strengths',d:'Three questions that turn "I have nothing" into things worth saying.',say:"I don't know what my strengths are. Can you help me find three?"}},
+    {id:'confidence',label:'Lost confidence',say:"I got rejected again and I've lost confidence",
+      video:{t:'What a rejection actually means',by:'Kim Ali',len:'0:40',kim:true,pts:['It is a decision about a fit, not a verdict on you.','Most roles get far more applicants than interviews.','The useful question is "what did I do well?", then "what one thing would I change?"']},
+      guide:{t:'After a rejection: the next 24 hours',mins:3,steps:['Let it sting. Do not open another application tonight.','Write down one thing you did well in that process, even a small one.','If you had an interview, send two lines thanking them and asking for one piece of feedback.','Tell one person. Saying it out loud makes it smaller.','Tomorrow, pick one job and one change to try. Only one.']},
+      tool:{t:'Confidence check-in',d:'Rate where you are from 1 to 10, then find what moves it up by one.',say:"I got rejected again and my confidence is low."}},
+    {id:'change',label:'Career change',say:"I'm thinking about changing career",
+      video:{t:'Changing direction without starting again',by:'Priya Raman',len:'0:55',pts:['You are moving sideways with skills, not back to zero.','Name three skills that travel with you.','Talk to one person doing the job before you retrain for it.']},
+      guide:{t:'Thinking about a switch: five questions first',mins:4,steps:['What exactly do you want less of? Be specific: the tasks, the people or the hours.','What do you want more of?','Which three skills would you take with you?','Who do you know, or could reach, who does the work you are curious about?','What is the smallest test: a short course, a side project, one conversation?']},
+      tool:{t:'Skills that travel',d:'Sort what you already do into skills another field would pay for.',say:"I want to change career but I don't know which of my skills carry over."}},
+    {id:'study',label:'Exam nerves',say:"I have an exam coming up and I'm nervous",
+      video:{t:'Two minutes before the exam',by:'Mei-Ling Chow',len:'0:35',pts:['Breathe out for longer than you breathe in, five times.','Read the whole paper before you write anything.','Start with the question you know best.']},
+      guide:{t:'Exam week: a plan you can keep',mins:3,steps:['List every topic on one page and mark each one green, orange or red.','Tonight, do one red topic for 25 minutes. Then stop for five.','Test yourself instead of rereading. Close the notes and write what you remember.','Pack your bag and check the room and time the night before.','Phone in another room for the last hour before sleep.']},
+      tool:{t:"Tonight's study plan",d:'Tell the AI what is due and get one block to start with.',say:"I have an exam coming up and I can't get started."}}
+  ];
+  var tabs=document.getElementById('tabs'),kit=document.getElementById('kit'),curKit=KITS[0];
+  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+  function renderKit(k){
+    curKit=k;
+    tabs.innerHTML=KITS.map(function(x){return '<button class="tab" type="button" role="tab" aria-selected="'+(x===k)+'" data-kit="'+x.id+'">'+x.label+'</button>'}).join('');
+    kit.innerHTML=
+      '<button class="kc video'+(k.video.kim?'':' alt')+'" type="button" data-open="video"><span class="ex">Example</span><span class="thumb"><span class="play"></span><span class="len num">'+k.video.len+'</span></span><span class="body"><span class="kind">Watch · '+k.video.len+'</span><span class="t">'+esc(k.video.t)+'</span><span class="d">With '+k.video.by+'. Captions on.</span><span class="go">Watch, then practise →</span></span></button>'+
+      '<button class="kc guide" type="button" data-open="guide"><span class="thumb"><span class="glyph">'+k.guide.steps.length+'</span></span><span class="body"><span class="kind">Read · '+k.guide.mins+' min</span><span class="t">'+esc(k.guide.t)+'</span><span class="d">'+k.guide.steps.length+' steps you can do tonight.</span><span class="go">Open the plan →</span></span></button>'+
+      '<button class="kc tool" type="button" data-open="tool"><span class="thumb"><span class="glyph">'+BARS+'</span></span><span class="body"><span class="kind">Do · with the AI coach</span><span class="t">'+esc(k.tool.t)+'</span><span class="d">'+esc(k.tool.d)+'</span><span class="go">Start now · free →</span></span></button>';
+  }
+  function showContent(kind){
+    var k=curKit,b=document.getElementById('pbody'),f=document.getElementById('pfoot'),h;
+    if(kind==='tool'){openChat('kim',k.tool.say);return}
+    if(kind==='video'){document.getElementById('dtitle').textContent='Video';
+      h='<div class="vph"><div><span class="play" style="margin:0 auto 10px"></span>Example. This video is not recorded yet.<br>'+k.video.len+', vertical, captions on.</div></div><div class="sec"><p style="font-family:var(--display);font-weight:700;font-size:22px;line-height:1.2">'+esc(k.video.t)+'</p><p style="color:var(--slate);margin-top:4px">With '+k.video.by+'</p></div><div class="sec"><h3>What it covers</h3><ul>'+k.video.pts.map(function(p){return '<li>'+esc(p)+'</li>'}).join('')+'</ul></div>';
+    }else{document.getElementById('dtitle').textContent='Guide · '+k.guide.mins+' min read';
+      h='<div class="sec"><p style="font-family:var(--display);font-weight:700;font-size:24px;line-height:1.15">'+esc(k.guide.t)+'</p></div><ol class="steps-l">'+k.guide.steps.map(function(p){return '<li><span>'+esc(p)+'</span></li>'}).join('')+'</ol><div class="sec"><p style="color:var(--slate);font-size:14px">Based on how Kim Ali coaches. Coaching, not therapy.</p></div>';
+    }
+    b.innerHTML=h;b.scrollTop=0;
+    f.innerHTML='<button class="btn btn-gold" type="button" id="practise">Practise this with Coach Kim AI · free</button>';
+    document.getElementById('practise').addEventListener('click',function(){openChat('kim',k.say)});
+    openD(prof);
+  }
+  tabs.addEventListener('click',function(e){var t=e.target.closest('.tab');if(t)renderKit(KITS.filter(function(x){return x.id===t.dataset.kit})[0])});
+  kit.addEventListener('click',function(e){var c=e.target.closest('.kc');if(c)showContent(c.dataset.open)});
+  renderKit(KITS[0]);
+
+  // ---------- confidence tracker (saved on this device) ----------
+  var confMem=[];
+  function getConf(){try{var v=JSON.parse(localStorage.getItem('eluvo-conf')||'null');if(Array.isArray(v))return v}catch(e){}return confMem}
+  function setConf(a){confMem=a;try{localStorage.setItem('eluvo-conf',JSON.stringify(a))}catch(e){}renderProg()}
+  function saveConf(n){var a=getConf().slice(-29);a.push({n:n,t:Date.now()});setConf(a)}
+  function spark(a){return '<span class="spark" role="img" aria-label="Confidence ratings: '+a.map(function(x){return x.n}).join(', ')+'">'+a.slice(-8).map(function(x){return '<i style="height:'+x.n*10+'%"></i>'}).join('')+'</span>'}
+  function renderProg(){
+    var a=getConf(),p=document.getElementById('prog'),m=document.getElementById('chatprog');
+    p.hidden=m.hidden=!a.length;if(!a.length)return;
+    var first=a[0].n,last=a[a.length-1].n,line=a.length>1?first+' → '+last:last+' / 10';
+    p.innerHTML=spark(a)+'<div><small>Your confidence</small><strong class="num">'+line+'</strong><small>'+a.length+' check-in'+(a.length>1?'s':'')+' · saved on this device only · <button type="button" data-clearconf>Clear</button></small></div>';
+    m.innerHTML=spark(a)+'<span>Your confidence: <span class="num">'+line+'</span> · <button type="button" data-clearconf>Clear</button></span>';
+  }
+  document.addEventListener('click',function(e){if(e.target.closest('[data-clearconf]')){e.stopPropagation();setConf([])}});
+  renderProg();
 
   // ---------- chat ----------
   var RULES='You are "Coach Kim AI", the AI coach trained on the method of Kim Ali, an Australian employment, confidence and career coach. You are not Kim herself; if asked, say you are Kim’s AI coach and that the real Kim can be booked for a free 30-minute call.\n'+
@@ -520,7 +649,7 @@
     var R={interview:['Okay, an interview tomorrow. First, what is the role, and what is the one question you are most worried they will ask?','Good, that is a real question, so let us build a real answer. Think of one moment, at work, uni or anywhere, where you handled something like that. Tell me what the situation was, in two sentences.','That is your Situation. Now what was your task in it, and what did you actually do? Keep it to what you did, not the team.','That is a proper answer: situation, what you did, what happened. Say it out loud once tonight. On a scale of 1 to 10, where is your confidence about that question right now?'],
       reject:['Another no. That stings, and the part of you that is tired of this is doing its job. How many is that now, and which one hurt the most?','Thank you for telling me. A rejection is a decision about a fit, not a verdict on you. Before we touch the next application, tell me one thing you did well in that process, even a small one.','That counts. You already have things worth talking about. One next step for today: write that one thing down where you will see it tomorrow. Nothing else today. How does that sit?'],
       lost:['Not knowing what you want is more common than it looks, and you do not need the whole answer today. Let us start small: what is one thing you are naturally good at, that people ask you for help with?','That is a strength, and strengths are clues. Second question: what gives you energy, the thing you lose track of time doing?','Now the last one: what matters most to you, the thing you would not trade? Hold those three together and a direction usually shows up. Your next step today is to write all three on one line.'],
-      rate:['Thanks for the number. Remember it, we will check it again after one practice. What would move it up by just one point?'],
+      rate:['Thanks for the number. Remember it, we will check it again after one practice. What would move it up by just one point?','Got it, and it is saved next to your last one. Any movement counts, even one point. What did you do between the two numbers that made the difference?'],
       gen:['Tell me what is going on this week, in your own words. Not the whole story, just the part that is loudest right now.','Okay. What would feel like one small win by the end of today?','Then that is your next step. You do not need all the answers today, just that one. Want to practise it with me now?']};
     var arr=R[k];return arr[Math.min(s,arr.length)-1];
   }
@@ -548,11 +677,12 @@
   document.getElementById('cform').addEventListener('submit',function(e){e.preventDefault();sendMsg(inp.value)});
   stop.addEventListener('click',function(){if(ctl)ctl.abort()});
   document.querySelectorAll('#starters button').forEach(function(b){b.addEventListener('click',function(){sendMsg(b.textContent)})});
-  var cb=document.getElementById('confbtns');for(var i=1;i<=10;i++){(function(n){var b=document.createElement('button');b.type='button';b.textContent=n;b.addEventListener('click',function(){sendMsg('My confidence right now is '+n+'/10.')});cb.appendChild(b)})(i)}
-  function openChat(id){
+  var cb=document.getElementById('confbtns');for(var i=1;i<=10;i++){(function(n){var b=document.createElement('button');b.type='button';b.textContent=n;b.addEventListener('click',function(){saveConf(n);sendMsg('My confidence right now is '+n+'/10.')});cb.appendChild(b)})(i)}
+  function openChat(id,seed){
     if(id!=='kim'){var c=COACHES.filter(function(x){return x.id===id})[0];add('sys','Only Coach Kim’s AI is live in this mockup. '+(c?c.name+'’s':'This')+' AI coach would work the same way, trained on their own rulebook. Continuing with Coach Kim.')}
     if(!log.querySelector('.msg.ai')){add('ai','Hi, I’m Kim’s AI coach. I am not Kim, but I work the way she does: one step at a time. What is going on this week?','Coach Kim AI')}
     prof.classList.remove('on');openD(chat);setTimeout(function(){inp.focus()},250);
+    if(seed&&seed.trim())sendMsg(seed);
   }
 })();
 </script>
