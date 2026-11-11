@@ -98,10 +98,6 @@
   form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .sent{background:var(--fern-tint);color:#1E5A40;border-radius:10px;padding:12px 14px;font-size:14.5px;font-weight:600}
   footer{padding:28px 0;font-size:13.5px;color:var(--slate)} footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center} footer .sp{flex:1}
-  .about{background:#F3F2F7;padding:48px 0 64px;border-top:6px solid var(--pin)}
-  .about .wrap{max-width:960px} .about h2{font-family:var(--sans);font-size:22px;font-weight:800;margin-bottom:14px}
-  .about ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
-  .about li{background:#fff;border:1px solid #E2E0EA;border-radius:10px;padding:13px 16px;font-size:14.5px}
   [hidden]{display:none!important}
   @media (max-width:980px){
     .hero .wrap,.cta .wrap{grid-template-columns:1fr} .g3,.g4{grid-template-columns:1fr 1fr} .stats{grid-template-columns:1fr 1fr} .stat:nth-child(2){border-right:0} .stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
@@ -119,12 +115,12 @@
 
 <div class="chrome"><div class="wrap">
   <span class="mk">Mockup</span><span class="ttl">Eluvo · page for employment providers and universities</span><span class="sp"></span>
-  <a href="index.html">Student site</a><a href="#notes">Notes</a>
+  <a href="index.html">Student site</a>
 </div></div>
 
 <header class="hdr"><div class="wrap">
   <a class="logo" href="index.html" aria-label="Eluvo home"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>eluvo<small>for organisations</small></a>
-  <nav><a href="#get">What they get</a><a href="#see">What you see</a><a href="#pilot">Running a pilot</a><a href="index.html">For students</a></nav>
+  <nav><a href="#get">What they get</a><a href="#see">What you see</a><a href="#pilot">Running a pilot</a><a href="coaches.html">For coaches</a><a href="index.html">For students</a></nav>
   <a class="btn btn-gold sm" href="#contact">Request a pilot</a>
 </div></header>
 
@@ -215,17 +211,6 @@
 </div></section>
 
 <footer><div class="wrap"><a class="logo" href="index.html" style="font-size:19px"><svg style="width:22px;height:22px" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>eluvo</a><span>Grow forward.</span><span class="sp"></span><a href="index.html">For students</a><a href="brand-guide.html">Brand guide</a></div></footer>
-
-<section class="about" id="notes"><div class="wrap">
-  <h2>About this page</h2>
-  <ul>
-    <li><strong>Why it exists.</strong> A young job seeker rarely pays for coaching. Employment providers and careers services have budgets and a duty to build confidence, so they get their own pitch, away from the student homepage.</li>
-    <li><strong>All numbers and people in the dashboard are invented</strong> to show how a cohort view would read. There are no real results yet; a pilot is how to get them.</li>
-    <li><strong>The privacy split is a proposal.</strong> "Activity and confidence, never conversations" is the line that keeps young people honest with the AI. It needs a decision, a privacy policy and consent wording before any pilot.</li>
-    <li><strong>No prices on purpose.</strong> Options to decide between: a fixed pilot fee, a fee per active participant, or a site licence.</li>
-    <li><strong>The form sends nothing.</strong> It needs an inbox or CRM behind it before this page is shared.</li>
-  </ul>
-</div></section>
 
 <script>
 document.getElementById('pform').addEventListener('submit',function(e){e.preventDefault();document.getElementById('sent').hidden=false});

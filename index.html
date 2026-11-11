@@ -36,7 +36,7 @@
   .eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep)}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:12px 20px;border-radius:12px;text-decoration:none;border:2px solid transparent;cursor:pointer;white-space:nowrap;transition:transform .12s ease,background .12s ease}
   .btn:hover{transform:translateY(-1px)}
-  .btn:focus-visible,.chip:focus-visible,input:focus-visible,.pin:focus-visible,.card:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
+  .btn:focus-visible,.chip:focus-visible,input:focus-visible,.card:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
   .hero :focus-visible,.coaches :focus-visible,.chrome :focus-visible{outline-color:var(--gold)}
   [hidden]{display:none!important}
   .btn-gold{background:var(--gold);color:var(--ink)} .btn-gold:hover{background:#FFC533}
@@ -52,15 +52,7 @@
   .chrome .wrap{display:flex;align-items:center;gap:16px;min-height:42px}
   .chrome .mk{background:var(--pin);color:#fff;font-weight:800;letter-spacing:.12em;font-size:10.5px;padding:3px 8px;border-radius:4px;text-transform:uppercase}
   .chrome .sp{flex:1} .chrome a{color:#C9C4DC;text-decoration:none} .chrome a:hover{color:#fff}
-  .toggle{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:4px 12px;font:600 13px var(--sans);cursor:pointer}
-  .toggle .dot{width:9px;height:9px;border-radius:50%;background:var(--pin)} html.hide-notes .toggle .dot{background:#555}
-  .anno{position:relative}
-  .pin{position:absolute;z-index:40;width:26px;height:26px;border-radius:50%;background:var(--pin);color:#fff;font:800 12px/1 var(--sans);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(209,69,44,.45);cursor:pointer;padding:0}
-  .note{position:absolute;z-index:45;width:min(320px,80vw);background:#fff;color:#1a1a1a;border:1px solid #F0C9C0;border-left:4px solid var(--pin);border-radius:8px;padding:11px 13px;font-size:13px;line-height:1.5;box-shadow:0 14px 40px rgba(20,20,40,.18);display:none}
-  .note b{color:var(--pin);font-weight:800;letter-spacing:.08em;font-size:11px;text-transform:uppercase;display:block;margin-bottom:3px}
-  .anno.open .note,.anno:has(.pin:hover) .note{display:block}
   .ex{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9C2F1C;background:#FBE7E2;border:1px dashed #E8A092;padding:2px 7px;border-radius:4px}
-  html.hide-notes .pin,html.hide-notes .note,html.hide-notes .ex{display:none!important}
 
   /* header */
   .hdr{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:42px;z-index:50}
@@ -179,7 +171,7 @@
   .step .n{width:34px;height:34px;border-radius:10px;background:var(--gold);display:grid;place-items:center;font-family:var(--display);font-weight:800;margin-bottom:12px}
   .step h3{margin-bottom:6px} .step p{color:var(--slate);font-size:15px}
   .coaches{padding:64px 0;background:var(--plum-2);color:#fff}
-  .coaches .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .coaches .wrap{display:grid;grid-template-columns:1fr auto;gap:28px 48px;align-items:center}
   .coaches h2{color:#fff} .coaches .lede{color:rgba(255,255,255,.75);margin-top:12px;font-size:17px}
   .onb{display:flex;flex-direction:column;gap:12px;margin-top:22px}
   .onb div{display:grid;grid-template-columns:30px 1fr;gap:12px;font-size:15px;color:rgba(255,255,255,.9)}
@@ -226,16 +218,16 @@
   .cin{padding:12px 18px;border-top:1px solid var(--line);background:#fff}
   .cin form{display:flex;gap:8px}
   .cin input{flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid var(--line);font:15px var(--sans)}
+  .mic{padding:9px 11px} .mic svg{width:20px;height:20px;display:block}
+  .rec{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--paper)}
+  .rtop{display:flex;align-items:center;gap:8px;font-size:14px} .rtop .num{margin-left:auto;color:var(--slate);font-weight:600}
+  .rdot{width:10px;height:10px;border-radius:50%;background:var(--coral);animation:pulse 1.2s infinite} @keyframes pulse{50%{opacity:.25}}
+  .rec p{font-size:14.5px;color:var(--slate);margin:8px 0 10px;max-height:96px;overflow:auto} .rec p.has{color:var(--ink)}
+  .racts{display:flex;gap:8px} .racts .btn{flex:1}
+  .spoken{align-self:flex-end;font-size:12px;color:var(--slate);font-weight:600;margin-top:-4px}
+  .msg.tip{background:var(--tint);border:1px solid #DAD4EE;align-self:stretch;max-width:100%;font-size:14px}
+  .msg.tip b{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);margin-bottom:2px}
   .cin .fine{font-size:11.5px;color:var(--slate);margin-top:8px}
-
-  /* notes list */
-  .about{background:#F3F2F7;padding:56px 0 72px;border-top:6px solid var(--pin)}
-  .about .wrap{max-width:960px} .about h2{font-family:var(--sans);font-size:24px;font-weight:800;margin-bottom:6px}
-  .about .sub{color:#555;margin-bottom:22px}
-  .about ol{list-style:none;padding:0;margin:0;display:grid;gap:12px}
-  .about li{display:grid;grid-template-columns:30px 1fr;gap:12px;background:#fff;border:1px solid #E2E0EA;border-radius:10px;padding:14px 16px;font-size:14.5px;line-height:1.5}
-  .about li .n{width:26px;height:26px;border-radius:50%;background:var(--pin);color:#fff;font-weight:800;font-size:12px;display:grid;place-items:center}
-  .about li strong{display:block}
 
   @media (max-width:980px){
     .hero .wrap{grid-template-columns:1fr} .face{justify-self:start}
@@ -244,7 +236,6 @@
     .hdr .wrap{gap:10px} .hdr .wrap>.btn{margin-left:auto} .menu{display:grid}
     .hdr nav{display:none;position:absolute;top:100%;left:0;right:0;margin:0;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 18px 30px -18px rgba(31,26,58,.35);flex-direction:column;gap:0;padding:6px 24px 12px}
     .hdr.open nav{display:flex} .hdr nav a{padding:13px 0;border-top:1px solid var(--line)} .hdr nav a:first-child{border-top:0}
-    .hdr>.pin{top:55px!important;left:calc(50% - 13px)!important} .hdr>.note{top:88px!important;left:16px!important} .hdr.open>.pin,.hdr.open>.note{display:none!important}
     .dir .wrap>*{min-width:0} .listhead{flex-wrap:wrap;gap:4px 16px} .ftoggle{display:flex;width:100%;justify-content:space-between} .filters{display:none} .dir.fopen .filters{display:flex}
   }
   @media (max-width:600px){
@@ -254,12 +245,11 @@
     .chip{padding:10px 14px} .fgroup label{padding:5px 0} .sw{padding:4px 0} .dh .x{min-width:44px;min-height:44px}
     .starters button{padding:10px 13px} .conf{display:grid;gap:6px} #confbtns{display:grid;grid-template-columns:repeat(10,1fr);gap:4px} .conf button{width:auto;height:40px}
   }
-  @media (max-width:600px){ .chat>.pin{top:82px!important;left:auto!important;right:10px} .chat>.note{top:114px!important;left:auto!important;right:10px} }
   @media (max-width:360px){
     .wrap{padding:0 16px} .hero .wrap{padding-left:16px;padding-right:16px} .chrome a{display:none}
     .logo{font-size:21px;gap:7px} .logo svg{width:24px;height:24px} .hdr .wrap>.btn{padding:9px 10px;font-size:13px}
   }
-  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .drawer,.btn{transition:none} }
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .drawer,.btn{transition:none} .rdot{animation:none} }
 </style>
 </head>
 <body>
@@ -267,24 +257,19 @@
 
 <div class="chrome"><div class="wrap">
   <span class="mk">Mockup</span><span class="ttl">Eluvo · coach directory + live Coach Kim AI</span><span class="sp"></span>
-  <a href="#find">Directory</a><a href="#notes">Notes</a>
-  <button class="toggle" id="noteToggle" type="button"><span class="dot"></span><span id="noteLabel">Notes on</span></button>
+  <a href="#find">Directory</a>
 </div></div>
 
-<header class="hdr anno">
-  <button class="pin" type="button" style="top:55px;left:calc(50% - 13px)" aria-label="Note 1">1</button>
-  <div class="note" style="top:88px;left:calc(50% - 160px)"><b>Note 1 · The brand</b>Eluvo, "Grow forward". Logo, colours and type follow the brand guide: purple carries, yellow acts, amber points. Kim is the face and co-founder, so her name and photo sit in the hero, but the platform name stays neutral for 2,000 other coaches.</div>
+<header class="hdr">
   <div class="wrap">
     <a class="logo" href="#top" aria-label="Eluvo home"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>eluvo</a>
-    <nav id="nav"><a href="#start">Guides &amp; videos</a><a href="#find">Find a coach</a><a href="#how">How it works</a><a href="#forcoaches">For coaches</a><a href="providers.html">For organisations</a><a href="#">Sign in</a></nav>
+    <nav id="nav"><a href="#start">Guides &amp; videos</a><a href="#find">Find a coach</a><a href="#how">How it works</a><a href="coaches.html">For coaches</a><a href="providers.html">For organisations</a><a href="#">Sign in</a></nav>
     <button class="btn btn-gold sm" type="button" data-chat="kim"><span>Talk to Coach Kim<span class="xs-hide"> · free</span></span></button>
     <button class="menu" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span></button>
   </div>
 </header>
 
-<section class="hero anno" id="top">
-  <button class="pin" type="button" style="top:22px;left:24px" aria-label="Note 2">2</button>
-  <div class="note" style="top:54px;left:24px"><b>Note 2 · The conversation comes first</b>Someone who just got rejected wants help now, not a list of coaches to compare. The headline is Kim's own opening question, the box under it starts the chat, and the card on the right shows what a chat is like. The directory is one scroll down for people who want a person.</div>
+<section class="hero" id="top">
   <div class="wrap">
     <div>
       <p class="eyebrow" style="color:var(--gold)">Free AI coach · real coaches behind it</p>
@@ -318,9 +303,7 @@
   </div>
 </section>
 
-<section class="start anno" id="start">
-  <button class="pin" type="button" style="top:18px;right:24px" aria-label="Note 7">7</button>
-  <div class="note" style="top:50px;right:24px"><b>Note 7 · Content that ends in practice</b>Not a blog. Each situation gets one short video, one guide and one tool, and every one of them ends with "practise this with the AI coach". The same clips run on TikTok and Instagram to bring people in. Videos are not recorded yet; the guides are drafts from Kim's method for her to edit.</div>
+<section class="start" id="start">
   <div class="wrap">
     <div class="top">
       <div>
@@ -335,11 +318,7 @@
   </div>
 </section>
 
-<section class="dir anno" id="find">
-  <button class="pin" type="button" style="top:-10px;left:24px" aria-label="Note 3">3</button>
-  <div class="note" style="top:22px;left:24px"><b>Note 3 · The Oladoc pattern</b>Filters on the left, cards on the right, two actions per card: the free one (chat with the AI coach) and the paid one (book the human). Every card answers the same five questions in the same places: who, what for, proof, price, next action.</div>
-  <button class="pin" type="button" style="top:-10px;right:24px" aria-label="Note 4">4</button>
-  <div class="note" style="top:22px;right:24px"><b>Note 4 · Who is real here</b>Kim's card and profile use her real credentials from LinkedIn and her website. Every other coach is an illustrative example with made-up names and numbers, to show how a full directory reads. Nothing about them should be reused.</div>
+<section class="dir" id="find">
   <div class="wrap">
     <button class="btn btn-line ftoggle" id="filterBtn" type="button" aria-expanded="false" aria-controls="filters">Filters<span class="fcount" id="fcount" hidden></span></button>
     <aside class="filters" id="filters">
@@ -390,53 +369,18 @@
   </div>
 </section>
 
-<section class="coaches anno" id="forcoaches">
-  <button class="pin" type="button" style="top:22px;right:24px" aria-label="Note 6">6</button>
-  <div class="note" style="top:54px;right:24px"><b>Note 6 · The coach side</b>Two thousand coaches will only join if setup takes an hour and they keep control. The four steps here are the onboarding. The "what you keep" box is the answer to "will the AI replace me".</div>
+<section class="coaches" id="forcoaches">
   <div class="wrap">
     <div>
       <p class="eyebrow" style="color:var(--gold)">For coaches</p>
       <h2 style="margin-top:8px">Coach 500 people without working more hours</h2>
       <p class="lede">Train your AI coach in about an hour. It does the daily practice in your voice. You do the sessions.</p>
-      <div class="onb">
-        <div><b>1</b><span>Upload two or three recorded sessions, or write out how a typical one goes.</span></div>
-        <div><b>2</b><span>Answer 20 questions: your go-to questions, how you open, how you close, what you never say.</span></div>
-        <div><b>3</b><span>Read 10 sample replies from your AI and correct them. That becomes its rulebook.</span></div>
-        <div><b>4</b><span>Set what is free, what is paid, and when the AI must hand over to you.</span></div>
-      </div>
     </div>
-    <div class="keep">
-      <h3>What you keep</h3>
-      <ul>
-        <li>Your playbook. It is yours, and it leaves with you.</li>
-        <li>Your clients. Every conversation is visible to you.</li>
-        <li>The off switch. Pause your AI coach any time.</li>
-        <li>Your price. Eluvo takes a small cut of bookings, nothing else.</li>
-        <li>Each other. Referrals, shared worksheets, peer circles.</li>
-      </ul>
-      <form onsubmit="event.preventDefault()"><input type="email" placeholder="Your email" aria-label="Your email"><button class="btn btn-gold sm" type="submit">Join the coach waitlist</button></form>
-    </div>
+    <a class="btn btn-gold" href="coaches.html">See how it works for coaches</a>
   </div>
 </section>
 
-<footer><div class="wrap"><span class="logo" style="font-size:19px"><svg style="width:22px;height:22px" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>eluvo</span><span>Grow forward.</span><a href="providers.html">For organisations</a><a href="brand-guide.html">Brand guide</a><span class="sp"></span><span>Not a crisis service. If you are in danger call 000. Lifeline 13 11 14.</span></div></footer>
-
-<section class="about" id="notes">
-  <div class="wrap">
-    <h2>About this mockup</h2>
-    <p class="sub">Pins on the page map to this list. Toggle "Notes" in the top bar to see it clean.</p>
-    <ol>
-      <li><span class="n">1</span><div><strong>Name: Eluvo.</strong> "Grow forward." The three-bar logo sets the palette: purple #3B2E6B, ink #1F1A3A, yellow #F4B205 on cream #FBF9F5. Fonts Outfit and Figtree. Full rules in the <a href="brand-guide.html">brand guide</a>.</div></li>
-      <li><span class="n">2</span><div><strong>Conversation first.</strong> The hero starts a chat instead of a search. Quick chips use the words trainees actually say; Kim's posts gave us those words.</div></li>
-      <li><span class="n">3</span><div><strong>Directory like Oladoc.</strong> Filters left, cards right, free action and paid action on every card, verified badge, price in the same spot.</div></li>
-      <li><span class="n">4</span><div><strong>Only Kim is real.</strong> Her credentials come from LinkedIn (ICI Advanced Practitioner, IAP Certified Career Coach, MBA, ex Country Head of HR, Telstra career coach). The other six coaches are invented examples.</div></li>
-      <li><span class="n">5</span><div><strong>Coach Kim AI is live when opened in Claude.</strong> Press "Talk to Coach Kim". The first message asks your permission, then it answers using a rulebook built from her method: start where you are, name the feeling, find the strength, STAR answers one at a time, rate confidence 1 to 10, end with one next step. Outside Claude it falls back to demo replies.</div></li>
-      <li><span class="n">6</span><div><strong>Coaches join in an hour</strong> and keep their playbook, clients, price and the off switch.</div></li>
-      <li><span class="n">7</span><div><strong>Guides and videos, by situation.</strong> One video, one guide, one tool for each of five situations, each ending in practice with the AI coach. Videos are placeholders; guides are drafts for Kim to edit.</div></li>
-      <li><span class="n">8</span><div><strong>Confidence is saved.</strong> Each 1 to 10 rating in the chat is kept on the device and shown as rising bars, in the chat and in "Start here". It is the reason to come back, and it can be cleared in one tap.</div></li>
-    </ol>
-  </div>
-</section>
+<footer><div class="wrap"><span class="logo" style="font-size:19px"><svg style="width:22px;height:22px" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>eluvo</span><span>Grow forward.</span><a href="coaches.html">For coaches</a><a href="providers.html">For organisations</a><a href="brand-guide.html">Brand guide</a><span class="sp"></span><span>Not a crisis service. If you are in danger call 000. Lifeline 13 11 14.</span></div></footer>
 
 <!-- drawers -->
 <div class="scrim" id="scrim"></div>
@@ -445,9 +389,7 @@
   <div class="db" id="pbody"></div>
   <div class="dfoot" id="pfoot"></div>
 </aside>
-<aside class="drawer chat anno" id="chat" aria-label="Chat with Coach Kim AI">
-  <button class="pin" type="button" style="top:60px;left:10px" aria-label="Note 5">5</button>
-  <div class="note" style="top:92px;left:10px"><b>Note 5 · Live AI, Kim's rulebook</b>The green "Live AI" pill means your messages go to Claude with Kim's rules in front of them. Grey "Demo" means scripted replies. Either way: not Kim herself, and a crisis message switches it to real help lines.</div>
+<aside class="drawer chat" id="chat" aria-label="Chat with Coach Kim AI">
   <div class="dh">
     <div class="av" style="width:40px;height:40px;border-radius:10px"><img src="kim-avatar.jpg" alt=""></div>
     <div><strong>Coach Kim · AI coach</strong><div style="font-size:12.5px;color:var(--slate)">Trained on Kim Ali's method. Not Kim herself.</div></div>
@@ -465,21 +407,18 @@
     <div class="conf" style="margin:10px 0 8px">My confidence right now:
       <span id="confbtns"></span>
     </div>
-    <form id="cform"><input id="cinput" type="text" placeholder="Type what's going on…" aria-label="Your message" autocomplete="off"><button class="btn btn-plum sm" type="submit" id="send">Send</button><button class="btn btn-line sm" type="button" id="stop" hidden>Stop</button></form>
-    <div class="fine">Coaching, not therapy. If you are in danger call 000. Lifeline 13 11 14 · Beyond Blue 1300 22 4636. <a href="https://cal.com/coach-kim/let-s-talk">Book a free 30-min call with the real Kim</a>.</div>
+    <div class="rec" id="rec" hidden>
+      <div class="rtop"><span class="rdot"></span><strong>Listening</strong><span class="num" id="rectime">0:00</span></div>
+      <p id="rectext">Say your answer out loud. Take your time.</p>
+      <div class="racts"><button class="btn btn-plum sm" type="button" id="recdone">Done</button><button class="btn btn-line sm" type="button" id="reccancel">Cancel</button></div>
+    </div>
+    <form id="cform"><input id="cinput" type="text" placeholder="Type what's going on…" aria-label="Your message" autocomplete="off"><button class="btn btn-line sm mic" type="button" id="mic" aria-label="Say your answer out loud" title="Say your answer out loud"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button class="btn btn-plum sm" type="submit" id="send">Send</button><button class="btn btn-line sm" type="button" id="stop" hidden>Stop</button></form>
+    <div class="fine">Coaching, not therapy. Speaking uses your browser's speech-to-text; Eluvo keeps no audio. If you are in danger call 000. Lifeline 13 11 14 · Beyond Blue 1300 22 4636. <a href="https://cal.com/coach-kim/let-s-talk">Book a free 30-min call with the real Kim</a>.</div>
   </div>
 </aside>
 
 <script>
 (function(){
-  // ---------- notes ----------
-  var root=document.documentElement,tg=document.getElementById('noteToggle'),lab=document.getElementById('noteLabel');
-  function setNotes(on){root.classList.toggle('hide-notes',!on);lab.textContent=on?'Notes on':'Notes off';try{localStorage.setItem('eluvo-notes',on?'1':'0')}catch(e){}}
-  var sv=null;try{sv=localStorage.getItem('eluvo-notes')}catch(e){} setNotes(sv!=='0');
-  tg.addEventListener('click',function(){setNotes(root.classList.contains('hide-notes'))});
-  document.querySelectorAll('.pin').forEach(function(p){p.addEventListener('click',function(e){e.stopPropagation();var a=p.closest('.anno'),o=a.classList.contains('open');document.querySelectorAll('.anno.open').forEach(function(x){x.classList.remove('open')});if(!o)a.classList.add('open')})});
-  document.addEventListener('click',function(){document.querySelectorAll('.anno.open').forEach(function(x){x.classList.remove('open')})});
-
   // ---------- coaches ----------
   var KIM='kim-avatar.jpg';
   var COACHES=[
@@ -552,7 +491,7 @@
   // ---------- drawers ----------
   var scrim=document.getElementById('scrim'),prof=document.getElementById('profile'),chat=document.getElementById('chat');
   function openD(d){scrim.classList.add('on');d.classList.add('on')}
-  function closeAll(){scrim.classList.remove('on');prof.classList.remove('on');chat.classList.remove('on')}
+  function closeAll(){if(recOn)recStop();scrim.classList.remove('on');prof.classList.remove('on');chat.classList.remove('on')}
   scrim.addEventListener('click',closeAll);document.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',closeAll)});
   function showProfile(c){
     var b=document.getElementById('pbody'),f=document.getElementById('pfoot');document.getElementById('dtitle').textContent='Coach profile';
@@ -666,13 +605,14 @@
     var arr=R[k];return arr[Math.min(s,arr.length)-1];
   }
   function trimTurns(){while(turns.length>14)turns.shift();while(turns.length&&turns[0].role!=='user')turns.shift()}
-  async function sendMsg(text){
+  async function sendMsg(text,spoken){
     text=(text||'').trim();if(!text)return;
     add('me',text);inp.value='';
+    if(spoken){var sp=document.createElement('div');sp.className='spoken num';sp.textContent=spoken.meta;log.appendChild(sp);var tp=add('tip','');tp.innerHTML='<b>Delivery</b>';tp.appendChild(document.createTextNode(spoken.tip))}
     if(crisis(text)){add('sys','It sounds like things are really heavy right now. You deserve support from a person today. Lifeline 13 11 14 (24/7), Beyond Blue 1300 22 4636, or 000 if you are in danger. Please tell someone you trust.')}
     turns.push({role:'user',content:text});trimTurns();
     var bubble=add('ai','Thinking…','Coach Kim AI');
-    if(!sampleFn){await new Promise(function(r){setTimeout(r,700)});var rep=demoReply(text);bubble.textContent=rep;turns.push({role:'assistant',content:rep});log.scrollTop=log.scrollHeight;return}
+    if(!sampleFn){await new Promise(function(r){setTimeout(r,700)});var rep=spoken?'That is a real moment, and you told it in your own words. Now give it an ending: what changed because of what you did? Say it once more with that last line.':demoReply(text);bubble.textContent=rep;turns.push({role:'assistant',content:rep});log.scrollTop=log.scrollHeight;return}
     ctl=new AbortController();send.disabled=true;stop.hidden=false;
     try{
       var res=await sampleFn([{role:'user',content:RULES}].concat(turns),{cache:false,modelTier:'quick',signal:ctl.signal,onText:function(u){bubble.textContent=u.text;log.scrollTop=log.scrollHeight}});
@@ -690,6 +630,35 @@
   stop.addEventListener('click',function(){if(ctl)ctl.abort()});
   document.querySelectorAll('#starters button').forEach(function(b){b.addEventListener('click',function(){sendMsg(b.textContent)})});
   var cb=document.getElementById('confbtns');for(var i=1;i<=10;i++){(function(n){var b=document.createElement('button');b.type='button';b.textContent=n;b.addEventListener('click',function(){saveConf(n);sendMsg('My confidence right now is '+n+'/10.')});cb.appendChild(b)})(i)}
+  // ---------- say it out loud ----------
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition,sr=null,recOn=false,recT0=0,recTick=null,finalTxt='',interimTxt='';
+  var recBox=document.getElementById('rec'),recText=document.getElementById('rectext'),recTime=document.getElementById('rectime'),cform=document.getElementById('cform');
+  function mmss(s){return Math.floor(s/60)+':'+('0'+Math.floor(s%60)).slice(-2)}
+  function recUI(on){recBox.hidden=!on;cform.hidden=on;document.getElementById('starters').hidden=on;if(!on){clearInterval(recTick)}}
+  function recStop(){recOn=false;if(sr){try{sr.stop()}catch(e){}}recUI(false)}
+  function recStart(){
+    if(!SR){add('sys','Speaking practice needs a browser that can turn speech into text, such as Chrome, Edge or Safari. You can type your answer instead.');return}
+    finalTxt='';interimTxt='';recText.textContent='Say your answer out loud. Take your time.';recText.className='';recTime.textContent='0:00';
+    sr=new SR();sr.lang='en-AU';sr.continuous=true;sr.interimResults=true;
+    sr.onresult=function(e){interimTxt='';for(var i=e.resultIndex;i<e.results.length;i++){var t=e.results[i][0].transcript;if(e.results[i].isFinal)finalTxt+=t+' ';else interimTxt+=t}var all=(finalTxt+interimTxt).trim();if(all){recText.textContent=all;recText.className='has';recText.scrollTop=recText.scrollHeight}};
+    sr.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed'){recStop();add('sys','The microphone is blocked for this page. Allow it in your browser settings, or type your answer instead.')}};
+    sr.onend=function(){if(recOn){try{sr.start()}catch(e){}}};
+    try{sr.start()}catch(e){add('sys','The microphone could not start. You can type your answer instead.');return}
+    recOn=true;recT0=Date.now();recUI(true);recTick=setInterval(function(){recTime.textContent=mmss((Date.now()-recT0)/1000)},500);
+  }
+  function recDone(){
+    var secs=Math.max(1,Math.round((Date.now()-recT0)/1000)),text=(finalTxt+interimTxt).replace(/\s+/g,' ').trim();recStop();
+    if(!text){add('sys','I did not catch anything. Try again a little closer to the microphone, or type your answer.');return}
+    var words=text.split(' ').length,wpm=Math.round(words/secs*60),fill=(text.match(/\b(um+|uh+|erm+|you know|sort of|kind of|basically)\b/gi)||[]).length;
+    var tip=secs<30?'That was short. Add what you did and what happened as a result.':secs>90?'That ran long. Aim for under 90 seconds by trimming the set-up.':'Good length. Most strong answers land between 30 and 90 seconds.';
+    if(secs>=10)tip+=wpm>175?' You were speaking fast, so pause between the parts.':wpm<95?' Unhurried pace. Keep the pauses, cut any restarts.':' Steady pace.';
+    if(fill)tip+=' I caught '+fill+' filler word'+(fill>1?'s':'')+'. A short silence works better.';
+    sendMsg(text,{meta:'Spoken · '+mmss(secs)+' · '+words+' words'+(secs>=10?' · '+wpm+' words a minute':''),tip:tip});
+  }
+  document.getElementById('mic').addEventListener('click',recStart);
+  document.getElementById('recdone').addEventListener('click',recDone);
+  document.getElementById('reccancel').addEventListener('click',recStop);
+
   function openChat(id,seed){
     if(id!=='kim'){var c=COACHES.filter(function(x){return x.id===id})[0];add('sys','Only Coach Kim’s AI is live in this mockup. '+(c?c.name+'’s':'This')+' AI coach would work the same way, trained on their own rulebook. Continuing with Coach Kim.')}
     if(!log.querySelector('.msg.ai')){add('ai','Hi, I’m Kim’s AI coach. I am not Kim, but I work the way she does: one step at a time. What is going on this week?','Coach Kim AI')}
