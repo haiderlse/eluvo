@@ -82,6 +82,19 @@
   .chip:hover{background:rgba(255,255,255,.18)}
   .trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:26px;font-size:14px;color:rgba(255,255,255,.85);font-weight:500}
   .trust span::before{content:"✓";color:var(--gold);font-weight:800;margin-right:7px}
+  .priv{display:flex;align-items:center;gap:7px;margin-top:10px;font-size:13.5px;color:rgba(255,255,255,.82)} .priv svg{width:15px;height:15px;flex:none;color:var(--gold)}
+  .back{background:#fff;color:var(--ink);border-radius:16px;padding:18px 20px;margin-top:20px;max-width:560px;box-shadow:0 20px 50px -24px rgba(0,0,0,.55)}
+  .back small{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate)}
+  .back .st{font-family:var(--display);font-weight:700;font-size:21px;line-height:1.25;margin:6px 0 14px;overflow-wrap:anywhere}
+  .back .acts{display:flex;flex-wrap:wrap;gap:8px} .back .conf-l{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--slate);margin-top:14px}
+  .back :focus-visible{outline-color:var(--plum)}
+  .stepbar{margin-top:10px;font-size:13.5px} .stepbar:empty{display:none}
+  .stepbar .set{background:var(--gold-tint);border:1px dashed #E2B93B;color:var(--ink);border-radius:10px;padding:9px 12px;font:600 13.5px var(--sans);cursor:pointer;width:100%;text-align:left}
+  .stepbar form{display:flex;gap:6px} .stepbar input{flex:1;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);font:14.5px var(--sans)}
+  .stepbar .saved{background:var(--gold-tint);border-radius:10px;padding:9px 12px;display:grid;gap:4px}
+  .stepbar .saved b{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep)} .stepbar .saved span{font-weight:600;font-size:14.5px;overflow-wrap:anywhere}
+  .stepbar .links{display:flex;flex-wrap:wrap;gap:4px 14px} .stepbar .links button,.prog .nx button{background:none;border:0;padding:0;color:var(--plum);font:600 12.5px var(--sans);text-decoration:underline;cursor:pointer}
+  .prog .nx{display:block;font-size:13px;color:var(--ink);font-weight:600;margin-top:2px;max-width:34ch;overflow-wrap:anywhere}
   .hero .alt{margin-top:22px;font-size:14.5px;color:rgba(255,255,255,.8)} .hero .alt a{color:#fff;font-weight:600}
   .face{background:#fff;color:var(--ink);border-radius:18px;overflow:hidden;justify-self:end;width:100%;max-width:430px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
   .face .ph{position:relative} .face .ph img{width:100%;height:215px;object-fit:cover;object-position:50% 22%}
@@ -272,14 +285,17 @@
 <section class="hero" id="top">
   <div class="wrap">
     <div>
-      <p class="eyebrow" style="color:var(--gold)">Free AI coach · real coaches behind it</p>
-      <h1 style="margin-top:10px">What's going on <em>this week?</em></h1>
-      <p class="lede">Tell Coach Kim's AI. It is free, any hour, no sign-up. It works the way Kim does, one step at a time, and you can book a real coach when you want a person.</p>
+      <p class="eyebrow" style="color:var(--gold)" id="heroEye">Free AI coach · real coaches behind it</p>
+      <h1 style="margin-top:10px" id="heroH">What's going on <em>this week?</em></h1>
+      <div class="back" id="back" hidden></div>
+      <p class="lede" id="heroLede">Tell Coach Kim's AI. It is free, any hour, no sign-up. It works the way Kim does, one step at a time, and you can book a real coach when you want a person.</p>
       <form class="search" id="heroForm">
         <input id="say" type="text" placeholder="e.g. I have an interview tomorrow" aria-label="What's going on this week?" autocomplete="off">
         <button class="btn btn-plum" type="submit">Start talking · free</button>
       </form>
+      <p class="priv"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Private. Nothing you type is shared with anyone unless you choose to.</p>
       <div class="quick">
+        <button class="chip" type="button" data-say="I feel stuck and I don't know where to start">Don't know where to start</button>
         <button class="chip" type="button" data-say="I have an interview tomorrow">Interview tomorrow</button>
         <button class="chip" type="button" data-say="I'm trying to get my first job">First job</button>
         <button class="chip" type="button" data-say="I got rejected again and I've lost confidence">Lost confidence</button>
@@ -403,6 +419,7 @@
       <button type="button">I got rejected again</button>
       <button type="button">I don't know what I want to do</button>
     </div>
+    <div class="stepbar" id="stepbar"></div>
     <div class="mini" id="chatprog" hidden></div>
     <div class="conf" style="margin:10px 0 8px">My confidence right now:
       <span id="confbtns"></span>
@@ -572,12 +589,58 @@
   function spark(a){return '<span class="spark" role="img" aria-label="Confidence ratings: '+a.map(function(x){return x.n}).join(', ')+'">'+a.slice(-8).map(function(x){return '<i style="height:'+x.n*10+'%"></i>'}).join('')+'</span>'}
   function renderProg(){
     var a=getConf(),p=document.getElementById('prog'),m=document.getElementById('chatprog');
-    p.hidden=m.hidden=!a.length;if(!a.length)return;
-    var first=a[0].n,last=a[a.length-1].n,line=a.length>1?first+' → '+last:last+' / 10';
-    p.innerHTML=spark(a)+'<div><small>Your confidence</small><strong class="num">'+line+'</strong><small>'+a.length+' check-in'+(a.length>1?'s':'')+' · saved on this device only · <button type="button" data-clearconf>Clear</button></small></div>';
-    m.innerHTML=spark(a)+'<span>Your confidence: <span class="num">'+line+'</span> · <button type="button" data-clearconf>Clear</button></span>';
+    var st=getSteps(),pend=pendingStep(),done=st.filter(function(x){return x.done}).length;
+    m.hidden=!a.length;p.hidden=!a.length&&!st.length;
+    var first=a.length?a[0].n:0,last=a.length?a[a.length-1].n:0,line=a.length>1?first+' → '+last:last+' / 10';
+    if(a.length)m.innerHTML=spark(a)+'<span>Your confidence: <span class="num">'+line+'</span> · <button type="button" data-clearconf>Clear</button></span>';
+    if(p.hidden)return;
+    var bits=[];if(a.length)bits.push(a.length+' check-in'+(a.length>1?'s':''));if(done)bits.push(done+' step'+(done>1?'s':'')+' done');
+    p.innerHTML=(a.length?spark(a):'')+'<div>'+(a.length?'<small>Your confidence</small><strong class="num">'+line+'</strong>':'<small>Your progress</small>')+(pend?'<span class="nx">Next step: '+esc(pend.text)+'</span>':'')+'<small>'+bits.join(' · ')+(bits.length?' · ':'')+'saved on this device only · <button type="button" data-clearconf>Clear</button></small></div>';
   }
-  document.addEventListener('click',function(e){if(e.target.closest('[data-clearconf]')){e.stopPropagation();setConf([])}});
+  document.addEventListener('click',function(e){if(e.target.closest('[data-clearconf]')){e.stopPropagation();stepMem=[];try{localStorage.removeItem('eluvo-steps')}catch(x){}setConf([]);renderStepBar();renderBack()}});
+
+  // ---------- next step (saved on this device) ----------
+  var stepMem=[],stepEdit=false,stepAsked=false;
+  function getSteps(){try{var v=JSON.parse(localStorage.getItem('eluvo-steps')||'null');if(Array.isArray(v))return v}catch(e){}return stepMem}
+  function setSteps(a){stepMem=a=a.slice(-20);try{localStorage.setItem('eluvo-steps',JSON.stringify(a))}catch(e){}renderStepBar();renderProg()}
+  function pendingStep(a){a=a||getSteps();var l=a[a.length-1];return l&&!l.done?l:null}
+  function saveStep(text){text=text.replace(/\s+/g,' ').trim().slice(0,140);if(!text)return;var a=getSteps(),p=pendingStep(a);if(p){p.text=text;p.t=Date.now()}else a.push({text:text,t:Date.now(),done:false});stepEdit=false;setSteps(a)}
+  function finishStep(){var a=getSteps(),p=pendingStep(a);if(p){p.done=true;p.d=Date.now();setSteps(a)}}
+  function whenSet(t){var d=Math.round((new Date().setHours(0,0,0,0)-new Date(t).setHours(0,0,0,0))/864e5);return d<=0?'today':d===1?'yesterday':d<7?'on '+['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date(t).getDay()]:d+' days ago'}
+  function renderStepBar(){
+    var bar=document.getElementById('stepbar'),p=pendingStep();
+    if(stepEdit){bar.innerHTML='<form id="stepform"><input id="stepin" type="text" maxlength="140" placeholder="One small thing I will do today" aria-label="My next step for today"><button class="btn btn-gold sm" type="submit">Save</button></form>';document.getElementById('stepin').value=p?p.text:'';return}
+    bar.innerHTML=p?'<div class="saved"><b>Your next step</b><span>'+esc(p.text)+'</span><div class="links"><button type="button" data-step="done">I did it</button><button type="button" data-step="edit">Change</button><button type="button" data-step="send">Send it to myself</button></div></div>':'<button class="set" type="button" data-step="edit">＋ Set my one next step for today</button>';
+  }
+  document.getElementById('stepbar').addEventListener('click',function(e){
+    var b=e.target.closest('[data-step]');if(!b)return;var k=b.dataset.step,p=pendingStep();
+    if(k==='edit'){stepEdit=true;renderStepBar();document.getElementById('stepin').focus()}
+    else if(k==='done'&&p){var t=p.text;finishStep();renderBack();sendMsg('I did my next step: “'+t+'”.')}
+    else if(k==='send'&&p){var msg='My next step today: '+p.text+' (from Eluvo)';
+      if(navigator.share){navigator.share({text:msg}).catch(function(){})}
+      else if(navigator.clipboard){navigator.clipboard.writeText(msg).then(function(){b.textContent='Copied. Paste it anywhere.'},function(){b.textContent='Could not copy'})}
+      else b.textContent='Sharing is not available here'}
+  });
+  document.getElementById('stepbar').addEventListener('submit',function(e){e.preventDefault();var v=document.getElementById('stepin').value;if(v.trim()){saveStep(v);add('tip','').innerHTML='<b>Saved</b>Your next step is saved on this device. It will be here when you come back.'}});
+  function nudgeStep(){
+    if(stepAsked||pendingStep()||turns.filter(function(t){return t.role==='assistant'}).length<2)return;
+    stepAsked=true;add('tip','').innerHTML='<b>Before you go</b>Write down one next step for today, in your own words. Small is good.';stepEdit=true;renderStepBar();
+  }
+  // returning visitor: ask about the last step
+  function renderBack(){
+    var p=pendingStep(),box=document.getElementById('back'),a=getConf();
+    box.hidden=!p;document.getElementById('heroLede').hidden=!!p;
+    document.getElementById('heroEye').textContent=p?'Welcome back':'Free AI coach · real coaches behind it';
+    document.getElementById('heroH').innerHTML=p?'How did your <em>next step</em> go?':"What's going on <em>this week?</em>";
+    document.getElementById('say').placeholder=p?'Or tell me what is going on now':'e.g. I have an interview tomorrow';
+    if(!p)return;
+    box.innerHTML='<small>Your next step · set '+whenSet(p.t)+'</small><div class="st">'+esc(p.text)+'</div><div class="acts"><button class="btn btn-gold sm" type="button" data-back="done">I did it</button><button class="btn btn-line sm" type="button" data-back="notyet">Not yet</button></div>'+(a.length?'<div class="conf-l">'+spark(a)+'Confidence at your last check-in: <span class="num">'+a[a.length-1].n+' / 10</span></div>':'');
+  }
+  document.getElementById('back').addEventListener('click',function(e){
+    var b=e.target.closest('[data-back]'),p=pendingStep();if(!b||!p)return;var t=p.text;
+    if(b.dataset.back==='done'){finishStep();renderBack();openChat('kim','I did my next step: “'+t+'”.')}
+    else openChat('kim','I haven’t done my next step yet: “'+t+'”.');
+  });
   renderProg();
 
   // ---------- chat ----------
@@ -595,11 +658,13 @@
   function add(cls,text,who){if(who){var w=document.createElement('div');w.className='who';w.textContent=who;log.appendChild(w)}var m=document.createElement('div');m.className='msg '+cls;m.textContent=text;log.appendChild(m);log.scrollTop=log.scrollHeight;return m}
   function crisis(t){return /suicid|kill myself|end it all|self[- ]harm|hurt myself|don.?t want to be here|want to die/i.test(t)}
   function demoReply(t){
-    var k=/interview/i.test(t)?'interview':/reject|no\b|didn.?t get|fail/i.test(t)?'reject':/don.?t know|what i want|lost|stuck/i.test(t)?'lost':/\d+\s*\/\s*10|confidence right now/i.test(t)?'rate':'gen';
+    var k=/^I did my next step/i.test(t)?'did':/^I haven.t done my next step/i.test(t)?'notyet':/interview/i.test(t)?'interview':/reject|no\b|didn.?t get|fail/i.test(t)?'reject':/don.?t know|what i want|lost|stuck/i.test(t)?'lost':/\d+\s*\/\s*10|confidence right now/i.test(t)?'rate':'gen';
     var s=demoStep[k]=(demoStep[k]||0)+1;
     var R={interview:['Okay, an interview tomorrow. First, what is the role, and what is the one question you are most worried they will ask?','Good, that is a real question, so let us build a real answer. Think of one moment, at work, uni or anywhere, where you handled something like that. Tell me what the situation was, in two sentences.','That is your Situation. Now what was your task in it, and what did you actually do? Keep it to what you did, not the team.','That is a proper answer: situation, what you did, what happened. Say it out loud once tonight. On a scale of 1 to 10, where is your confidence about that question right now?'],
       reject:['Another no. That stings, and the part of you that is tired of this is doing its job. How many is that now, and which one hurt the most?','Thank you for telling me. A rejection is a decision about a fit, not a verdict on you. Before we touch the next application, tell me one thing you did well in that process, even a small one.','That counts. You already have things worth talking about. One next step for today: write that one thing down where you will see it tomorrow. Nothing else today. How does that sit?'],
       lost:['Not knowing what you want is more common than it looks, and you do not need the whole answer today. Let us start small: what is one thing you are naturally good at, that people ask you for help with?','That is a strength, and strengths are clues. Second question: what gives you energy, the thing you lose track of time doing?','Now the last one: what matters most to you, the thing you would not trade? Hold those three together and a direction usually shows up. Your next step today is to write all three on one line.'],
+      did:['You did it. That counts, and it was yours. How did it feel once it was done?','Hold on to that. What is the next small step, something you could do today?'],
+      notyet:['No stress, that happens. What got in the way: time, nerves, or was the step too big?','Then let us make it smaller. What is a version of it you could finish in ten minutes?'],
       rate:['Thanks for the number. Remember it, we will check it again after one practice. What would move it up by just one point?','Got it, and it is saved next to your last one. Any movement counts, even one point. What did you do between the two numbers that made the difference?'],
       gen:['Tell me what is going on this week, in your own words. Not the whole story, just the part that is loudest right now.','Okay. What would feel like one small win by the end of today?','Then that is your next step. You do not need all the answers today, just that one. Want to practise it with me now?']};
     var arr=R[k];return arr[Math.min(s,arr.length)-1];
@@ -612,11 +677,11 @@
     if(crisis(text)){add('sys','It sounds like things are really heavy right now. You deserve support from a person today. Lifeline 13 11 14 (24/7), Beyond Blue 1300 22 4636, or 000 if you are in danger. Please tell someone you trust.')}
     turns.push({role:'user',content:text});trimTurns();
     var bubble=add('ai','Thinking…','Coach Kim AI');
-    if(!sampleFn){await new Promise(function(r){setTimeout(r,700)});var rep=spoken?'That is a real moment, and you told it in your own words. Now give it an ending: what changed because of what you did? Say it once more with that last line.':demoReply(text);bubble.textContent=rep;turns.push({role:'assistant',content:rep});log.scrollTop=log.scrollHeight;return}
+    if(!sampleFn){await new Promise(function(r){setTimeout(r,700)});var rep=spoken?'That is a real moment, and you told it in your own words. Now give it an ending: what changed because of what you did? Say it once more with that last line.':demoReply(text);bubble.textContent=rep;turns.push({role:'assistant',content:rep});nudgeStep();log.scrollTop=log.scrollHeight;return}
     ctl=new AbortController();send.disabled=true;stop.hidden=false;
     try{
       var res=await sampleFn([{role:'user',content:RULES}].concat(turns),{cache:false,modelTier:'quick',signal:ctl.signal,onText:function(u){bubble.textContent=u.text;log.scrollTop=log.scrollHeight}});
-      turns.push({role:'assistant',content:res.text});
+      turns.push({role:'assistant',content:res.text});nudgeStep();
     }catch(e){
       var c=e&&e.code;
       if(c==='cancelled'){bubble.textContent=e.text||'(stopped)'}
@@ -658,6 +723,8 @@
   document.getElementById('mic').addEventListener('click',recStart);
   document.getElementById('recdone').addEventListener('click',recDone);
   document.getElementById('reccancel').addEventListener('click',recStop);
+
+  renderStepBar();renderBack();
 
   function openChat(id,seed){
     if(id!=='kim'){var c=COACHES.filter(function(x){return x.id===id})[0];add('sys','Only Coach Kim’s AI is live in this mockup. '+(c?c.name+'’s':'This')+' AI coach would work the same way, trained on their own rulebook. Continuing with Coach Kim.')}
