@@ -6,12 +6,12 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Eluvo for employment providers and universities</title>
-<meta name="description" content="Give every young person on your caseload a coach between appointments: a free AI coach at any hour, practice that tracks confidence, and a verified human coach when it matters.">
+<meta name="description" content="Most tools hand out answers. Eluvo helps each young person name what is really holding them back, supports them between appointments, and shows you the patterns across your caseload.">
 <meta name="theme-color" content="#3B2E6B">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Eluvo">
 <meta property="og:title" content="Eluvo for employment providers and universities">
-<meta property="og:description" content="A coach for every young person on your caseload, between appointments.">
+<meta property="og:description" content="See what is really holding each young person back.">
 <meta property="og:image" content="https://haiderlse.github.io/eluvo/og.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -87,6 +87,18 @@
   .privacy ul{margin:8px 0 0;padding-left:18px;display:grid;gap:6px;font-size:15px}
   .privacy .yes h3{color:var(--fern)} .privacy .no h3{color:#C0392B}
 
+  .pcard{background:#fff;color:var(--ink);border-radius:18px;padding:20px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+  .pcard .lbl{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);margin-bottom:14px}
+  .pcard .who span{display:block;font-weight:500;font-size:13px;color:var(--slate)}
+  .pcard small{display:block;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep);margin-top:16px}
+  .pcard .wn{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.15;margin:4px 0 6px}
+  .pcard p{font-size:14.5px;color:var(--slate)}
+  .pcard .two{display:grid;grid-template-columns:1fr auto;gap:18px;border-top:1px solid var(--line);margin-top:16px} .pcard .two b{display:block;font-size:15px;margin-top:3px}
+  .close{margin-top:22px;font-family:var(--display);font-weight:700;font-size:20px;line-height:1.3;max-width:46ch}
+  .blk{padding:20px;border-bottom:1px solid var(--line)} .blk h3{font-size:17px;margin-bottom:14px}
+  .brow{display:grid;grid-template-columns:230px 1fr 26px;gap:12px;align-items:center;font-size:14.5px;padding:5px 0}
+  .brow i{display:block;height:12px;border-radius:6px;background:var(--plum);width:var(--w)} .brow:first-of-type i{background:var(--gold)} .brow b{text-align:right}
+  .blk .hint{margin-top:14px;font-size:14.5px;color:var(--slate);max-width:70ch}
   .cta{background:var(--ink);color:#fff}
   .cta .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
   .cta .eyebrow{color:var(--gold)} .cta .lede{color:rgba(255,255,255,.78)}
@@ -104,7 +116,7 @@
     .hdr nav{display:none} .hdr .wrap>.btn{margin-left:auto}
   }
   @media (max-width:600px){
-    .g3,.g4,.privacy,form .row{grid-template-columns:1fr} section{padding:48px 0} .hero .wrap{padding:44px 24px 48px}
+    .g3,.g4,.privacy,form .row{grid-template-columns:1fr} .brow{grid-template-columns:1fr 70px 22px;font-size:13.5px} section{padding:48px 0} .hero .wrap{padding:44px 24px 48px}
     .logo small{display:none} .chrome .ttl{display:none} .hero .acts .btn{flex:1}
   }
   @media (max-width:360px){ .wrap{padding:0 16px} .hero .wrap{padding-left:16px;padding-right:16px} .logo{font-size:21px} .hdr .wrap>.btn{padding:9px 10px;font-size:13px} }
@@ -120,62 +132,87 @@
 
 <header class="hdr"><div class="wrap">
   <a class="logo" href="index.html" aria-label="Eluvo home"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>eluvo<small>for organisations</small></a>
-  <nav><a href="#get">What they get</a><a href="#see">What you see</a><a href="#pilot">Running a pilot</a><a href="coaches.html">For coaches</a><a href="index.html">For students</a></nav>
+  <nav><a href="#why">Why it works</a><a href="#get">What they get</a><a href="#see">What you see</a><a href="#pilot">Running a pilot</a><a href="coaches.html">For coaches</a><a href="index.html">For students</a></nav>
   <a class="btn btn-gold sm" href="#contact">Request a pilot</a>
 </div></header>
 
 <section class="hero" style="padding:0"><div class="wrap">
   <div>
     <p class="eyebrow">For employment providers and universities</p>
-    <h1 style="margin-top:10px">A coach for every young person, <em>between appointments.</em></h1>
-    <p class="lede">Your consultants see each person for a short time. The hard moments come later: the night before an interview, the hour after a rejection. Eluvo is there for those, and tells you who needs a person.</p>
-    <div class="acts"><a class="btn btn-gold" href="#contact">Request a pilot</a><a class="btn btn-ghost" href="index.html">Try the student side</a></div>
+    <h1 style="margin-top:10px">See what is really holding <em>each young person back.</em></h1>
+    <p class="lede">Most tools hand out answers. Eluvo starts one step earlier: a two-minute check that helps a young person name what is in the way, then supports them between appointments. You see the patterns across your caseload.</p>
+    <div class="acts"><a class="btn btn-gold" href="#contact">Request a pilot</a><a class="btn btn-ghost" href="index.html">Try the check yourself</a></div>
   </div>
-  <div class="gap" role="img" aria-label="Illustration of one week: one appointment on Tuesday, six days without contact">
-    <h3>One participant's week</h3>
-    <div class="week"><div>Mon<b></b></div><div class="appt">Tue<b></b></div><div>Wed<b></b></div><div>Thu<b></b></div><div>Fri<b></b></div><div>Sat<b></b></div><div>Sun<b></b></div></div>
-    <div class="key"><span><i></i>Appointment with you</span><span><i class="e"></i>On their own</span></div>
-    <p>The interview is on Thursday. The nerves arrive on Wednesday night. That is the gap Eluvo covers.</p>
+  <div class="pcard">
+    <div class="lbl"><span>Before the appointment</span><span class="ex">Example</span></div>
+    <div class="who"><i>JT</i><div>J. T.<span>Finished the check last night, 10:40 pm</span></div></div>
+    <small>What looks to be in the way</small>
+    <div class="wn">Bracing for another no</div>
+    <p>Four rejections in. Has stopped applying because not trying feels safer than another no.</p>
+    <div class="two"><div><small>Next step, in their words</small><b>Apply for the cafe job. Just that one.</b></div><div><small>Confidence</small><b class="num">3 → 5</b></div></div>
   </div>
+</div></section>
+
+<section class="white" id="why"><div class="wrap">
+  <p class="eyebrow">Why start there</p>
+  <h2 style="margin-top:8px">Same symptom, three different causes</h2>
+  <p class="lede">Three young people on your caseload have stopped applying.</p>
+  <div class="g3">
+    <div class="tile"><h3>One expects another no</h3><p>Four rejections in, not applying feels safer. What helps: one small, low-stakes attempt.</p></div>
+    <div class="tile"><h3>One can’t see what they offer</h3><p>Thinks no experience means nothing to say. What helps: naming three strengths from real moments.</p></div>
+    <div class="tile"><h3>One is carrying things at home</h3><p>Money and family are using up the energy. What helps: a person, not a worksheet.</p></div>
+  </div>
+  <p class="close">The same resume workshop helps none of them. Eluvo helps each one name what is in the way, so the support that follows fits.</p>
 </div></section>
 
 <section id="get"><div class="wrap">
   <p class="eyebrow">What your participants get</p>
-  <h2 style="margin-top:8px">Help at the moment they need it</h2>
-  <p class="lede">Nothing to install. They open a link on their phone and start talking.</p>
+  <h2 style="margin-top:8px">Self-awareness first. Then confidence and follow-through.</h2>
+  <p class="lede">For the moments that decide things: job searching, rejection, interviews and the first weeks in work. Nothing to install; they open a link on their phone.</p>
   <div class="g4">
-    <div class="tile"><h3>An AI coach, any hour</h3><p>Built on a real coach's method. It asks one question at a time and ends every chat with one next step.</p></div>
-    <div class="tile"><h3>Practice, not reading</h3><p>They build one interview answer from a real moment, then say it back. Short videos and plans for the week they are having.</p></div>
-    <div class="tile"><h3>Confidence they can see</h3><p>A 1 to 10 rating before and after each practice. Small movement, made visible.</p></div>
-    <div class="tile"><h3>A person when it matters</h3><p>The AI hands over to a verified human coach, or back to your consultant, when someone needs more than practice.</p></div>
+    <div class="tile"><h3>A name for what’s in the way</h3><p>A two-minute check in their own words. They say whether it fits. Most have never been asked.</p></div>
+    <div class="tile"><h3>One next step they chose</h3><p>Small enough for today, written by them, and followed up when they come back.</p></div>
+    <div class="tile"><h3>Practice that fits</h3><p>Answers out loud for nerves, strengths for self-doubt, one application for avoidance. Any hour.</p></div>
+    <div class="tile"><h3>A person when it matters</h3><p>Handover to a verified human coach, or back to your consultant, when someone needs more than practice.</p></div>
   </div>
 </div></section>
 
 <section class="white" id="see"><div class="wrap">
   <p class="eyebrow">What you see</p>
-  <h2 style="margin-top:8px">Who is practising, who is stuck, who needs a call</h2>
-  <p class="lede">A cohort view for consultants and team leaders. It shows activity and confidence trends. It never shows what a participant typed.</p>
+  <h2 style="margin-top:8px">What is holding people back, who is moving, who needs a call</h2>
+  <p class="lede">A cohort view for consultants and team leaders. It shows what looks to be in the way, activity and confidence trends. It never shows what a participant typed.</p>
   <div class="dash">
     <div class="bar"><strong>Cohort: Youth team, north region</strong><span class="ex">Example data</span><span class="sp"></span><span class="tag">Last 7 days</span></div>
     <div class="stats">
       <div class="stat"><small>Active this week</small><b class="num">31 <span>of 42</span></b><span>opened Eluvo at least once</span></div>
-      <div class="stat"><small>Practice sessions</small><b class="num">118</b><span>most between 8 pm and midnight</span></div>
-      <div class="stat"><small>Confidence change</small><b class="num">+1.6</b><span>average, first rating to latest</span></div>
+      <div class="stat"><small>Finished the check</small><b class="num">27</b><span>have a name for what is in the way</span></div>
+      <div class="stat"><small>Said “that’s it”</small><b class="num">22 <span>of 27</span></b><span>agreed the result fits them</span></div>
       <div class="stat"><small>Asked for a person</small><b class="num">4</b><span>waiting on a call back</span></div>
     </div>
+    <div class="blk">
+      <h3>What is in the way, across this cohort</h3>
+      <div class="brow"><span>Bracing for another no</span><i style="--w:100%"></i><b class="num">8</b></div>
+      <div class="brow"><span>Can’t see what they offer</span><i style="--w:75%"></i><b class="num">6</b></div>
+      <div class="brow"><span>Too much at once</span><i style="--w:50%"></i><b class="num">4</b></div>
+      <div class="brow"><span>A how-to gap</span><i style="--w:37.5%"></i><b class="num">3</b></div>
+      <div class="brow"><span>Nerves on the day</span><i style="--w:37.5%"></i><b class="num">3</b></div>
+      <div class="brow"><span>No clear direction</span><i style="--w:25%"></i><b class="num">2</b></div>
+      <div class="brow"><span>Life outside is taking the room</span><i style="--w:12.5%"></i><b class="num">1</b></div>
+      <p class="hint">Eight people are avoiding applications because they expect a no, and only three have a how-to gap. Another resume session would reach three; one small application each would reach eight.</p>
+    </div>
     <div class="tw"><table>
-      <thead><tr><th>Participant</th><th>Last active</th><th>Practice</th><th>Confidence</th><th>Status</th></tr></thead>
+      <thead><tr><th>Participant</th><th>What’s in the way</th><th>Confidence</th><th>Last active</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td><span class="who"><i>JT</i>J. T.</span></td><td>Last night, 10:40 pm</td><td class="num">6 sessions</td><td><span class="spark" aria-hidden="true"><i style="height:30%"></i><i style="height:40%"></i><i style="height:60%"></i><i style="height:70%"></i></span><span class="num">3 → 7</span></td><td><span class="tag gold">Interview Thursday</span></td></tr>
-        <tr><td><span class="who"><i>AM</i>A. M.</span></td><td>Today, 7:15 am</td><td class="num">2 sessions</td><td><span class="spark" aria-hidden="true"><i style="height:50%"></i><i style="height:40%"></i></span><span class="num">5 → 4</span></td><td><span class="tag" style="background:#FBE7E2;color:#9C2F1C">Asked for a person</span></td></tr>
-        <tr><td><span class="who"><i>SK</i>S. K.</span></td><td>3 days ago</td><td class="num">4 sessions</td><td><span class="spark" aria-hidden="true"><i style="height:40%"></i><i style="height:50%"></i><i style="height:60%"></i></span><span class="num">4 → 6</span></td><td><span class="tag ok">Started a job</span></td></tr>
-        <tr><td><span class="who"><i>RN</i>R. N.</span></td><td>12 days ago</td><td class="num">1 session</td><td><span class="spark" aria-hidden="true"><i style="height:40%"></i></span><span class="num">4</span></td><td><span class="tag">Gone quiet</span></td></tr>
+        <tr><td><span class="who"><i>JT</i>J. T.</span></td><td>Bracing for another no</td><td><span class="spark" aria-hidden="true"><i style="height:30%"></i><i style="height:40%"></i><i style="height:60%"></i><i style="height:70%"></i></span><span class="num">3 → 7</span></td><td>Last night, 10:40 pm</td><td><span class="tag gold">Interview Thursday</span></td></tr>
+        <tr><td><span class="who"><i>AM</i>A. M.</span></td><td>Life outside is taking the room</td><td><span class="spark" aria-hidden="true"><i style="height:50%"></i><i style="height:40%"></i></span><span class="num">5 → 4</span></td><td>Today, 7:15 am</td><td><span class="tag" style="background:#FBE7E2;color:#9C2F1C">Asked for a person</span></td></tr>
+        <tr><td><span class="who"><i>SK</i>S. K.</span></td><td>A how-to gap</td><td><span class="spark" aria-hidden="true"><i style="height:40%"></i><i style="height:50%"></i><i style="height:60%"></i></span><span class="num">4 → 6</span></td><td>3 days ago</td><td><span class="tag ok">Started a job</span></td></tr>
+        <tr><td><span class="who"><i>RN</i>R. N.</span></td><td style="color:var(--mist)">Not shared</td><td><span class="spark" aria-hidden="true"><i style="height:40%"></i></span><span class="num">4</span></td><td>12 days ago</td><td><span class="tag">Gone quiet</span></td></tr>
       </tbody>
     </table></div>
   </div>
   <div class="privacy">
-    <div class="tile yes"><h3>You see</h3><ul><li>Who has used it, and when.</li><li>How many practice sessions, on which topics.</li><li>Confidence ratings over time.</li><li>When someone asks for a person.</li></ul></div>
-    <div class="tile no"><h3>You don't see</h3><ul><li>What anyone typed, or what the AI said back.</li><li>Anything from a participant who has not agreed to share.</li><li>Any score or ranking of a person.</li></ul></div>
+    <div class="tile yes"><h3>You see</h3><ul><li>What looks to be in the way, when the participant chooses to share it.</li><li>Who has used it, and when.</li><li>Confidence ratings and next steps done over time.</li><li>When someone asks for a person.</li></ul></div>
+    <div class="tile no"><h3>You don’t see</h3><ul><li>What anyone typed, or what the AI said back.</li><li>Anything from a participant who has not agreed to share.</li><li>Any score or ranking of a person.</li></ul></div>
   </div>
 </div></section>
 
@@ -185,7 +222,7 @@
   <div class="g3">
     <div class="tile"><div class="n">1</div><h3>Pick a cohort</h3><p>One team or one intake, 20 to 50 people. We agree what you want to learn before it starts.</p></div>
     <div class="tile"><div class="n">2</div><h3>Share a link</h3><p>Consultants hand over a link or QR code in an appointment. Participants choose whether to share their progress with you.</p></div>
-    <div class="tile"><div class="n">3</div><h3>Review together</h3><p>At eight weeks we go through usage, confidence change and what consultants noticed, and you decide whether to continue.</p></div>
+    <div class="tile"><div class="n">3</div><h3>Review together</h3><p>At eight weeks we go through what was in the way, what moved, and what consultants noticed. You decide whether to continue.</p></div>
   </div>
   <div class="g3">
     <div class="tile"><h3>For employment providers</h3><p>Fits around appointments and job plans. Useful for interview preparation, first jobs and the weeks after a knock-back.</p></div>
