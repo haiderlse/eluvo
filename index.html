@@ -134,7 +134,18 @@
   .prog{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;font-size:14px}
   .prog strong{display:block;font-family:var(--display);font-size:18px} .prog small{color:var(--slate);font-size:12.5px}
   .prog button,.mini button{background:none;border:0;padding:0;color:var(--plum);font:600 12.5px var(--sans);text-decoration:underline;cursor:pointer}
-  .tabs{display:flex;flex-wrap:wrap;gap:8px;overflow-x:auto;margin:22px 0 16px;padding:3px 3px 6px;scrollbar-width:none}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;overflow-x:auto;margin:14px 0 16px;padding:3px 3px 6px;scrollbar-width:none}
+  .paths{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+  .path{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-content:start;text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;cursor:pointer;font:inherit;color:inherit;transition:border-color .12s}
+  .path .pn{grid-row:1/3;width:32px;height:32px;border-radius:10px;background:var(--gold-tint);color:var(--gold-deep);display:grid;place-items:center;font:800 15px var(--display)}
+  .path .pt{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.2} .path .pd{font-size:13.5px;color:var(--slate)}
+  .path:hover{border-color:var(--plum)} .path:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
+  .path[aria-selected=true]{background:var(--plum);border-color:var(--plum);color:#fff} .path[aria-selected=true] .pd{color:rgba(255,255,255,.82)} .path[aria-selected=true] .pn{background:var(--gold);color:var(--ink)}
+  .path .yours{display:inline-block;background:var(--gold);color:var(--ink);font:800 11px var(--sans);border-radius:999px;padding:2px 7px;margin-left:6px;vertical-align:middle}
+  .tabs .tl{align-self:center;flex:none;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);margin-right:4px}
+  .frame{display:flex;flex-wrap:wrap;gap:8px 0;margin-top:32px;font-family:var(--display);font-weight:700;font-size:15.5px}
+  .frame span{display:flex;align-items:center} .frame span:not(:last-child)::after{content:"→";color:var(--gold-deep);margin:0 12px}
+  .promise{margin-top:16px;font-family:var(--display);font-weight:700;font-size:clamp(20px,2.4vw,26px);line-height:1.25;max-width:32ch;letter-spacing:-.01em}
   .tab{flex:none;background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:10px 16px;font:600 14.5px var(--sans);cursor:pointer}
   .tab[aria-selected=true]{background:var(--plum);border-color:var(--plum);color:#fff}
   .tab:focus-visible,.kc:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
@@ -264,7 +275,7 @@
   @media (max-width:980px){
     .hero .wrap{grid-template-columns:1fr} .face{justify-self:start}
     .dir .wrap{grid-template-columns:1fr} .filters{position:static}
-    .steps{grid-template-columns:1fr} .coaches .wrap{grid-template-columns:1fr} .kit{grid-template-columns:1fr 1fr}
+    .steps{grid-template-columns:1fr} .coaches .wrap{grid-template-columns:1fr} .kit{grid-template-columns:1fr 1fr} .paths{grid-template-columns:1fr 1fr}
     .hdr .wrap{gap:10px} .hdr .wrap>.btn{margin-left:auto} .menu{display:grid}
     .hdr nav{display:none;position:absolute;top:100%;left:0;right:0;margin:0;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 18px 30px -18px rgba(31,26,58,.35);flex-direction:column;gap:0;padding:6px 24px 12px}
     .hdr.open nav{display:flex} .hdr nav a{padding:13px 0;border-top:1px solid var(--line)} .hdr nav a:first-child{border-top:0}
@@ -272,7 +283,7 @@
   }
   @media (max-width:600px){
     .card{grid-template-columns:1fr} .av{width:64px;height:64px} .card .acts{margin-left:0;width:100%;flex-wrap:wrap} .card .acts .btn{flex:1}
-    .face{max-width:none} .tabs{flex-wrap:nowrap} .bintro{grid-template-columns:1fr} .kit{grid-template-columns:1fr} .kc .thumb{height:130px} .lsearch{max-width:none;flex-basis:100%;order:3} .sort{display:none} .keep form{flex-wrap:wrap} .keep form .btn{flex:1}
+    .face{max-width:none} .paths{grid-template-columns:1fr} .path{padding:13px 14px} .tabs{flex-wrap:nowrap} .bintro{grid-template-columns:1fr} .kit{grid-template-columns:1fr} .kc .thumb{height:130px} .lsearch{max-width:none;flex-basis:100%;order:3} .sort{display:none} .keep form{flex-wrap:wrap} .keep form .btn{flex:1}
     .search{flex-direction:column} .chrome .ttl{display:none} .xs-hide{display:none}
     .chip{padding:10px 14px} .fgroup label{padding:5px 0} .sw{padding:4px 0} .dh .x{min-width:44px;min-height:44px}
     .starters button{padding:10px 13px} .conf{display:grid;gap:6px} #confbtns{display:grid;grid-template-columns:repeat(10,1fr);gap:4px} .conf button{width:auto;height:40px}
@@ -307,7 +318,7 @@
       <p class="eyebrow" style="color:var(--gold)" id="heroEye">Free · 2 minutes · no sign-up</p>
       <h1 style="margin-top:10px" id="heroH">Stuck, and <em>not sure why?</em></h1>
       <div class="back" id="back" hidden></div>
-      <p class="lede" id="heroLede">Most advice skips the first question: what is actually in the way? Tell Coach Kim’s AI what’s going on. In about two minutes you will have a name for it, and one next step.</p>
+      <p class="lede" id="heroLede">Most career advice starts with jobs. Eluvo starts with you. Tell Coach Kim’s AI what’s going on, and in about two minutes you will have a name for what is in the way, and one next step.</p>
       <form class="search" id="heroForm">
         <input id="say" type="text" placeholder="e.g. I keep putting off applying" aria-label="What's going on?" autocomplete="off">
         <button class="btn btn-plum" type="submit" id="heroBtn">Find what’s in the way</button>
@@ -341,12 +352,13 @@
   <div class="wrap">
     <div class="top">
       <div>
-        <p class="eyebrow">What gets in the way</p>
-        <h2 style="margin-top:8px">Same stuck feeling, different causes</h2>
+        <p class="eyebrow">Four pathways</p>
+        <h2 style="margin-top:8px">Most career advice starts with jobs. We start with you.</h2>
         <p class="lede" id="startLede"></p>
       </div>
       <div class="prog" id="prog" hidden></div>
     </div>
+    <div class="paths" id="paths" role="tablist" aria-label="Pathways"></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="What gets in the way"></div>
     <div class="bintro" id="bintro"></div>
     <div class="kit" id="kit"></div>
@@ -401,6 +413,8 @@
       <div class="step"><div class="n">2</div><h3>Find what is in the way</h3><p>Three quick questions, then a name for it: fear of another no, not seeing what you offer, too much at once. You say whether it fits.</p></div>
       <div class="step"><div class="n">3</div><h3>One next step, and help that fits</h3><p>A step small enough for today, practice with the AI coach, and a real coach when you want a person. Come back and it asks how it went.</p></div>
     </div>
+    <div class="frame" aria-label="The Eluvo framework"><span>Understand yourself</span><span>Find direction</span><span>Build confidence</span><span>Create opportunities</span><span>Build your future</span></div>
+    <p class="promise">You do not need to have your entire future figured out. You just need to know what to do next.</p>
   </div>
 </section>
 
@@ -551,7 +565,14 @@
 
   // ---------- start here: videos, guides, tools ----------
   var BARS='<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#3B2E6B"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#1F1A3A"/></svg>';
-  var ORDER=['avoid','strengths','direction','overload','nerves','knowhow','load'];
+  var ORDER=['avoid','strengths','direction','overload','nerves','knowhow','seen','load'];
+  var PATHS=[
+    {id:'know',t:'I want to know what I want',d:'Explore your strengths, values, interests and goals.',b:['direction','strengths']},
+    {id:'confidence',t:'I want to grow my confidence',d:'Build self-trust, get past self-doubt and take action.',b:['avoid','nerves']},
+    {id:'job',t:'I want to get a job ASAP',d:'Resume, interviews, LinkedIn and a job search that moves.',b:['knowhow','overload']},
+    {id:'career',t:'I want to grow my career',d:'Development, visibility, influence and progression.',b:['seen']}
+  ];
+  function pathOf(id){return PATHS.filter(function(p){return p.b.indexOf(id)>=0})[0]||null}
   var BLOCKERS={
     avoid:{name:'Bracing for another no',looks:'After a few knock-backs, not applying starts to feel safer than risking another no. That is protection, not laziness.',helps:'Make the next attempt small enough that a no would not sting much.',step:'Apply for one job I would actually want. Just one.',
       kw:['reject','knock','no point','whats the point','putting off','putting things off','put off','avoid','stopped applying','cant face','give up','another no','ghosted'],
@@ -595,6 +616,13 @@
       video:{t:'“Tell me about yourself” in 45 seconds',by:'Kim Ali',len:'0:45',kim:true,pts:['Now: who you are today, in one line.','Before: one real moment that shows a skill they asked for.','Next: why this job, at this place.']},
       guide:{t:'Your first resume in 30 minutes',mins:4,steps:['Name, phone, email and suburb at the top. No photo, no date of birth.','Two lines on who you are and the kind of work you want.','List three things you have done, each starting with a verb: organised, served, fixed, built.','Add school or study, and any tickets or licences.','Ask one person to read it for typos, then send it to one job today.']},
       tool:{t:'STAR answer builder',d:'Turn one real moment into one solid answer, then say it back.',say:'Help me build a STAR answer for my interview.'}},
+    seen:{name:'Working hard, standing still',looks:'You do good work and wait to be noticed. Progress usually goes to people whose work is seen and who ask for what is next.',helps:'Make your work visible, and ask one clear question about what comes next.',step:'Write down three things I delivered this quarter.',
+      kw:['promotion','promoted','pay rise','raise','manager','overlooked','stuck in my job','same role','progress','losing my job','redundan','career growth','next level'],
+      say:'I work hard but I’m not moving forward in my career.',
+      follow:['Let us start with what you have done. What is one piece of work from the last few months you are proud of?','Who knows about that, apart from you? Getting it in front of one more person is a good next step.'],
+      video:{t:'Good work does not speak for itself',by:'Kim Ali',len:'0:45',kim:true,pts:['Managers remember what they are reminded of.','Keep a running list of what you delivered and what it changed.','Ask "what would it take to get to the next level?" and write down the answer.']},
+      guide:{t:'Ask for what is next: a five-step plan',mins:4,steps:['List three things you delivered in the last three months, with the result of each.','Decide what you want: more pay, a new title, different work, or to learn something.','Book 20 minutes with your manager and say what you want in one sentence.','Ask what it would take, and write down exactly what they say.','Agree when you will check in again, and put it in both calendars.']},
+      tool:{t:'Practise the conversation',d:'Rehearse asking your manager about what comes next.',say:'I want to ask my manager about progressing. Can we practise that conversation?'}},
     load:{name:'Life outside is taking the room',looks:'Money, family, health or housing is using up the energy that job hunting or study needs. That is real, and it comes first.',helps:'Lighten one thing, and bring a person in.',step:'Tell one person I trust what is going on this week.',
       kw:['money','rent','family','sick','health','housing','at home','caring','two jobs','taking over'],
       say:'There’s a lot going on outside of work and study for me right now.',
@@ -607,9 +635,10 @@
   var tabs=document.getElementById('tabs'),kit=document.getElementById('kit'),curKit=KITS[0];
   function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
   function renderKit(k){
-    curKit=k;var mine=getBlocker(),my=mine&&mine.id;
-    tabs.innerHTML=KITS.map(function(x){return '<button class="tab" type="button" role="tab" aria-selected="'+(x===k)+'" data-kit="'+x.id+'">'+esc(x.name)+(x.id===my?'<span class="yours">Yours</span>':'')+'</button>'}).join('');
-    document.getElementById('startLede').innerHTML=my?'Your check pointed to <strong>'+esc(BLOCKERS[my].name)+'</strong>. Here is what helps, and the others in case one fits better. <button class="linkbtn" type="button" data-redo>Redo the check</button>':'Most people are held back by one of these. Not sure which is yours? <button class="linkbtn" type="button" data-startcheck>Take the 2-minute check.</button>';
+    curKit=k;var mine=getBlocker(),my=mine&&mine.id,path=pathOf(k.id),myPath=my&&pathOf(my),ids=path?path.b:[k.id];
+    document.getElementById('paths').innerHTML=PATHS.map(function(p,i){return '<button class="path" type="button" role="tab" aria-selected="'+(p===path)+'" data-path="'+p.id+'"><span class="pn">'+(i+1)+'</span><span class="pt">'+p.t+(p===myPath?'<span class="yours">Yours</span>':'')+'</span><span class="pd">'+p.d+'</span></button>'}).join('');
+    tabs.innerHTML='<span class="tl">What gets in the way here</span>'+ids.map(function(id){var x=BLOCKERS[id];return '<button class="tab" type="button" role="tab" aria-selected="'+(x===k)+'" data-kit="'+x.id+'">'+esc(x.name)+(x.id===my?'<span class="yours">Yours</span>':'')+'</button>'}).join('');
+    document.getElementById('startLede').innerHTML=my?'Your check pointed to <strong>'+esc(BLOCKERS[my].name)+'</strong>'+(myPath?', on the pathway “'+myPath.t+'”':'')+'. Here is what helps. <button class="linkbtn" type="button" data-redo>Redo the check</button>':'Clarity comes before action. Pick the pathway that sounds like you, or <button class="linkbtn" type="button" data-startcheck>take the 2-minute check</button> if you are not sure.';
     document.getElementById('bintro').innerHTML='<div><h3>'+esc(k.name)+'</h3><p>'+esc(k.looks)+'</p></div><div><small>What helps</small><p>'+esc(k.helps)+'</p></div>';
     kit.innerHTML=
       '<button class="kc video'+(k.video.kim?'':' alt')+'" type="button" data-open="video"><span class="ex">Example</span><span class="thumb"><span class="play"></span><span class="len num">'+k.video.len+'</span></span><span class="body"><span class="kind">Watch · '+k.video.len+'</span><span class="t">'+esc(k.video.t)+'</span><span class="d">With '+k.video.by+'. Captions on.</span><span class="go">Watch, then practise →</span></span></button>'+
@@ -631,7 +660,8 @@
   }
   tabs.addEventListener('click',function(e){var t=e.target.closest('.tab');if(t)renderKit(KITS.filter(function(x){return x.id===t.dataset.kit})[0])});
   kit.addEventListener('click',function(e){var c=e.target.closest('.kc');if(c)showContent(c.dataset.open)});
-  renderKit(KITS[0]);
+  document.getElementById('paths').addEventListener('click',function(e){var b=e.target.closest('.path');if(!b)return;var p=PATHS.filter(function(x){return x.id===b.dataset.path})[0],mine=getBlocker();renderKit(BLOCKERS[mine&&p.b.indexOf(mine.id)>=0?mine.id:p.b[0]])});
+  var KIT0=BLOCKERS[PATHS[0].b[0]],b0=getBlocker();renderKit(b0?BLOCKERS[b0.id]:KIT0);
 
   // ---------- confidence tracker (saved on this device) ----------
   var confMem=[];
@@ -649,7 +679,7 @@
     var bits=[];if(a.length)bits.push(a.length+' check-in'+(a.length>1?'s':''));if(done)bits.push(done+' step'+(done>1?'s':'')+' done');
     p.innerHTML=(a.length?spark(a):'')+'<div>'+(a.length?'<small>Your confidence</small><strong class="num">'+line+'</strong>':'<small>Your progress</small>')+(bl?'<span class="nx">In the way: '+esc(BLOCKERS[bl.id].name)+'</span>':'')+(pend?'<span class="nx">Next step: '+esc(pend.text)+'</span>':'')+'<small>'+bits.join(' · ')+(bits.length?' · ':'')+'saved on this device only · <button type="button" data-clearconf>Clear</button></small></div>';
   }
-  document.addEventListener('click',function(e){if(e.target.closest('[data-clearconf]')){e.stopPropagation();stepMem=[];blockMem=null;try{localStorage.removeItem('eluvo-steps');localStorage.removeItem('eluvo-blocker')}catch(x){}setConf([]);renderStepBar();renderKit(KITS[0]);renderHero()}});
+  document.addEventListener('click',function(e){if(e.target.closest('[data-clearconf]')){e.stopPropagation();stepMem=[];blockMem=null;try{localStorage.removeItem('eluvo-steps');localStorage.removeItem('eluvo-blocker')}catch(x){}setConf([]);renderStepBar();renderKit(KIT0);renderHero()}});
 
   // ---------- next step (saved on this device) ----------
   var stepMem=[],stepEdit=false,stepAsked=false;
@@ -703,7 +733,7 @@
 
   // ---------- chat ----------
   var RULES='You are "Coach Kim AI", the AI coach trained on the method of Kim Ali, an Australian employment, confidence and career coach. You are not Kim herself; if asked, say you are Kim’s AI coach and that the real Kim can be booked for a free 30-minute call.\n'+
-  'Who you talk to: young job seekers in Australia aged about 17 to 25, students, fresh graduates, people who have had many rejections. Some have disability or come from migrant backgrounds. Treat them as capable adults.\n'+
+  'Who you talk to: mostly young job seekers in Australia aged about 17 to 25, students, fresh graduates, people who have had many rejections; some are already in work and want to grow their career. Some have disability or come from migrant backgrounds. Treat them as capable adults.\n'+
   'How you talk: warm, plain, short. 2 to 5 sentences. Australian spelling. One question at a time. No lectures, no lists of tips, no headings, no markdown. Never say "as an AI".\n'+
   'Principle: name what is actually in the way before offering help. Do not hand out tips for a problem the person has not recognised as theirs.\n'+
   'Kim’s method, in order: 1) Start where they are: ask what is going on this week, not their whole story. 2) Name the feeling without fighting it, e.g. "the nervous part of you is doing its job". 3) Find the strength: they already have skills and moments worth talking about; ask for one real moment. 4) For interview questions, build ONE answer at a time from a real moment using Situation, Task, Action, Result, in their own words, then let them say it back. 5) Ask them to rate their confidence 1 to 10 before and after a practice, and point out the movement. 6) End with ONE small next step for today, never a list.\n'+
@@ -788,10 +818,10 @@
   var check=null,blockMem=null,bq=[];
   function syncStarters(){var on=!!check;document.getElementById('starters').hidden=recOn||on;document.getElementById('stepbar').hidden=on;document.querySelector('.cin .conf').hidden=on}
   function getBlocker(){try{var v=JSON.parse(localStorage.getItem('eluvo-blocker')||'null');if(v&&BLOCKERS[v.id])return v}catch(e){}return blockMem}
-  function setBlocker(b){blockMem=b;try{if(b)localStorage.setItem('eluvo-blocker',JSON.stringify(b));else localStorage.removeItem('eluvo-blocker')}catch(e){}renderKit(b?BLOCKERS[b.id]:KITS[0]);renderProg();renderHero()}
+  function setBlocker(b){blockMem=b;try{if(b)localStorage.setItem('eluvo-blocker',JSON.stringify(b));else localStorage.removeItem('eluvo-blocker')}catch(e){}renderKit(b?BLOCKERS[b.id]:KIT0);renderProg();renderHero()}
   function ctx(){var b=getBlocker();if(!b)return '';var B=BLOCKERS[b.id];return '\nContext from a short check this person completed: what looks to be in the way is "'+B.name+'" ('+B.looks+') '+(b.fit==='yes'?'They agreed it fits.':'They chose this themselves.')+' Their own words: "'+(b.words||'').slice(0,200)+'". What helps: '+B.helps+' Work from this and do not repeat the check unless they say it no longer fits.'}
   var BEH=[['I put it off',{avoid:2,overload:1}],['I don’t know where to start',{overload:2,direction:1,knowhow:1}],['I start, then freeze or go blank',{nerves:2}],['I would do it, but I don’t know how',{knowhow:2}]];
-  var VOICE=[['“What’s the point, they’ll say no anyway.”','avoid'],['“I’ve got nothing they’d want.”','strengths'],['“I don’t even know what I want.”','direction'],['“There’s too much. I can’t keep up.”','overload'],['“I’ll mess it up on the day.”','nerves'],['“Nobody ever showed me how.”','knowhow'],['“Other things in my life are taking over.”','load']];
+  var VOICE=[['“What’s the point, they’ll say no anyway.”','avoid'],['“I’ve got nothing they’d want.”','strengths'],['“I don’t even know what I want.”','direction'],['“There’s too much. I can’t keep up.”','overload'],['“I’ll mess it up on the day.”','nerves'],['“Nobody ever showed me how.”','knowhow'],['“I work hard and nobody notices.”','seen'],['“Other things in my life are taking over.”','load']];
   function kwScore(text,w){var t=text.toLowerCase().replace(/[’']/g,'');ORDER.forEach(function(id){var n=0;BLOCKERS[id].kw.forEach(function(k){if(t.indexOf(k)>=0)n++});if(n)check.scores[id]=(check.scores[id]||0)+Math.min(n,2)*w})}
   function bump(o){Object.keys(o).forEach(function(k){check.scores[k]=(check.scores[k]||0)+o[k]})}
   function opts(list,cb,cls){var d=document.createElement('div');d.className='opts'+(cls?' '+cls:'');list.forEach(function(l,i){var b=document.createElement('button');b.type='button';b.textContent=l;b.addEventListener('click',function(){cb(i,l,d,b)});d.appendChild(b)});log.appendChild(d);log.scrollTop=log.scrollHeight;return d}
@@ -843,7 +873,7 @@
   function finishCheck(id,c,fit){
     var B=BLOCKERS[id];check=null;syncStarters();stepAsked=true;bq=B.follow.slice();
     setBlocker({id:id,t:Date.now(),words:c.words,beh:c.beh,voice:c.voice,fit:fit});
-    var msg=(fit==='yes'?'Good. Naming it is half the work.':'Thanks, that helps. '+B.looks)+'\n\nWhat helps: '+B.helps+'\n\nA first step for today: “'+B.step+'” Use it as it is, or change it to your own words.';
+    var pw=pathOf(id),msg=(fit==='yes'?'Good. Naming it is half the work.':'Thanks, that helps. '+B.looks)+(pw?' That puts you on the pathway “'+pw.t+'”.':'')+'\n\nWhat helps: '+B.helps+'\n\nA first step for today: “'+B.step+'” Use it as it is, or change it to your own words.';
     turns.push({role:'user',content:(c.words||'I feel stuck.')+(c.beh?' When it is time to act: '+c.beh+'.':'')+(c.voice?' The voice in my head says: '+c.voice:'')});
     turns.push({role:'assistant',content:'What looks to be in the way: '+B.name+'. '+msg});trimTurns();
     setTimeout(function(){

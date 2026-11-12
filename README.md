@@ -16,7 +16,7 @@ Eluvo helps young people work out what is really holding them back, then gives t
 
 ## Blockers (draft, for Kiran to correct)
 
-The seven blockers and the questions that tell them apart are a first draft, written to make the mockup work. They live in `BLOCKERS`, `BEH` and `VOICE` in `index.html`.
+The eight blockers and the questions that tell them apart are a first draft, written to make the mockup work. They live in `BLOCKERS`, `BEH` and `VOICE` in `index.html`.
 
 | Blocker | What it looks like | What helps |
 |---|---|---|
@@ -26,7 +26,16 @@ The seven blockers and the questions that tell them apart are a first draft, wri
 | Too much at once | Everything feels urgent, so nothing starts | Shrinking the week to one thing |
 | Nerves on the day | Fine until someone is watching | Practising out loud |
 | A how-to gap | Nobody showed you how this part works | Learning the one missing piece and using it |
+| Working hard, standing still | Good work, waiting to be noticed | Making the work visible and asking what comes next |
 | Life outside is taking the room | Money, family, health or housing is using the energy | Lightening one thing, and bringing a person in |
+
+The blockers sit under the four pathways from the strategic foundation:
+
+- I want to know what I want: No clear direction, Can't see what you offer
+- I want to grow my confidence: Bracing for another no, Nerves on the day
+- I want to get a job ASAP: A how-to gap, Too much at once
+- I want to grow my career: Working hard, standing still
+- No pathway (a person first): Life outside is taking the room
 
 The check asks: what's going on (own words), what happens when it is time to act, which voice in your head sounds most familiar, and confidence from 1 to 10. The person then says whether the result fits ("Yes, that's it" / "Not quite").
 
