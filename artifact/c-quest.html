@@ -1,0 +1,415 @@
+<title>C-Quest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+  /* Layout: a one-screen session. Plum band on top, a conversation column that scrolls with the composer
+     pinned under it, and a "your story so far" card beside it (a fold-down strip on phones). */
+  :root{
+    --bg:#FBF9F5; --surface:#FFFFFF; --surface-2:#F1EEF8; --ink:#1F1A3A; --muted:#5A5670; --line:#E7E3DA;
+    --band:#3B2E6B; --on-band:#FFFFFF; --accent:#3B2E6B; --bubble:#3B2E6B; --on-bubble:#FFFFFF;
+    --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#FFF1C2; --gold-ink:#8A6100;
+    --ok:#2F7D5B; --ok-soft:#E1F0E7; --warn-soft:#FBE7E2; --warn-ink:#7A2414; --warn-line:#F1B9AD;
+    --shadow:0 18px 40px -26px rgba(31,26,58,.5);
+    --display:"Outfit","Segoe UI",Helvetica,Arial,sans-serif; --text:"Figtree","Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#15112A; --surface:#201A3B; --surface-2:#2A2349; --ink:#F3F0FA; --muted:#B8B2CF; --line:#3A3259;
+      --band:#241C47; --on-band:#FFFFFF; --accent:#C3B8F0; --bubble:#4A3C86; --on-bubble:#FFFFFF;
+      --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#463A12; --gold-ink:#F7CF5A;
+      --ok:#7FD0A8; --ok-soft:#1D3A2E; --warn-soft:#45201B; --warn-ink:#F6C3B8; --warn-line:#7A3A30;
+      --shadow:0 18px 40px -26px rgba(0,0,0,.8); color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#15112A; --surface:#201A3B; --surface-2:#2A2349; --ink:#F3F0FA; --muted:#B8B2CF; --line:#3A3259;
+    --band:#241C47; --on-band:#FFFFFF; --accent:#C3B8F0; --bubble:#4A3C86; --on-bubble:#FFFFFF;
+    --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#463A12; --gold-ink:#F7CF5A;
+    --ok:#7FD0A8; --ok-soft:#1D3A2E; --warn-soft:#45201B; --warn-ink:#F6C3B8; --warn-line:#7A3A30;
+    --shadow:0 18px 40px -26px rgba(0,0,0,.8); color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.55 var(--text);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--band)}
+  p{margin:0} button,input,textarea{font:inherit;color:inherit}
+  h1,h2{font-family:var(--display);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin:0;text-wrap:balance}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+  .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .lab{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink)}
+  .muted{color:var(--muted)} .small{font-size:.875rem}
+
+  .bar{background:var(--band);color:var(--on-band);flex:none}
+  .bar .in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;min-height:56px}
+  .bar .in :focus-visible{outline-color:var(--gold)}
+  .logo{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:1.2rem}
+  .logo svg{width:24px;height:24px;flex:none} .logo span{font-weight:600;opacity:.85;font-size:.95rem}
+  .bar .sp{flex:1}
+  .tool{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:999px;padding:7px 12px;font-weight:600;font-size:.82rem;cursor:pointer;min-height:36px;white-space:nowrap}
+  .tool[aria-pressed="true"]{background:#fff;color:#3B2E6B}
+  .tool .sm{display:none}
+
+  .shell{flex:1;min-height:0;width:100%;max-width:1120px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;padding-block:16px 12px}
+  .talk{min-width:0;min-height:0;display:flex;flex-direction:column}
+  .log{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:4px 2px 16px;scroll-behavior:smooth}
+  .guide{max-width:62ch;font-size:1.08rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+  .guide.wait{color:var(--muted)}
+  .who{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:-8px}
+  .me{align-self:flex-end;max-width:min(80%,52ch);background:var(--bubble);color:var(--on-bubble);border-radius:16px 16px 4px 16px;padding:10px 14px;white-space:pre-wrap;overflow-wrap:anywhere}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .welcome{box-shadow:var(--shadow);display:grid;gap:14px;max-width:62ch}
+  .welcome h1{font-size:clamp(1.8rem,5.2vw,2.5rem)}
+  .field{display:grid;gap:6px;font-weight:600;font-size:.9rem}
+  .field input{padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:400;font-size:1rem;width:100%}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;padding:12px 18px;border-radius:12px;border:2px solid transparent;cursor:pointer;min-height:46px;text-decoration:none}
+  .btn-gold{background:var(--gold);color:var(--on-gold)} .btn-line{background:var(--surface);border-color:var(--line);color:var(--ink)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .rowb{display:flex;flex-wrap:wrap;gap:10px}
+  .notice{background:var(--surface-2);border-radius:12px;padding:12px 14px;font-size:.9rem}
+  .alert{background:var(--warn-soft);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:14px;padding:14px 16px;display:grid;gap:8px;max-width:62ch}
+  .alert b{font-family:var(--display)} .nums{display:grid;gap:4px;font-variant-numeric:tabular-nums}
+  .sealed{background:var(--gold-soft);border-radius:16px;padding:16px 18px;display:grid;gap:10px;max-width:62ch}
+  .sealed b{font-family:var(--display);font-size:1.1rem}
+  .linkb{background:none;border:0;padding:0;color:var(--accent);font-weight:700;text-decoration:underline;cursor:pointer}
+
+  .composer{flex:none;border-top:1px solid var(--line);padding-top:10px;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .composer>*{min-width:0}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:8px 14px;font-weight:600;font-size:.92rem;cursor:pointer;min-height:40px}
+  .chip:hover{background:var(--surface-2)}
+  .send{display:flex;gap:8px;align-items:flex-end}
+  .send textarea{flex:1;min-width:0;resize:none;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);max-height:9.5em;line-height:1.45}
+  .ico{width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none}
+  .ico svg{width:20px;height:20px} .ico[aria-pressed="true"]{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn-ink)}
+  .hear{font-size:.85rem;color:var(--muted);min-height:1.2em}
+  .fine{font-size:.78rem;color:var(--muted)}
+
+  .side{min-height:0;overflow:auto}
+  .story{background:var(--surface);border:1px solid var(--line);border-radius:16px}
+  .story summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-family:var(--display);font-weight:700}
+  .story summary::-webkit-details-marker{display:none}
+  .story .count{font:600 .8rem var(--text);color:var(--muted)}
+  .slots{display:grid;gap:0;padding:0 16px 6px}
+  .slot{padding:10px 0;border-top:1px solid var(--line);display:grid;gap:2px}
+  .slot .v{font-weight:600;overflow-wrap:anywhere} .slot .v.empty{font-weight:400;color:var(--muted)}
+  .tag{display:inline-block;font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 8px;background:var(--ok-soft);color:var(--ok);margin-left:6px;vertical-align:middle}
+  .story .foot{padding:12px 16px 16px;border-top:1px solid var(--line);display:grid;gap:8px}
+  dialog{border:0;border-radius:18px;padding:22px;width:min(520px,calc(100% - 32px));background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+  dialog::backdrop{background:rgba(15,10,35,.55)}
+  dialog h2{font-size:1.4rem;margin-bottom:8px} dialog .nums{margin:12px 0}
+  .numrow{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface-2);border-radius:10px;padding:8px 12px}
+  .numrow b{user-select:all}
+
+  @media (max-width:860px){
+    .shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:10px;padding-block:10px 8px}
+    .side{order:-1;overflow:visible} .guide{font-size:1.02rem} .logo span{display:none}
+    .story[open]{max-height:46vh;overflow:auto}
+  }
+  @media (max-width:400px){ .tool{padding:6px 10px;font-size:.78rem} .tool .lg{display:none} .tool .sm{display:inline} .btn{padding:12px 14px} }
+  @media (min-width:861px){ .story summary{cursor:default;pointer-events:none} }
+  @media (prefers-reduced-motion:reduce){ .log{scroll-behavior:auto} }
+</style>
+
+<header class="bar"><div class="in gut">
+  <div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#B9AEE6"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#FFFFFF"/></svg>eluvo <span>C-Quest</span></div>
+  <span class="sp"></span>
+  <button class="tool" type="button" id="voiceBtn" aria-pressed="false" hidden>Read aloud</button>
+  <button class="tool" type="button" id="helpBtn" aria-label="Need a hand? Open support"><span class="lg">Need a hand?</span><span class="sm">Help</span></button>
+</div></header>
+
+<div class="shell gut">
+  <main class="talk">
+    <div class="log" id="log" role="log" aria-live="polite">
+      <section class="card welcome" id="welcome">
+        <p class="lab">C-Quest · Grow forward</p>
+        <h1>A career story you talk your way through.</h1>
+        <p>You and an AI guide build a short story set in a job you would like to try. Along the way you find the inner voice that gets loud when something matters, and you leave with one small thing to try in real life. About ten minutes.</p>
+        <label class="field" for="nameIn">What should the guide call you? (optional)
+          <input id="nameIn" type="text" maxlength="30" autocomplete="given-name" placeholder="First name or nickname"></label>
+        <div class="rowb"><button class="btn btn-gold" type="button" id="beginBtn" disabled>Getting the guide ready…</button></div>
+        <p class="notice" id="aiNote">The guide is Claude, an AI. What you type is sent to Claude to write your story, and it uses your own Claude account. Your session is saved in this browser only. It is a career and reflection tool, not therapy and not an emergency service.</p>
+      </section>
+    </div>
+    <div class="composer" id="composer" hidden>
+      <div class="chips" id="chips"></div>
+      <form class="send" id="sendForm">
+        <textarea id="msgIn" rows="1" maxlength="1200" placeholder="Say it in your own words…" aria-label="Your reply"></textarea>
+        <button class="ico" type="button" id="micBtn" aria-pressed="false" aria-label="Speak your reply" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button class="btn btn-gold" type="submit" id="sendBtn">Send</button>
+        <button class="btn btn-line" type="button" id="stopBtn" hidden>Stop</button>
+      </form>
+      <div class="hear" id="hear" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <aside class="side">
+    <details class="story" id="story" open>
+      <summary><span>Your story so far</span><span class="count" id="count">0 of 6</span></summary>
+      <div class="slots" id="slots"></div>
+      <div class="foot">
+        <div class="rowb" id="sealActs" hidden><button class="btn btn-gold" type="button" id="doneBtn">I have done it</button><button class="btn btn-line" type="button" id="notYetBtn">Not yet</button></div>
+        <button class="linkb small" type="button" id="resetBtn" hidden>Start over</button>
+        <p class="fine">The voices and Leader skills draw on Internal Family Systems, developed by Richard C. Schwartz. C-Quest is independent and is not affiliated with or endorsed by the IFS Institute.</p>
+      </div>
+    </details>
+  </aside>
+</div>
+
+<dialog id="help" aria-labelledby="helpH">
+  <h2 id="helpH">Let's slow down.</h2>
+  <p>There is no rush and no wrong answer. You can type "I don't know" at any point and the guide will offer another way in.</p>
+  <p class="muted small" style="margin-top:8px">If things feel heavy, please talk to a person. These lines are free:</p>
+  <div class="nums">
+    <div class="numrow"><span>Lifeline · any time</span><b>13 11 14</b></div>
+    <div class="numrow"><span>Kids Helpline · ages 5 to 25</span><b>1800 55 1800</b></div>
+    <div class="numrow"><span>headspace</span><b>1800 650 890</b></div>
+    <div class="numrow"><span>In danger</span><b>000</b></div>
+  </div>
+  <p class="small muted">This version cannot connect you to a person. In the full product, asking for one tells a named person at your school, uni or service.</p>
+  <div class="rowb" style="margin-top:14px"><button class="btn btn-gold" type="button" id="helpClose">Back to my story</button></div>
+</dialog>
+
+<script>
+(function(){
+  'use strict';
+  var VOICES=['Over-thinker','Overwhelmed','Pleaser','Doubter','Comparer','Snooze Button'];
+  var SKILLS=['Calm','Curiosity','Clarity','Compassion','Confidence','Courage','Creativity','Connectedness'];
+  var PREVIEW='https://haiderlse.github.io/eluvo/quest-preview.html';
+  var RULES=[
+'You are the guide for C-Quest, a short interactive career story for a young person in Australia, about 18 to 25. You are an AI guide. You are not a person, not a coach and not a therapist, and you say so plainly if asked.',
+'',
+'WHAT THIS SESSION IS',
+'The person is the main character of a short story set in a kind of work they want to try on. Through the story you help them notice one inner voice that speaks up when something matters, answer it kindly, call on one Leader skill, and then choose one small real-life action for this week. It is a career and reflection tool. It is not therapy and it does not diagnose anything.',
+'',
+'THE IDEAS, IN PLAIN WORDS',
+'Everyone has several inner voices that speak up when something matters. Each is trying to help. None is a flaw. The person is never "a Doubter"; they have a Doubter voice. Under the voices everyone has a calm, steady centre called the Leader, which can listen to a voice, thank it, and still choose what to do.',
+'The six voices (use these names only):',
+'- Over-thinker: "I just need to think about this a little more." Helps by keeping them careful and prepared. Holds them back by circling so decisions wait. Answered by Calm or Clarity.',
+'- Overwhelmed: "It is all too much right now." Helps by signalling they are stretched. Holds them back by making everything feel the same size, so they freeze. Answered by Calm.',
+'- Pleaser: "What will they think?" Helps by making them thoughtful and easy to work with. Holds them back by steering them to what others expect. Answered by Courage.',
+'- Doubter: "Who am I to go for that?" Helps by keeping them humble and honest. Holds them back by talking them out of things before they try. Answered by Confidence.',
+'- Comparer: "Everyone else is further ahead." Helps by showing what is possible. Holds them back by leaving them feeling behind. Answered by Compassion or Connectedness.',
+'- Snooze Button: "I will deal with it later." Helps by protecting them from pressure. Holds them back by letting time slip. Answered by Curiosity or Courage.',
+'The eight Leader skills (use these names only): Calm (staying steady when things feel stressful), Curiosity (wanting to find out instead of assuming), Clarity (seeing the situation as it is), Compassion (being kind to yourself and others), Confidence (trusting yourself to handle it), Courage (acting even when it feels scary), Creativity (finding new ways around a problem), Connectedness (feeling part of something and reaching out).',
+'',
+'THE ARC. Move through it in order, one small step per message. Never skip ahead and never rush.',
+'1. WELCOME. Greet them, by name if they gave one. In two sentences say what will happen. Ask what kind of work they would like to try on, with a few everyday examples such as retail, hospitality, health, trades, office work, IT, education, transport, creative work or public service. If they are unsure, suggest one.',
+'2. SETTING. Ask one light question that makes the story theirs, for example what the place is like or what they would be doing there. Use their answer.',
+'3. SCENE. Write a short scene of 40 to 70 words, in second person and present tense, in that workplace, where something ordinary but slightly uncomfortable happens: being asked to do something at short notice, a chance to put a hand up, a task that keeps getting put off, a busy moment, someone else seeming ahead, a message that is hard to send. Keep it realistic and entry-level. Do not invent technical details you are unsure of. End by asking what goes through their head.',
+'4. VOICE. From what THEY said, reflect which of the six voices it sounds like, quoting their own words as the reason, in one or two sentences. Say what that voice is trying to do for them. Ask whether that fits. If they say no, ask what fits better or offer one other voice. They decide.',
+'5. KIND REPLY. Invite them to thank the voice and answer it kindly in their own words. If they are stuck, offer one example and ask them to change it so it sounds like them.',
+'6. LEADER SKILL. Offer two Leader skills that could help here, including one that answers their voice, each with a few plain words. Ask which they want to call on.',
+'7. ACT IN THE STORY. Ask what they do next in the scene, calling on that skill. Then continue the story for two or three sentences showing a realistic result of THEIR choice. Results are ordinary, not magical: sometimes fine, sometimes awkward but survivable. Never punish a choice.',
+'8. REAL LIFE. Ask where this voice might show up in their real week. Together shape ONE small real action for the next few days, small enough to do in ten minutes, in their own words. If they suggest something big, help make it smaller.',
+'9. PREDICTION. Ask what their voice says will happen if they do it. Take their answer as the prediction.',
+'10. SEAL. Tell them the prediction is sealed and you will open it together when they come back after doing the action. Sum up in three short lines: the voice, their kind reply, their small action. Then stop.',
+'11. DEBRIEF. Only when they come back. If they did it: read the prediction back, ask what actually happened, then compare the two honestly. If the voice was right, say that happens, and that they acted with the voice there, which took the skill. If they did not do it: no judgement. Ask what got in the way and offer to make the action smaller.',
+'',
+'HOW YOU WRITE',
+'Short: two to four sentences per message, except the scene. One question at a time, always at the end. Plain words a 15-year-old reads easily. Australian spelling. No headings, no lists, no markdown, no emojis. Use their words back to them. Warm and matter-of-fact, never gushing. Never shame. Never tell them what they should feel. If they say they do not know, or seem stuck, slow down, say that is fine, and offer two concrete options. If they go off track, answer briefly and kindly, then return to the step you were on.',
+'',
+'LINES YOU DO NOT CROSS',
+'- Stay on this week and this task. Never ask where a voice came from, or about childhood, family history, trauma or past events that shaped them. If they bring it up, acknowledge it in one sentence, say this session is for the work side of things, and suggest talking with someone they trust.',
+'- Do not diagnose, name a condition, give medical or mental-health advice, or promise a job or any result.',
+'- Do not use the terms "Internal Family Systems", "IFS", "parts" or "Self". Say "voices" and "the Leader".',
+'- If they mention self-harm, suicide, abuse or being in danger, or sound very distressed: stop the story. Reply gently in two or three sentences, say they deserve support from a person today, and give Lifeline 13 11 14, Kids Helpline 1800 55 1800, headspace 1800 650 890, and 000 if they are in danger. Encourage them to tell someone they trust. Set "support" to true. Do not continue the story unless they say they are okay and want to.',
+'- If they ask for a human, say this version cannot connect them to one, and that in the full product a person at their school, uni or service follows up. Set "support" to true.',
+'',
+'OUTPUT FORMAT, every message, no exceptions',
+'First write your message to the person. Then, on a new final line, write the marker @@STATE followed by one JSON object on a single line with exactly these keys:',
+'{"step": the arc step number you are on, "setting": string or null, "voice": one of the six voice names or null, "fits": true, false or null, "reply": their kind reply in their words or null, "skill": one of the eight skill names or null, "action": their small real action in their words or null, "prediction": what the voice predicts or null, "sealed": true or false, "support": true or false, "chips": an array of up to 3 short replies the person might tap, each under 7 words, written in their voice, or [] when a free answer is better}',
+'Carry forward everything already known. Set "voice" only after you have reflected it, and "fits" only after they answer. Set "sealed" to true at step 10 and keep it true. Chips are optional helpers and never the "right" answer; when you ask something hard, include "I\'m not sure" as one of them. Never mention the marker or the JSON to the person.'
+  ].join('\n');
+
+  // ---------- state ----------
+  var KEY='cquest-session-v1';
+  function blank(){return {step:0,setting:null,voice:null,fits:null,reply:null,skill:null,action:null,prediction:null,sealed:false,support:false}}
+  var S={name:'',started:false,turns:[],state:blank(),chips:[]},mem=null;
+  function load(){try{var v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.turns)&&v.state)return v}catch(e){}return null}
+  function save(){mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+  function wipe(){try{localStorage.removeItem(KEY)}catch(e){}}
+  var $=function(id){return document.getElementById(id)};
+  var log=$('log'),composer=$('composer'),chipsEl=$('chips'),msgIn=$('msgIn'),sendBtn=$('sendBtn'),stopBtn=$('stopBtn'),hear=$('hear');
+  var sample=null,tts=null,dict=null,busy=false,ctl=null,voiceOn=false;
+
+  // ---------- helpers ----------
+  function shown(t){var i=t.indexOf('@@');if(i>=0)t=t.slice(0,i);return t.replace(/@+\s*$/,'').replace(/\s+$/,'')}
+  function parseState(t){var i=t.lastIndexOf('@@STATE');if(i<0)return null;var a=t.indexOf('{',i),b=t.lastIndexOf('}');if(a<0||b<a)return null;try{return JSON.parse(t.slice(a,b+1))}catch(e){return null}}
+  function str(v,n){return typeof v==='string'&&v.trim()?v.trim().slice(0,n||220):null}
+  function applyState(o){
+    if(!o||typeof o!=='object')return;var st=S.state;
+    var n=Number(o.step);if(n>=1&&n<=11)st.step=Math.round(n);
+    st.setting=str(o.setting,80)||st.setting;
+    var v=str(o.voice,30);if(v&&VOICES.indexOf(v)>=0)st.voice=v;
+    if(o.fits===true||o.fits===false)st.fits=o.fits;
+    st.reply=str(o.reply)||st.reply;
+    var k=str(o.skill,30);if(k&&SKILLS.indexOf(k)>=0)st.skill=k;
+    st.action=str(o.action)||st.action;st.prediction=str(o.prediction)||st.prediction;
+    if(o.sealed===true)st.sealed=true;
+    st.support=o.support===true;
+    S.chips=Array.isArray(o.chips)?o.chips.map(function(c){return str(c,60)}).filter(Boolean).slice(0,3):[];
+  }
+  function scrollDown(){log.scrollTop=log.scrollHeight}
+  function node(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+  function addGuide(text,wait){log.appendChild(node('div','who','Guide'));var m=node('div','guide'+(wait?' wait':''),text);log.appendChild(m);scrollDown();return m}
+  function addMe(text){log.appendChild(node('div','me',text));scrollDown()}
+  function addNote(text){var n=node('p','notice',text);log.appendChild(n);scrollDown();return n}
+  function supportCard(){
+    if(log.querySelector('.alert'))return;
+    var a=node('div','alert');a.setAttribute('role','alert');
+    a.appendChild(node('b',null,'You deserve support from a person today.'));
+    a.appendChild(node('span',null,'These lines are free. Please call one, or tell someone you trust.'));
+    var n=node('div','nums');['Lifeline 13 11 14 · any time','Kids Helpline 1800 55 1800','headspace 1800 650 890','000 if you are in danger'].forEach(function(t){n.appendChild(node('span',null,t))});
+    a.appendChild(n);log.appendChild(a);scrollDown();
+  }
+  function crisis(t){return /suicid|kill myself|end it all|self[- ]harm|hurt myself|don.?t want to be here|want to die/i.test(t||'')}
+
+  // ---------- story so far ----------
+  function renderStory(){
+    var st=S.state,opened=st.step>=11;
+    var rows=[
+      ['Trying on',st.setting],
+      ['Loudest voice',st.voice,st.voice&&st.fits===true?'You said it fits':null],
+      ['Your kind reply',st.reply?'“'+st.reply+'”':null],
+      ['Leader skill',st.skill],
+      ['Small real action',st.action],
+      ['The voice’s prediction',st.prediction?(st.sealed&&!opened?'Sealed until you have done it':'“'+st.prediction+'”'):null]
+    ];
+    var box=$('slots'),done=0;box.textContent='';
+    rows.forEach(function(r){var s=node('div','slot');s.appendChild(node('span','lab',r[0]));var v=node('span','v'+(r[1]?'':' empty'),r[1]||'Not yet');if(r[2]){v.appendChild(node('span','tag',r[2]))}s.appendChild(v);box.appendChild(s);if(r[1])done++});
+    $('count').textContent=done+' of 6';
+    $('sealActs').hidden=!(st.sealed&&!opened)||busy;
+    $('resetBtn').hidden=!S.started;
+  }
+  function renderChips(){
+    chipsEl.textContent='';
+    if(busy)return;
+    S.chips.forEach(function(c){var b=node('button','chip',c);b.type='button';b.addEventListener('click',function(){send(c)});chipsEl.appendChild(b)});
+  }
+  function setBusy(on){busy=on;sendBtn.hidden=on;stopBtn.hidden=!on;msgIn.disabled=false;log.setAttribute('aria-busy',on);renderChips();renderStory()}
+
+  // ---------- talking to the guide ----------
+  function buildInput(){
+    var head=RULES+'\n\nSTATE SO FAR, kept by the page: '+JSON.stringify(S.state)+(S.name?'\nThe person asked to be called: '+S.name:'');
+    return [{role:'user',content:head}].concat(S.turns.slice(-24));
+  }
+  var COPY={
+    rate_limited:'Claude is busy, or you have reached a usage limit for now. Wait a little, then send again.',
+    session_expired:'You have been signed out of Claude. Sign in again, then send your reply once more.',
+    refused:'The guide could not answer that one. Try saying it another way, and we will pick the story back up.',
+    upstream_error:'Something interrupted that reply. Send your message again when you are ready.'
+  };
+  function send(text){
+    text=(text||'').replace(/\s+$/,'').trim();if(!text||busy||!sample)return;
+    if(dict&&dict.active())dict.stop().catch(function(){});
+    addMe(text);msgIn.value='';autosize();hear.textContent='';
+    if(crisis(text))supportCard();
+    S.turns.push({role:'user',content:text});save();
+    var bubble=addGuide('Thinking…',true);ctl=new AbortController();setBusy(true);
+    sample(buildInput(),{cache:false,modelTier:'quick',signal:ctl.signal,onText:function(u){bubble.classList.remove('wait');bubble.textContent=shown(u.text);scrollDown()}})
+    .then(function(res){
+      var full=res.text,say=shown(full)||'…';bubble.classList.remove('wait');bubble.textContent=say;
+      S.turns.push({role:'assistant',content:full});applyState(parseState(full));save();
+      if(res.truncated)addNote('That reply was cut short. Ask the guide to carry on.');
+      if(S.state.support)supportCard();
+      if(S.state.sealed&&S.state.step<11&&!log.querySelector('.sealed'))sealedCard();
+      speak(say);
+    })
+    .catch(function(e){
+      var code=e&&e.code,keep=e&&e.text?shown(e.text):'';
+      if(code==='refused'){bubble.textContent=COPY.refused;bubble.classList.remove('wait')}
+      else if(keep){bubble.textContent=keep;bubble.classList.remove('wait');S.turns.push({role:'assistant',content:keep})}
+      else{var w=bubble.previousSibling;bubble.remove();if(w&&w.className==='who')w.remove()}
+      if(code==='cancelled'){if(keep)addNote('Stopped.')}
+      else if(code==='not_granted'||code==='sampling_disabled'||code==='not_declared'||code==='capability_disabled'||code==='capability_removed'){sample=null;composer.hidden=true;addNote('The guide cannot run here, because Claude has not been allowed for this page. Your story so far is saved in this browser.')}
+      else if(code!=='refused')addNote(COPY[code]||COPY.upstream_error);
+      save();
+    })
+    .then(function(){ctl=null;setBusy(false);scrollDown();if(!window.matchMedia('(pointer:coarse)').matches)msgIn.focus()});
+  }
+  function sealedCard(){
+    var c=node('div','sealed');c.appendChild(node('b',null,'Your prediction is sealed.'));
+    c.appendChild(node('span',null,'Do your small action when you are ready, then come back to this page. We will open the prediction together.'));
+    log.appendChild(c);scrollDown();
+  }
+
+  // ---------- start, resume, reset ----------
+  function begin(){
+    if(!sample||S.started)return;
+    S.name=$('nameIn').value.replace(/\s+/g,' ').trim().slice(0,30);S.started=true;
+    $('welcome').hidden=true;composer.hidden=false;renderStory();
+    send(S.name?'Hi, you can call me '+S.name+'. I am ready to begin.':'Hi. I would rather not give a name. I am ready to begin.');
+  }
+  function resume(){
+    $('welcome').hidden=true;composer.hidden=!sample;
+    S.turns.forEach(function(t){if(t.role==='user')addMe(t.content);else addGuide(shown(t.content))});
+    if(S.state.sealed&&S.state.step<11){sealedCard();addNote('Welcome back. Have you done your small action? Use the buttons in “Your story so far”, or just tell the guide.')}
+    else addNote('Welcome back. Carry on where you left off.');
+    renderStory();renderChips();
+  }
+  var resetArmed=false;
+  $('resetBtn').addEventListener('click',function(){
+    if(!resetArmed){resetArmed=true;this.textContent='Tap again to clear this story';return}
+    if(ctl)ctl.abort();wipe();S={name:'',started:false,turns:[],state:blank(),chips:[]};
+    [].slice.call(log.children).forEach(function(c){if(c.id!=='welcome')c.remove()});
+    $('welcome').hidden=false;composer.hidden=true;resetArmed=false;this.textContent='Start over';renderStory();renderChips();
+  });
+  $('beginBtn').addEventListener('click',begin);
+  $('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();begin()}});
+  $('sendForm').addEventListener('submit',function(e){e.preventDefault();send(msgIn.value)});
+  msgIn.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send(msgIn.value)}});
+  function autosize(){msgIn.style.height='auto';msgIn.style.height=Math.min(msgIn.scrollHeight,170)+'px'}
+  msgIn.addEventListener('input',autosize);
+  stopBtn.addEventListener('click',function(){if(ctl)ctl.abort()});
+  $('doneBtn').addEventListener('click',function(){send('I did my small action. Let’s open the prediction.')});
+  $('notYetBtn').addEventListener('click',function(){send('I have not done my small action yet.')});
+
+  // ---------- help ----------
+  var help=$('help');
+  $('helpBtn').addEventListener('click',function(){if(help.showModal)help.showModal();else help.setAttribute('open','')});
+  $('helpClose').addEventListener('click',function(){if(help.close)help.close();else help.removeAttribute('open')});
+
+  // ---------- read aloud ----------
+  var voiceBtn=$('voiceBtn');
+  function speak(t){if(!voiceOn||!tts||!t)return;tts.speak(t.slice(0,1900)).catch(function(e){if(e&&(e.code==='not_granted'||e.code==='unavailable')){voiceOn=false;voiceBtn.hidden=true}})}
+  voiceBtn.addEventListener('click',function(){
+    voiceOn=!voiceOn;voiceBtn.setAttribute('aria-pressed',voiceOn);voiceBtn.textContent=voiceOn?'Reading aloud':'Read aloud';
+    if(!voiceOn&&tts)tts.stop().catch(function(){});
+    else if(voiceOn){var g=log.querySelectorAll('.guide');if(g.length)speak(g[g.length-1].textContent)}
+  });
+
+  // ---------- speak your reply ----------
+  var micBtn=$('micBtn');
+  micBtn.addEventListener('click',function(){
+    if(!dict)return;
+    if(dict.active()){dict.stop().catch(function(){});return}
+    dict.start().catch(function(e){var c=e&&e.code;if(c==='not_granted'||c==='unavailable'){micBtn.hidden=true;hear.textContent='The microphone is not available here. You can type instead.'}else if(c!=='stopped'&&c!=='dismissed')hear.textContent='The microphone could not start. You can type instead.'});
+  });
+
+  // ---------- boot ----------
+  var saved=load();if(saved&&saved.started){S=saved;if(!S.chips)S.chips=[]}
+  if(window.matchMedia('(max-width:860px)').matches)$('story').open=false;
+  renderStory();
+  function unavailable(){
+    var b=$('beginBtn');b.hidden=true;
+    $('aiNote').textContent='The AI guide runs inside Claude, for people signed in to their own Claude account. It is not available in this view.';
+    var r=node('div','rowb');var a=node('a','btn btn-line','Play the scripted preview');a.href=PREVIEW;a.target='_blank';a.rel='noopener';r.appendChild(a);$('welcome').appendChild(r);
+    if(S.started)addNote('The guide is not available in this view, so you can read your story but not continue it here.');
+  }
+  var c=window.claude;
+  if(!c||typeof c.use!=='function'){if(S.started)resume();unavailable();return}
+  c.use('sample').then(function(s){
+    sample=s;
+    if(S.started)resume();
+    if(!s){unavailable();return}
+    var b=$('beginBtn');b.disabled=false;b.textContent='Begin the session';
+  });
+  c.use('tts').then(function(t){if(!t)return;tts=t;voiceBtn.hidden=false});
+  c.use('dictation').then(function(d){
+    if(!d)return;dict=d;micBtn.hidden=false;
+    d.onPartial(function(e){hear.textContent=e.text?'Hearing: '+e.text:''});
+    d.onFinal(function(e){var t=e.text||'';msgIn.value=msgIn.value?msgIn.value+t:t.replace(/^\s+/,'');autosize()});
+    d.onState(function(e){var on=e.state!=='idle';micBtn.setAttribute('aria-pressed',on);micBtn.setAttribute('aria-label',on?'Stop listening':'Speak your reply');if(!on)hear.textContent=''});
+  });
+})();
+</script>
