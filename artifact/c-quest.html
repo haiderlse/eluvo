@@ -2,14 +2,15 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-  /* Layout: a one-screen session. Plum band on top, a conversation column that scrolls with the composer
-     pinned under it, and a "your story so far" card beside it (a fold-down strip on phones). */
+  /* Layout: a one-screen call with Ali. He fills the stage and speaks; each line shows as a subtitle over the
+     bottom of the stage. Replies go in the bar underneath. The story card sits beside it (a pull-up sheet on phones). */
   :root{
     --bg:#FBF9F5; --surface:#FFFFFF; --surface-2:#F1EEF8; --ink:#1F1A3A; --muted:#5A5670; --line:#E7E3DA;
     --band:#3B2E6B; --on-band:#FFFFFF; --accent:#3B2E6B; --bubble:#3B2E6B; --on-bubble:#FFFFFF;
     --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#FFF1C2; --gold-ink:#8A6100;
     --ok:#2F7D5B; --ok-soft:#E1F0E7; --warn-soft:#FBE7E2; --warn-ink:#7A2414; --warn-line:#F1B9AD;
-    --shadow:0 18px 40px -26px rgba(31,26,58,.5); --glow:#FFE9A8; --floor:rgba(31,26,58,.2); --ring:#F4B205;
+    --shadow:0 18px 40px -26px rgba(31,26,58,.5); --glow:#FFE9A8; --ring:#F4B205;
+    --cap:15,10,35; --on-cap:#FFFFFF; --on-cap-dim:#D9D3EE;
     --display:"Outfit","Segoe UI",Helvetica,Arial,sans-serif; --text:"Figtree","Segoe UI",Helvetica,Arial,sans-serif;
   }
   @media (prefers-color-scheme: dark){
@@ -18,7 +19,8 @@
       --band:#241C47; --on-band:#FFFFFF; --accent:#C3B8F0; --bubble:#4A3C86; --on-bubble:#FFFFFF;
       --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#463A12; --gold-ink:#F7CF5A;
       --ok:#7FD0A8; --ok-soft:#1D3A2E; --warn-soft:#45201B; --warn-ink:#F6C3B8; --warn-line:#7A3A30;
-      --shadow:0 18px 40px -26px rgba(0,0,0,.8); --glow:#4A3C86; --floor:rgba(0,0,0,.55); --ring:#F4B205; color-scheme:dark;
+      --shadow:0 18px 40px -26px rgba(0,0,0,.8); --glow:#4A3C86; --ring:#F4B205;
+      --cap:8,5,22; --on-cap:#FFFFFF; --on-cap-dim:#D9D3EE; color-scheme:dark;
     }
   }
   :root[data-theme="dark"]{
@@ -26,110 +28,125 @@
     --band:#241C47; --on-band:#FFFFFF; --accent:#C3B8F0; --bubble:#4A3C86; --on-bubble:#FFFFFF;
     --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#463A12; --gold-ink:#F7CF5A;
     --ok:#7FD0A8; --ok-soft:#1D3A2E; --warn-soft:#45201B; --warn-ink:#F6C3B8; --warn-line:#7A3A30;
-    --shadow:0 18px 40px -26px rgba(0,0,0,.8); --glow:#4A3C86; --floor:rgba(0,0,0,.55); --ring:#F4B205; color-scheme:dark;
+    --shadow:0 18px 40px -26px rgba(0,0,0,.8); --glow:#4A3C86; --ring:#F4B205;
+    --cap:8,5,22; --on-cap:#FFFFFF; --on-cap-dim:#D9D3EE; color-scheme:dark;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.55 var(--text);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
   body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--band)}
-  p{margin:0} button,input,textarea{font:inherit;color:inherit}
-  h1,h2{font-family:var(--display);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin:0;text-wrap:balance}
+  p{margin:0} button,input,textarea,select{font:inherit;color:inherit}
+  h1,h2{font-family:var(--display);font-weight:800;line-height:1.12;letter-spacing:-.02em;margin:0;text-wrap:balance}
   :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
   .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
   .lab{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink)}
-  .muted{color:var(--muted)} .small{font-size:.875rem}
+  .muted{color:var(--muted)} .small{font-size:.875rem} .sp{flex:1}
 
   .bar{background:var(--band);color:var(--on-band);flex:none}
-  .bar .in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;min-height:56px}
+  .bar .in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;min-height:54px}
   .bar .in :focus-visible{outline-color:var(--gold)}
   .logo{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:1.2rem}
   .logo svg{width:24px;height:24px;flex:none} .logo span{font-weight:600;opacity:.85;font-size:.95rem}
-  .bar .sp{flex:1}
   .tool{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:999px;padding:7px 12px;font-weight:600;font-size:.82rem;cursor:pointer;min-height:36px;white-space:nowrap}
   .tool[aria-pressed="true"]{background:#fff;color:#3B2E6B}
   .tool .sm{display:none}
 
-  .shell{flex:1;min-height:0;width:100%;max-width:1120px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;padding-block:16px 12px}
-  .talk{min-width:0;min-height:0;display:flex;flex-direction:column}
-  .log{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:4px 2px 16px;scroll-behavior:smooth}
-  .guide{max-width:62ch;font-size:1.08rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
-  .guide.wait{color:var(--muted)}
-  .who{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:-8px}
-  .me{align-self:flex-end;max-width:min(80%,52ch);background:var(--bubble);color:var(--on-bubble);border-radius:16px 16px 4px 16px;padding:10px 14px;white-space:pre-wrap;overflow-wrap:anywhere}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
-  .welcome{box-shadow:var(--shadow);display:grid;gap:14px;max-width:62ch}
-  .welcome h1{font-size:clamp(1.8rem,5.2vw,2.5rem)}
-  .field{display:grid;gap:6px;font-weight:600;font-size:.9rem}
-  .field input{padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:400;font-size:1rem;width:100%}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;padding:12px 18px;border-radius:12px;border:2px solid transparent;cursor:pointer;min-height:46px;text-decoration:none}
-  .btn-gold{background:var(--gold);color:var(--on-gold)} .btn-line{background:var(--surface);border-color:var(--line);color:var(--ink)}
-  .btn:disabled{opacity:.5;cursor:not-allowed}
-  .rowb{display:flex;flex-wrap:wrap;gap:10px}
-  .notice{background:var(--surface-2);border-radius:12px;padding:12px 14px;font-size:.9rem}
-  .alert{background:var(--warn-soft);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:14px;padding:14px 16px;display:grid;gap:8px;max-width:62ch}
-  .alert b{font-family:var(--display)} .nums{display:grid;gap:4px;font-variant-numeric:tabular-nums}
-  .sealed{background:var(--gold-soft);border-radius:16px;padding:16px 18px;display:grid;gap:10px;max-width:62ch}
-  .sealed b{font-family:var(--display);font-size:1.1rem}
-  .linkb{background:none;border:0;padding:0;color:var(--accent);font-weight:700;text-decoration:underline;cursor:pointer}
+  .shell{flex:1;min-height:0;width:100%;max-width:1120px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;padding-block:14px 12px}
+  .talk{min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px}
 
-  .composer{flex:none;border-top:1px solid var(--line);padding-top:10px;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
-  .composer>*{min-width:0}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:8px 14px;font-weight:600;font-size:.92rem;cursor:pointer;min-height:40px}
-  .chip:hover{background:var(--surface-2)}
-  .send{display:flex;gap:8px;align-items:flex-end}
-  .send textarea{flex:1;min-width:0;resize:none;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);max-height:9.5em;line-height:1.45}
-  .ico{width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none}
-  .ico svg{width:20px;height:20px} .ico[aria-pressed="true"]{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn-ink)}
-  .hear{font-size:.85rem;color:var(--muted);min-height:1.2em}
-  .fine{font-size:.78rem;color:var(--muted)}
-
-  .side{min-height:0;overflow:auto}
-  /* the guide: one picture, cropped to a portrait, with a mouth that opens while he speaks */
-  .stage{display:grid;gap:8px;margin-bottom:12px}
-  .spot{--ch:500px;position:relative;height:228px;border-radius:16px;overflow:hidden;border:2px solid var(--line);background:radial-gradient(120% 95% at 50% 100%,var(--glow) 0,var(--surface) 78%);transition:border-color .2s}
-  .char{position:absolute;top:10px;left:calc(50% - var(--ch) * .4711 * .405);height:var(--ch);aspect-ratio:358/760;transform-origin:50% 60%;animation:breathe 4.6s ease-in-out infinite}
+  /* the stage */
+  .stage{flex:1;min-height:170px;position:relative;border-radius:20px;overflow:hidden;border:2px solid var(--line);background:radial-gradient(120% 90% at 50% 100%,var(--glow) 0,var(--surface) 80%);container-type:size;transition:border-color .2s}
+  .stage[data-mood="talking"],.stage[data-mood="listening"]{border-color:var(--ring)}
+  .char{--ch:520px;position:absolute;top:14px;left:calc(50% - var(--ch) * .4711 * .405);height:var(--ch);aspect-ratio:358/760;transform-origin:50% 60%;animation:breathe 4.6s ease-in-out infinite}
+  @supports (height:1cqh){ .char{--ch:clamp(330px,190cqh,840px);top:max(10px,4cqh)} }
   .char img{display:block;width:100%;height:100%;max-width:none}
   .mouth{position:absolute;left:45.2%;top:24.5%;width:7.4%;height:1.9%;border-radius:50%;background:radial-gradient(ellipse at 50% 92%,#C6605C 0 34%,#2A0F12 38%);transform:translate(-50%,-50%) scaleY(0);opacity:0}
   .stage[data-mood="talking"] .char{animation:talk .9s ease-in-out infinite}
   .stage[data-mood="talking"] .mouth{opacity:1;animation:mouth .62s steps(1,end) infinite}
-  .stage[data-mood="talking"] .spot,.stage[data-mood="listening"] .spot{border-color:var(--ring)}
   .stage[data-mood="thinking"] .char{animation:think 2.4s ease-in-out infinite}
-  .mood{justify-self:center;display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid transparent;border-radius:999px;padding:6px 14px;font-weight:600;font-size:.85rem;color:var(--ink);min-height:34px}
-  .mood:not(:disabled){cursor:pointer;border-color:var(--ring)} .mood:disabled{opacity:1}
-  .bars{display:inline-flex;align-items:flex-end;gap:2px;height:14px} .bars i{width:3px;height:4px;border-radius:2px;background:var(--gold-ink)}
+  .stagetop{position:absolute;top:10px;left:10px;right:10px;display:flex;align-items:center;gap:8px;z-index:2}
+  .nametag{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-weight:700;font-size:.82rem}
+  .nametag span{font-weight:500;color:var(--muted)}
+  .pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-weight:600;font-size:.82rem;cursor:pointer;min-height:32px}
+  .subs{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:46px 16px 12px;background:linear-gradient(rgba(var(--cap),0),rgba(var(--cap),.88) 42%);color:var(--on-cap);display:grid;gap:8px;justify-items:center}
+  #subTxt{font-weight:600;font-size:clamp(1.05rem,2.4cqw + .55rem,1.4rem);line-height:1.4;text-align:center;text-wrap:balance;max-width:34ch;min-height:2.8em;display:grid;align-items:end;overflow-wrap:anywhere}
+  #subTxt.you{font-weight:500;color:var(--on-cap-dim);font-style:italic}
+  .subrow{display:flex;align-items:center;gap:8px;width:100%}
+  .status{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-cap-dim)}
+  .bars{display:inline-flex;align-items:flex-end;gap:2px;height:14px} .bars i{width:3px;height:4px;border-radius:2px;background:var(--gold)}
   .stage[data-mood="talking"] .bars i{animation:bar .7s ease-in-out infinite} .bars i:nth-child(2){animation-delay:.15s} .bars i:nth-child(3){animation-delay:.3s}
+  .sbtn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:var(--on-cap);border-radius:999px;padding:5px 12px;font-weight:600;font-size:.8rem;cursor:pointer;min-height:32px}
+  .subs :focus-visible{outline-color:var(--gold)}
+  @container (max-height:300px){ .subs{padding-top:22px;gap:4px} #subTxt{min-height:0;font-size:1rem;line-height:1.3} .char{top:4px} }
   @keyframes breathe{50%{transform:translateY(-.35%) scale(1.004)}}
   @keyframes talk{25%{transform:translateY(-.5%) rotate(-.5deg)}60%{transform:translateY(.1%) rotate(.45deg)}}
   @keyframes think{50%{transform:rotate(-1.1deg)}}
   @keyframes mouth{0%{transform:translate(-50%,-50%) scaleY(.25)}16%{transform:translate(-50%,-50%) scaleY(1)}33%{transform:translate(-50%,-50%) scaleY(.5)}50%{transform:translate(-50%,-50%) scaleY(.95)}66%{transform:translate(-50%,-50%) scaleY(.2)}83%{transform:translate(-50%,-50%) scaleY(.75)}}
   @keyframes bar{50%{height:14px}}
-  .pick{display:grid;gap:4px;font-size:.82rem;font-weight:600} .pick select{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font:inherit;font-weight:400}
+
+  /* under the stage */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .welcome{flex:none;display:grid;gap:10px}
+  .welcome h1{font-size:clamp(1.25rem,3.6vw,1.6rem)}
+  .field{display:grid;gap:6px;font-weight:600;font-size:.9rem}
+  .start{display:flex;flex-wrap:wrap;gap:8px} .start input{flex:1 1 160px;min-width:0;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:1rem}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;padding:12px 18px;border-radius:12px;border:2px solid transparent;cursor:pointer;min-height:46px;text-decoration:none}
+  .btn-gold{background:var(--gold);color:var(--on-gold)} .btn-line{background:var(--surface);border-color:var(--line);color:var(--ink)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .rowb{display:flex;flex-wrap:wrap;gap:10px}
+  .fine{font-size:.8rem;color:var(--muted)}
+  .notice{flex:none;background:var(--surface-2);border-radius:12px;padding:10px 14px;font-size:.9rem}
+  .alert{flex:none;background:var(--warn-soft);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:14px;padding:12px 14px;display:grid;gap:4px;font-size:.92rem}
+  .alert b{font-family:var(--display)} .alert .nums{font-variant-numeric:tabular-nums;font-weight:600}
+  .composer{flex:none;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .composer>*{min-width:0}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:8px 14px;font-weight:600;font-size:.92rem;cursor:pointer;min-height:40px}
+  .chip:hover{background:var(--surface-2)} .chip.strong{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+  .send{display:flex;gap:8px;align-items:flex-end}
+  .send textarea{flex:1;min-width:0;resize:none;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);max-height:8em;line-height:1.45}
+  .ico{width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none}
+  .ico svg{width:20px;height:20px} .ico[aria-pressed="true"]{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn-ink)}
+  .hear{font-size:.85rem;color:var(--muted)} .hear:empty{display:none}
+
+  /* story card */
+  .side{min-height:0;overflow:auto}
   .story{background:var(--surface);border:1px solid var(--line);border-radius:16px}
-  .story summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-family:var(--display);font-weight:700}
-  .story summary::-webkit-details-marker{display:none}
+  .story .head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-family:var(--display);font-weight:700}
   .story .count{font:600 .8rem var(--text);color:var(--muted)}
-  .slots{display:grid;gap:0;padding:0 16px 6px}
+  .slots{display:grid;padding:0 16px 6px}
   .slot{padding:10px 0;border-top:1px solid var(--line);display:grid;gap:2px}
   .slot .v{font-weight:600;overflow-wrap:anywhere} .slot .v.empty{font-weight:400;color:var(--muted)}
   .tag{display:inline-block;font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 8px;background:var(--ok-soft);color:var(--ok);margin-left:6px;vertical-align:middle}
-  .story .foot{padding:12px 16px 16px;border-top:1px solid var(--line);display:grid;gap:8px}
-  dialog{border:0;border-radius:18px;padding:22px;width:min(520px,calc(100% - 32px));background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+  .story .foot{padding:12px 16px 16px;border-top:1px solid var(--line);display:grid;gap:10px}
+  .pick{display:grid;gap:4px;font-size:.82rem;font-weight:600} .pick select{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:400}
+  .linkb{background:none;border:0;padding:0;color:var(--accent);font-weight:700;text-decoration:underline;cursor:pointer;justify-self:start}
+  #sideClose{display:none}
+  .scrim{position:fixed;inset:0;background:rgba(15,10,35,.5);z-index:25}
+
+  /* dialogs */
+  dialog{border:0;border-radius:18px;padding:20px;width:min(560px,calc(100% - 32px));max-height:86%;background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
   dialog::backdrop{background:rgba(15,10,35,.55)}
-  dialog h2{font-size:1.4rem;margin-bottom:8px} dialog .nums{margin:12px 0}
+  dialog h2{font-size:1.35rem} .dlgh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+  .nums2{display:grid;gap:6px;margin:12px 0}
   .numrow{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface-2);border-radius:10px;padding:8px 12px}
   .numrow b{user-select:all}
+  .log{display:flex;flex-direction:column;gap:12px}
+  .who{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:-6px}
+  .guide{white-space:pre-wrap;overflow-wrap:anywhere}
+  .me{align-self:flex-end;max-width:85%;background:var(--bubble);color:var(--on-bubble);border-radius:16px 16px 4px 16px;padding:9px 13px;white-space:pre-wrap;overflow-wrap:anywhere}
 
   @media (max-width:860px){
-    .shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:10px;padding-block:10px 8px}
-    .side{order:-1;overflow:visible} .guide{font-size:1.02rem} .logo span{display:none}
-    .stage{grid-template-columns:auto 1fr;align-items:center;gap:12px;margin-bottom:8px} .mood{justify-self:start}
-    .spot{--ch:212px;width:68px;height:68px;border-radius:50%} .char{top:calc(50% - var(--ch) * .158)}
-    .story[open]{max-height:46vh;overflow:auto}
+    .shell{grid-template-columns:minmax(0,1fr);padding-block:10px 8px}
+    .logo span{display:none} .welcome h1{display:none} .welcome{gap:8px;padding:14px} .stage{min-height:150px}
+    .side{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:80%;background:var(--bg);border-radius:18px 18px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.35);transform:translateY(105%);visibility:hidden;transition:transform .22s,visibility .22s;
+      padding:14px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+    .side.open{transform:none;visibility:visible}
+    #sideClose{display:inline-flex}
   }
-  @media (max-width:400px){ .tool{padding:6px 10px;font-size:.78rem} .tool .lg{display:none} .tool .sm{display:inline} .btn{padding:12px 14px} }
-  @media (min-width:861px){ .story summary{cursor:default;pointer-events:none} }
-  @media (prefers-reduced-motion:reduce){ .log{scroll-behavior:auto} .char,.stage[data-mood] .char,.stage[data-mood] .mouth,.stage[data-mood] .bars i{animation:none} .stage[data-mood="talking"] .mouth{transform:translate(-50%,-50%) scaleY(.7)} }
+  @media (min-width:861px){ #storyBtn{display:none} .scrim{display:none} }
+  @media (max-width:400px){ .tool{padding:6px 10px;font-size:.78rem} .tool .lg{display:none} .tool .sm{display:inline} .btn{padding:12px 14px} .nametag span{display:none} }
+  @media (prefers-reduced-motion:reduce){ .char,.stage[data-mood] .char,.stage[data-mood] .mouth,.stage[data-mood] .bars i{animation:none} .stage[data-mood="talking"] .mouth{transform:translate(-50%,-50%) scaleY(.7)} .side{transition:none} }
 </style>
 
 <header class="bar"><div class="in gut">
@@ -141,18 +158,30 @@
 
 <div class="shell gut">
   <main class="talk">
-    <div class="log" id="log" role="log" aria-live="polite">
-      <section class="card welcome" id="welcome">
-        <p class="lab">C-Quest · Grow forward</p>
-        <h1>A career story you talk your way through.</h1>
-        <p>You and an AI guide build a short story set in a job you would like to try. Along the way you find the inner voice that gets loud when something matters, and you leave with one small thing to try in real life. About ten minutes.</p>
-        <label class="field" for="nameIn">What should the guide call you? (optional)
-          <input id="nameIn" type="text" maxlength="30" autocomplete="given-name" placeholder="First name or nickname"></label>
-        <div class="rowb"><button class="btn btn-gold" type="button" id="beginBtn" disabled>Getting the guide ready…</button></div>
-        <p class="small" id="voiceNote" hidden></p>
-        <p class="notice" id="aiNote">The guide is Claude, an AI. What you type is sent to Claude to write your story, and it uses your own Claude account. Your session is saved in this browser only. It is a career and reflection tool, not therapy and not an emergency service.</p>
-      </section>
-    </div>
+    <section class="stage" id="stage" data-mood="idle" aria-label="Ali, your AI guide">
+      <div class="stagetop">
+        <span class="nametag">Ali <span>· AI guide</span></span><span class="sp"></span>
+        <button class="pill" type="button" id="storyBtn">Story 0/6</button>
+        <button class="pill" type="button" id="logBtn">Transcript</button>
+      </div>
+      <div class="char"><img src="guide.webp" width="358" height="760" alt="Ali, a cartoon man with dark hair and a beard, in a dark jacket, gesturing with one hand"><span class="mouth" aria-hidden="true"></span></div>
+      <div class="subs">
+        <p id="subTxt" aria-live="polite">Hi, I’m Ali, your AI guide. Add your name if you like, then press Begin.</p>
+        <div class="subrow"><span class="status"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="moodTxt">Ready when you are</span></span><span class="sp"></span><button class="sbtn" type="button" id="replayBtn" hidden>Replay</button><button class="sbtn" type="button" id="skipBtn" hidden>Skip</button></div>
+      </div>
+    </section>
+
+    <div class="alert" id="supportBox" role="alert" hidden><b>You deserve support from a person today.</b><span>These lines are free. Please call one, or tell someone you trust.</span><span class="nums">Lifeline 13 11 14 · Kids Helpline 1800 55 1800 · headspace 1800 650 890 · 000 if you are in danger</span></div>
+    <p class="notice" id="notice" role="status" hidden></p>
+
+    <section class="card welcome" id="welcome">
+      <h1>A career story you talk through with Ali.</h1>
+      <label class="field" for="nameIn">What should Ali call you? (optional)</label>
+      <div class="start" id="beginRow"><input id="nameIn" type="text" maxlength="30" autocomplete="given-name" placeholder="First name or nickname"><button class="btn btn-gold" type="button" id="beginBtn" disabled>Getting Ali ready…</button></div>
+      <p class="fine" id="voiceNote" hidden></p>
+      <p class="fine" id="aiNote">Ali is an AI character powered by Claude, not a real person. What you type is sent to Claude and uses your own Claude account. Saved in this browser only. Not therapy and not an emergency service.</p>
+    </section>
+
     <div class="composer" id="composer" hidden>
       <div class="chips" id="chips"></div>
       <form class="send" id="sendForm">
@@ -165,35 +194,36 @@
     </div>
   </main>
 
-  <aside class="side">
-    <div class="stage" id="stage" data-mood="idle">
-      <div class="spot"><div class="char"><img src="guide.webp" width="358" height="760" alt="Your guide: a cartoon man with dark hair and a beard, in a dark jacket, gesturing with one hand"><span class="mouth" aria-hidden="true"></span></div></div>
-      <button class="mood" type="button" id="moodBtn" disabled><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="moodTxt">Ready when you are</span></button>
-    </div>
-    <details class="story" id="story" open>
-      <summary><span>Your story so far</span><span class="count" id="count">0 of 6</span></summary>
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="side" id="side" aria-label="Your story so far">
+    <section class="story">
+      <div class="head"><span>Your story so far</span><span class="count" id="count">0 of 6</span><button class="pill" type="button" id="sideClose">Close</button></div>
       <div class="slots" id="slots"></div>
       <div class="foot">
-        <div class="rowb" id="sealActs" hidden><button class="btn btn-gold" type="button" id="doneBtn">I have done it</button><button class="btn btn-line" type="button" id="notYetBtn">Not yet</button></div>
-        <label class="pick" for="voiceSel" id="voicePick" hidden>The guide's voice<select id="voiceSel"></select></label>
+        <label class="pick" for="voiceSel" id="voicePick" hidden>Ali’s voice<select id="voiceSel"></select></label>
         <button class="linkb small" type="button" id="resetBtn" hidden>Start over</button>
         <p class="fine">The voices and Leader skills draw on Internal Family Systems, developed by Richard C. Schwartz. C-Quest is independent and is not affiliated with or endorsed by the IFS Institute.</p>
       </div>
-    </details>
+    </section>
   </aside>
 </div>
 
+<dialog id="logDlg" aria-labelledby="logH">
+  <div class="dlgh"><h2 id="logH">Transcript</h2><button class="pill" type="button" id="logClose">Close</button></div>
+  <div class="log" id="log"><p class="muted" id="logEmpty">Nothing said yet.</p></div>
+</dialog>
+
 <dialog id="help" aria-labelledby="helpH">
-  <h2 id="helpH">Let's slow down.</h2>
-  <p>There is no rush and no wrong answer. You can type "I don't know" at any point and the guide will offer another way in.</p>
+  <h2 id="helpH">Let’s slow down.</h2>
+  <p>There is no rush and no wrong answer. You can say “I don’t know” at any point and Ali will offer another way in.</p>
   <p class="muted small" style="margin-top:8px">If things feel heavy, please talk to a person. These lines are free:</p>
-  <div class="nums">
+  <div class="nums2">
     <div class="numrow"><span>Lifeline · any time</span><b>13 11 14</b></div>
     <div class="numrow"><span>Kids Helpline · ages 5 to 25</span><b>1800 55 1800</b></div>
     <div class="numrow"><span>headspace</span><b>1800 650 890</b></div>
     <div class="numrow"><span>In danger</span><b>000</b></div>
   </div>
-  <p class="small muted">This version cannot connect you to a person. In the full product, asking for one tells a named person at your school, uni or service.</p>
+  <p class="small muted">Ali is an AI character, not a real person. This version cannot connect you to a person. In the full product, asking for one tells a named person at your school, uni or service.</p>
   <div class="rowb" style="margin-top:14px"><button class="btn btn-gold" type="button" id="helpClose">Back to my story</button></div>
 </dialog>
 
@@ -204,7 +234,7 @@
   var SKILLS=['Calm','Curiosity','Clarity','Compassion','Confidence','Courage','Creativity','Connectedness'];
   var PREVIEW='https://haiderlse.github.io/eluvo/quest-preview.html';
   var RULES=[
-'You are the guide for C-Quest, a short interactive career story for a young person in Australia, about 18 to 25. You are an AI guide. You are not a person, not a coach and not a therapist, and you say so plainly if asked.',
+'You are Ali, the on-screen guide for C-Quest, a short interactive career story for a young person in Australia, about 18 to 25. Ali is an AI character. You are not a real person, not a coach and not a therapist, and you say so plainly if asked.',
 '',
 'WHAT THIS SESSION IS',
 'The person is the main character of a short story set in a kind of work they want to try on. Through the story you help them notice one inner voice that speaks up when something matters, answer it kindly, call on one Leader skill, and then choose one small real-life action for this week. It is a career and reflection tool. It is not therapy and it does not diagnose anything.',
@@ -221,7 +251,7 @@
 'The eight Leader skills (use these names only): Calm (staying steady when things feel stressful), Curiosity (wanting to find out instead of assuming), Clarity (seeing the situation as it is), Compassion (being kind to yourself and others), Confidence (trusting yourself to handle it), Courage (acting even when it feels scary), Creativity (finding new ways around a problem), Connectedness (feeling part of something and reaching out).',
 '',
 'THE ARC. Move through it in order, one small step per message. Never skip ahead and never rush.',
-'1. WELCOME. Greet them, by name if they gave one. In two sentences say what will happen. Ask what kind of work they would like to try on, with a few everyday examples such as retail, hospitality, health, trades, office work, IT, education, transport, creative work or public service. If they are unsure, suggest one.',
+'1. WELCOME. Greet them, by name if they gave one, and say you are Ali, their AI guide. In one sentence say what will happen. Ask what kind of work they would like to try on, and offer three everyday examples only, such as retail, hospitality or office work. If they are unsure, suggest one.',
 '2. SETTING. Ask one light question that makes the story theirs, for example what the place is like or what they would be doing there. Use their answer.',
 '3. SCENE. Write a short scene of 40 to 70 words, in second person and present tense, in that workplace, where something ordinary but slightly uncomfortable happens: being asked to do something at short notice, a chance to put a hand up, a task that keeps getting put off, a busy moment, someone else seeming ahead, a message that is hard to send. Keep it realistic and entry-level. Do not invent technical details you are unsure of. End by asking what goes through their head.',
 '4. VOICE. From what THEY said, reflect which of the six voices it sounds like, quoting their own words as the reason, in one or two sentences. Say what that voice is trying to do for them. Ask whether that fits. If they say no, ask what fits better or offer one other voice. They decide.',
@@ -234,7 +264,7 @@
 '11. DEBRIEF. Only when they come back. If they did it: read the prediction back, ask what actually happened, then compare the two honestly. If the voice was right, say that happens, and that they acted with the voice there, which took the skill. If they did not do it: no judgement. Ask what got in the way and offer to make the action smaller.',
 '',
 'HOW YOU WRITE',
-'Short: two to four sentences per message, except the scene. One question at a time, always at the end. Plain words a 15-year-old reads easily. Australian spelling. No headings, no lists, no markdown, no emojis. Use their words back to them. Warm and matter-of-fact, never gushing. Never shame. Never tell them what they should feel. If they say they do not know, or seem stuck, slow down, say that is fine, and offer two concrete options. If they go off track, answer briefly and kindly, then return to the step you were on.',
+'Everything you write is spoken aloud and shown as subtitles, so write the way a person talks. Short: two or three short sentences per message, under 45 words, except the scene. Never give more than three examples. One question at a time, always at the end. Plain words a 15-year-old reads easily. Australian spelling. No headings, no lists, no markdown, no emojis. Use their words back to them. Warm and matter-of-fact, never gushing. Never shame. Never tell them what they should feel. If they say they do not know, or seem stuck, slow down, say that is fine, and offer two concrete options. If they go off track, answer briefly and kindly, then return to the step you were on.',
 '',
 'LINES YOU DO NOT CROSS',
 '- Stay on this week and this task. Never ask where a voice came from, or about childhood, family history, trauma or past events that shaped them. If they bring it up, acknowledge it in one sentence, say this session is for the work side of things, and suggest talking with someone they trust.',
@@ -252,14 +282,16 @@
   // ---------- state ----------
   var KEY='cquest-session-v1';
   function blank(){return {step:0,setting:null,voice:null,fits:null,reply:null,skill:null,action:null,prediction:null,sealed:false,support:false}}
-  var S={name:'',started:false,turns:[],state:blank(),chips:[]},mem=null;
+  var S={name:'',started:false,turns:[],state:blank(),chips:[]};
   function load(){try{var v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.turns)&&v.state)return v}catch(e){}return null}
-  function save(){mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
   function wipe(){try{localStorage.removeItem(KEY)}catch(e){}}
   var $=function(id){return document.getElementById(id)};
-  var log=$('log'),composer=$('composer'),chipsEl=$('chips'),msgIn=$('msgIn'),sendBtn=$('sendBtn'),stopBtn=$('stopBtn'),hear=$('hear');
+  var log=$('log'),composer=$('composer'),chipsEl=$('chips'),msgIn=$('msgIn'),sendBtn=$('sendBtn'),stopBtn=$('stopBtn'),hear=$('hear'),subTxt=$('subTxt');
   var sample=null,tts=null,dict=null,busy=false,ctl=null;
-  var voiceMode=null,voiceOn=false,voiceName=null,speaking=false,listening=false,streaming=false,tail=0;
+  var voiceMode=null,voiceOn=false,voiceName=null,listening=false,primed=false;
+  var seq={lines:[],text:'',i:0,token:0,active:false,driver:null,timer:0};
+  var HELLO='Hi, I’m Ali, your AI guide. Add your name if you like, then press Begin.';
 
   // ---------- helpers ----------
   function shown(t){var i=t.indexOf('@@');if(i>=0)t=t.slice(0,i);return t.replace(/@+\s*$/,'').replace(/\s+$/,'')}
@@ -278,168 +310,117 @@
     st.support=o.support===true;
     S.chips=Array.isArray(o.chips)?o.chips.map(function(c){return str(c,60)}).filter(Boolean).slice(0,3):[];
   }
-  function scrollDown(){log.scrollTop=log.scrollHeight}
   function node(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
-  function addGuide(text,wait){log.appendChild(node('div','who','Guide'));var m=node('div','guide'+(wait?' wait':''),text);log.appendChild(m);scrollDown();return m}
-  function addMe(text){log.appendChild(node('div','me',text));scrollDown()}
-  function addNote(text){var n=node('p','notice',text);log.appendChild(n);scrollDown();return n}
-  function supportCard(){
-    if(log.querySelector('.alert'))return;
-    var a=node('div','alert');a.setAttribute('role','alert');
-    a.appendChild(node('b',null,'You deserve support from a person today.'));
-    a.appendChild(node('span',null,'These lines are free. Please call one, or tell someone you trust.'));
-    var n=node('div','nums');['Lifeline 13 11 14 · any time','Kids Helpline 1800 55 1800','headspace 1800 650 890','000 if you are in danger'].forEach(function(t){n.appendChild(node('span',null,t))});
-    a.appendChild(n);log.appendChild(a);scrollDown();
-  }
   function crisis(t){return /suicid|kill myself|end it all|self[- ]harm|hurt myself|don.?t want to be here|want to die/i.test(t||'')}
+  function clip(t,n){t=t.replace(/\s+/g,' ');return t.length>n?t.slice(0,n-1)+'…':t}
+  function note(t){var n=$('notice');n.textContent=t;n.hidden=!t}
+  function logAdd(role,text){var e=$('logEmpty');if(e)e.remove();if(role==='me')log.appendChild(node('div','me',text));else{log.appendChild(node('div','who','Ali'));log.appendChild(node('div','guide',text))}}
+  function lastGuide(){for(var i=S.turns.length-1;i>=0;i--)if(S.turns[i].role==='assistant')return shown(S.turns[i].content);return ''}
+  function sealedOpen(){return S.state.sealed&&S.state.step<11}
 
   // ---------- story so far ----------
   function renderStory(){
     var st=S.state,opened=st.step>=11;
-    var rows=[
-      ['Trying on',st.setting],
-      ['Loudest voice',st.voice,st.voice&&st.fits===true?'You said it fits':null],
-      ['Your kind reply',st.reply?'“'+st.reply+'”':null],
-      ['Leader skill',st.skill],
-      ['Small real action',st.action],
-      ['The voice’s prediction',st.prediction?(st.sealed&&!opened?'Sealed until you have done it':'“'+st.prediction+'”'):null]
-    ];
+    var rows=[['Trying on',st.setting],['Loudest voice',st.voice,st.voice&&st.fits===true?'You said it fits':null],['Your kind reply',st.reply?'“'+st.reply+'”':null],['Leader skill',st.skill],['Small real action',st.action],
+      ['The voice’s prediction',st.prediction?(st.sealed&&!opened?'Sealed until you have done it':'“'+st.prediction+'”'):null]];
     var box=$('slots'),done=0;box.textContent='';
-    rows.forEach(function(r){var s=node('div','slot');s.appendChild(node('span','lab',r[0]));var v=node('span','v'+(r[1]?'':' empty'),r[1]||'Not yet');if(r[2]){v.appendChild(node('span','tag',r[2]))}s.appendChild(v);box.appendChild(s);if(r[1])done++});
-    $('count').textContent=done+' of 6';
-    $('sealActs').hidden=!(st.sealed&&!opened)||busy;
-    $('resetBtn').hidden=!S.started;
+    rows.forEach(function(r){var s=node('div','slot');s.appendChild(node('span','lab',r[0]));var v=node('span','v'+(r[1]?'':' empty'),r[1]||'Not yet');if(r[2])v.appendChild(node('span','tag',r[2]));s.appendChild(v);box.appendChild(s);if(r[1])done++});
+    $('count').textContent=done+' of 6';$('storyBtn').textContent='Story '+done+'/6';$('resetBtn').hidden=!S.started;
   }
   function renderChips(){
     chipsEl.textContent='';
-    if(busy)return;
-    S.chips.forEach(function(c){var b=node('button','chip',c);b.type='button';b.addEventListener('click',function(){send(c)});chipsEl.appendChild(b)});
+    if(busy||seq.active||!sample)return;
+    var list=S.chips.map(function(c){return [c,c]});
+    if(sealedOpen())list=[['I have done it','I did my small action. Let’s open the prediction.',1],['Not yet','I have not done my small action yet.']];
+    list.forEach(function(c){var b=node('button','chip'+(c[2]?' strong':''),c[0]);b.type='button';b.addEventListener('click',function(){send(c[1])});chipsEl.appendChild(b)});
   }
-  function setBusy(on){busy=on;sendBtn.hidden=on;stopBtn.hidden=!on;msgIn.disabled=false;log.setAttribute('aria-busy',on);renderChips();renderStory();mood()}
-  // the picture follows what is happening: listening, talking, thinking or waiting
   function mood(){
-    var m=listening?'listening':(speaking||streaming||Date.now()<tail)?'talking':busy?'thinking':'idle';
+    var m=listening?'listening':seq.active?'talking':busy?'thinking':'idle';
     $('stage').dataset.mood=m;
-    $('moodTxt').textContent=m==='listening'?'Listening…':m==='talking'?(speaking?'Speaking · tap to stop':'Speaking'):m==='thinking'?'Thinking…':(S.started?'Your turn':'Ready when you are');
-    $('moodBtn').disabled=!speaking;
+    $('moodTxt').textContent=m==='listening'?'Listening':m==='talking'?'Speaking':m==='thinking'?'Thinking':(S.started?'Your turn':'Ready when you are');
+    $('skipBtn').hidden=!(seq.active&&seq.lines.length>1);
+    $('replayBtn').hidden=seq.active||busy||!seq.text;
   }
+  function setBusy(on){busy=on;sendBtn.hidden=on;stopBtn.hidden=!on;renderChips();mood()}
 
-  // ---------- talking to the guide ----------
-  function buildInput(){
-    var head=RULES+'\n\nSTATE SO FAR, kept by the page: '+JSON.stringify(S.state)+(S.name?'\nThe person asked to be called: '+S.name:'');
-    return [{role:'user',content:head}].concat(S.turns.slice(-24));
+  // ---------- Ali speaks: one line at a time, as subtitles ----------
+  function setSub(t,kind){subTxt.textContent=t;subTxt.className=kind||''}
+  function splitLines(text){
+    var parts=text.replace(/\s+/g,' ').trim().match(/[^.!?…]+[.!?…]+["”’)]*|[^.!?…]+$/g)||[text],out=[],cur='';
+    parts.forEach(function(p){p=p.trim();if(!p)return;
+      if(cur&&cur.length+p.length>115){out.push(cur);cur=p}else cur=cur?cur+' '+p:p;
+      if(cur.length>=55){out.push(cur);cur=''}});
+    if(cur)out.push(cur);return out.length?out:[text];
   }
-  var COPY={
-    rate_limited:'Claude is busy, or you have reached a usage limit for now. Wait a little, then send again.',
-    session_expired:'You have been signed out of Claude. Sign in again, then send your reply once more.',
-    refused:'The guide could not answer that one. Try saying it another way, and we will pick the story back up.',
-    upstream_error:'Something interrupted that reply. Send your message again when you are ready.'
-  };
-  function send(text){
-    text=(text||'').replace(/\s+$/,'').trim();if(!text||busy||!sample)return;
-    if(dict&&dict.active())dict.stop().catch(function(){});
-    hush();addMe(text);msgIn.value='';autosize();hear.textContent='';
-    if(crisis(text))supportCard();
-    S.turns.push({role:'user',content:text});save();
-    var bubble=addGuide('Thinking…',true);ctl=new AbortController();setBusy(true);
-    sample(buildInput(),{cache:false,modelTier:'quick',signal:ctl.signal,onText:function(u){if(!streaming){streaming=true;mood()}bubble.classList.remove('wait');bubble.textContent=shown(u.text);scrollDown()}})
-    .then(function(res){
-      var full=res.text,say=shown(full)||'…';bubble.classList.remove('wait');bubble.textContent=say;
-      S.turns.push({role:'assistant',content:full});applyState(parseState(full));save();
-      if(res.truncated)addNote('That reply was cut short. Ask the guide to carry on.');
-      if(S.state.support)supportCard();
-      if(S.state.sealed&&S.state.step<11&&!log.querySelector('.sealed'))sealedCard();
-      streaming=false;if(voiceOn&&voiceMode)speak(say);else{tail=Date.now()+900;setTimeout(mood,950)}
-    })
-    .catch(function(e){
-      var code=e&&e.code,keep=e&&e.text?shown(e.text):'';
-      if(code==='refused'){bubble.textContent=COPY.refused;bubble.classList.remove('wait')}
-      else if(keep){bubble.textContent=keep;bubble.classList.remove('wait');S.turns.push({role:'assistant',content:keep})}
-      else{var w=bubble.previousSibling;bubble.remove();if(w&&w.className==='who')w.remove()}
-      if(code==='cancelled'){if(keep)addNote('Stopped.')}
-      else if(code==='not_granted'||code==='sampling_disabled'||code==='not_declared'||code==='capability_disabled'||code==='capability_removed'){sample=null;composer.hidden=true;addNote('The guide cannot run here, because Claude has not been allowed for this page. Your story so far is saved in this browser.')}
-      else if(code!=='refused')addNote(COPY[code]||COPY.upstream_error);
-      save();
-    })
-    .then(function(){ctl=null;streaming=false;setBusy(false);scrollDown();if(!window.matchMedia('(pointer:coarse)').matches)msgIn.focus()});
+  function showLine(i){i=Math.max(0,Math.min(i,seq.lines.length-1));seq.i=i;setSub(seq.lines[i])}
+  function quiet(){
+    clearTimeout(seq.timer);
+    if(voiceMode==='claude'&&tts)tts.stop().catch(function(){});
+    else if(voiceMode==='browser'){try{window.speechSynthesis.cancel()}catch(e){}}
   }
-  function sealedCard(){
-    var c=node('div','sealed');c.appendChild(node('b',null,'Your prediction is sealed.'));
-    c.appendChild(node('span',null,'Do your small action when you are ready, then come back to this page. We will open the prediction together.'));
-    log.appendChild(c);scrollDown();
+  function finish(){if(!seq.active)return;seq.active=false;seq.driver=null;clearTimeout(seq.timer);showLine(seq.lines.length-1);mood();renderChips()}
+  function hush(){seq.token++;seq.active=false;seq.driver=null;quiet();mood()}
+  function dur(t){return Math.max(1600,t.length*70)}
+  function timed(my,i){
+    seq.driver='timed';
+    (function step(){
+      if(seq.token!==my||!seq.active||seq.driver!=='timed')return;
+      showLine(i);
+      seq.timer=setTimeout(function(){if(seq.token!==my||seq.driver!=='timed')return;if(i>=seq.lines.length-1)finish();else{i++;step()}},dur(seq.lines[i]));
+    })();
   }
+  function browserSay(my,i){
+    if(seq.token!==my||!seq.active||seq.driver!=='browser')return;
+    if(i>=seq.lines.length){finish();return}
+    var sy=window.speechSynthesis,started=false,u;
+    try{
+      u=new SpeechSynthesisUtterance(seq.lines[i]);u.lang='en-AU';
+      u.onstart=function(){started=true;if(seq.token===my&&seq.driver==='browser')showLine(i)};
+      u.onend=function(){if(seq.token===my&&seq.driver==='browser')browserSay(my,i+1)};
+      u.onerror=function(){if(seq.token===my&&seq.driver==='browser')timed(my,i)};
+      sy.speak(u);
+      seq.timer=setTimeout(function(){if(!started&&seq.token===my&&seq.driver==='browser'){seq.driver='timed';try{sy.cancel()}catch(e){}timed(my,i)}},1800);
+    }catch(e){timed(my,i)}
+  }
+  function perform(text){
+    quiet();var my=++seq.token;seq.text=text;seq.lines=splitLines(text);seq.active=true;showLine(0);mood();renderChips();
+    if(voiceOn&&voiceMode==='claude'){
+      seq.driver='claude';
+      tts.speak(seq.lines.map(function(t,i){return {text:t.slice(0,1900),id:'s'+my+'-'+i}}),voiceName?{voice:voiceName}:undefined)
+        .then(function(){if(seq.token===my)finish()})
+        .catch(function(e){
+          if(seq.token!==my||!seq.active||seq.driver!=='claude')return;var c=e&&e.code;
+          if(c==='not_granted'||c==='unavailable')voiceGone();
+          if(c==='stopped')finish();else timed(my,seq.i);
+        });
+    }else if(voiceOn&&voiceMode==='browser'){seq.driver='browser';browserSay(my,0)}
+    else timed(my,0);
+  }
+  $('skipBtn').addEventListener('click',function(){quiet();finish()});
+  $('replayBtn').addEventListener('click',function(){prime();if(seq.text)perform(seq.text)});
 
-  // ---------- start, resume, reset ----------
-  function begin(){
-    if(!sample||S.started)return;
-    S.name=$('nameIn').value.replace(/\s+/g,' ').trim().slice(0,30);S.started=true;
-    $('welcome').hidden=true;composer.hidden=false;renderStory();
-    send(S.name?'Hi, you can call me '+S.name+'. I am ready to begin.':'Hi. I would rather not give a name. I am ready to begin.');
-  }
-  function resume(){
-    $('welcome').hidden=true;composer.hidden=!sample;
-    S.turns.forEach(function(t){if(t.role==='user')addMe(t.content);else addGuide(shown(t.content))});
-    if(S.state.sealed&&S.state.step<11){sealedCard();addNote('Welcome back. Have you done your small action? Use the buttons in “Your story so far”, or just tell the guide.')}
-    else addNote('Welcome back. Carry on where you left off.');
-    renderStory();renderChips();
-  }
-  var resetArmed=false;
-  $('resetBtn').addEventListener('click',function(){
-    if(!resetArmed){resetArmed=true;this.textContent='Tap again to clear this story';return}
-    if(ctl)ctl.abort();hush();wipe();S={name:'',started:false,turns:[],state:blank(),chips:[]};
-    [].slice.call(log.children).forEach(function(c){if(c.id!=='welcome')c.remove()});
-    $('welcome').hidden=false;composer.hidden=true;resetArmed=false;this.textContent='Start over';renderStory();renderChips();mood();
-  });
-  $('beginBtn').addEventListener('click',begin);
-  $('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();begin()}});
-  $('sendForm').addEventListener('submit',function(e){e.preventDefault();send(msgIn.value)});
-  msgIn.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send(msgIn.value)}});
-  function autosize(){msgIn.style.height='auto';msgIn.style.height=Math.min(msgIn.scrollHeight,170)+'px'}
-  msgIn.addEventListener('input',autosize);
-  stopBtn.addEventListener('click',function(){if(ctl)ctl.abort()});
-  $('doneBtn').addEventListener('click',function(){send('I did my small action. Let’s open the prediction.')});
-  $('notYetBtn').addEventListener('click',function(){send('I have not done my small action yet.')});
-
-  // ---------- help ----------
-  var help=$('help');
-  $('helpBtn').addEventListener('click',function(){if(help.showModal)help.showModal();else help.setAttribute('open','')});
-  $('helpClose').addEventListener('click',function(){if(help.close)help.close();else help.removeAttribute('open')});
-
-  // ---------- the guide's voice ----------
+  // ---------- Ali's voice ----------
   var voiceBtn=$('voiceBtn');
+  function prime(){if(primed||voiceMode!=='browser'||!voiceOn)return;primed=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;window.speechSynthesis.speak(u)}catch(e){}}
   function renderVoice(){
     voiceBtn.hidden=!voiceMode;voiceBtn.setAttribute('aria-pressed',voiceOn);voiceBtn.textContent=voiceOn?'Voice on':'Voice off';
     var n=$('voiceNote');n.hidden=!voiceMode;
-    n.textContent=!voiceMode?'':voiceOn?'Voice is on, so the guide will speak. Tap “Voice on” at the top to turn it off.':voiceMode==='browser'?'Tap “Voice off” at the top to hear the guide in this browser’s own voice.':'Voice is off. Tap “Voice off” at the top to hear the guide speak.';
+    n.textContent=!voiceMode?'':voiceOn?'Voice is on. Tap “Voice on” at the top to mute Ali; his subtitles stay.':voiceMode==='browser'?'Tap “Voice off” at the top to hear Ali in this browser’s own voice.':'Voice is off. Tap “Voice off” at the top to hear Ali.';
   }
-  function voiceGone(){voiceMode=null;voiceOn=false;speaking=false;$('voicePick').hidden=true;renderVoice();mood()}
-  function speak(t){
-    if(!voiceOn||!voiceMode||!t)return;
-    if(voiceMode==='claude'){
-      tts.speak(t.slice(0,1900),voiceName?{voice:voiceName}:undefined).catch(function(e){var c=e&&e.code;if(c==='not_granted'||c==='unavailable')voiceGone()});
-    }else{
-      try{var sy=window.speechSynthesis;sy.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-AU';
-        u.onstart=function(){speaking=true;mood()};u.onend=u.onerror=function(){speaking=false;mood()};sy.speak(u)}catch(e){voiceGone()}
-    }
-  }
-  function hush(){
-    if(voiceMode==='claude'&&tts)tts.stop().catch(function(){});
-    else if(voiceMode==='browser'){try{window.speechSynthesis.cancel()}catch(e){}}
-    if(speaking){speaking=false;mood()}
-  }
+  function voiceGone(){voiceMode=null;voiceOn=false;$('voicePick').hidden=true;renderVoice()}
   voiceBtn.addEventListener('click',function(){
     voiceOn=!voiceOn;try{localStorage.setItem('cquest-voice',voiceOn?'1':'0')}catch(e){}
-    renderVoice();
-    if(!voiceOn)hush();
-    else{var g=log.querySelectorAll('.guide');if(g.length&&!busy)speak(g[g.length-1].textContent)}
+    renderVoice();prime();
+    if(seq.active){var at=seq.i,my=seq.token;quiet();if(voiceOn)perform(seq.text);else timed(my,at)}
+    else if(voiceOn&&seq.text&&!busy)perform(seq.text);
   });
-  $('moodBtn').addEventListener('click',hush);
   $('voiceSel').addEventListener('change',function(){voiceName=this.value;try{localStorage.setItem('cquest-voice-name',voiceName)}catch(e){}});
   function initVoice(t){
     var pref=null,name=null;try{pref=localStorage.getItem('cquest-voice');name=localStorage.getItem('cquest-voice-name')}catch(e){}
     if(t){
       tts=t;voiceMode='claude';voiceOn=pref!=='0';
-      t.onState(function(e){speaking=e.state==='speaking'||e.state==='starting';mood();if(e.state==='idle'&&(e.reason==='not_granted'||e.reason==='unavailable'))voiceGone()});
+      if(typeof t.onLine==='function')t.onLine(function(e){var m=/^s(\d+)-(\d+)$/.exec((e&&e.id)||'');if(m&&seq.active&&seq.driver==='claude'&&+m[1]===seq.token)showLine(+m[2])});
+      t.onState(function(e){if(e.state==='idle'&&(e.reason==='not_granted'||e.reason==='unavailable'))voiceGone()});
       if(typeof t.voices==='function')t.voices().then(function(list){
         if(!Array.isArray(list)||list.length<2)return;var sel=$('voiceSel');sel.textContent='';
         list.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v.charAt(0).toUpperCase()+v.slice(1);sel.appendChild(o)});
@@ -450,24 +431,107 @@
     renderVoice();
   }
 
+  // ---------- talking to Ali ----------
+  function buildInput(){
+    var head=RULES+'\n\nSTATE SO FAR, kept by the page: '+JSON.stringify(S.state)+(S.name?'\nThe person asked to be called: '+S.name:'');
+    return [{role:'user',content:head}].concat(S.turns.slice(-24));
+  }
+  var COPY={
+    rate_limited:'Claude is busy, or you have reached a usage limit for now. Wait a little, then send again.',
+    session_expired:'You have been signed out of Claude. Sign in again, then send your reply once more.',
+    refused:'Ali could not answer that one. Try saying it another way, and we will pick the story back up.',
+    upstream_error:'Something interrupted that reply. Send your message again when you are ready.'
+  };
+  function send(text){
+    text=(text||'').replace(/\s+$/,'').trim();if(!text||busy||!sample)return;
+    if(dict&&dict.active())dict.stop().catch(function(){});
+    hush();prime();logAdd('me',text);msgIn.value='';autosize();hear.textContent='';note('');
+    setSub('You: “'+clip(text,110)+'”','you');
+    if(crisis(text))$('supportBox').hidden=false;
+    S.turns.push({role:'user',content:text});save();
+    var next=null;ctl=new AbortController();setBusy(true);
+    sample(buildInput(),{cache:false,modelTier:'quick',signal:ctl.signal})
+    .then(function(res){
+      var full=res.text,say=shown(full)||'…';
+      S.turns.push({role:'assistant',content:full});applyState(parseState(full));save();logAdd('guide',say);next=say;
+      if(res.truncated)note('That reply was cut short. Ask Ali to carry on.');
+      if(S.state.support)$('supportBox').hidden=false;
+      if(sealedOpen())note('Your prediction is sealed. Do your small action, then come back to this page and tell Ali.');
+    })
+    .catch(function(e){
+      var code=e&&e.code,keep=e&&e.text?shown(e.text):'';
+      if(keep&&code!=='refused'){S.turns.push({role:'assistant',content:keep});logAdd('guide',keep);next=keep}
+      if(code==='cancelled'){if(!keep)note('Stopped.')}
+      else if(code==='not_granted'||code==='sampling_disabled'||code==='not_declared'||code==='capability_disabled'||code==='capability_removed'){sample=null;composer.hidden=true;note('Ali cannot run here, because Claude has not been allowed for this page. Your story so far is saved in this browser.')}
+      else note(COPY[code]||COPY.upstream_error);
+      save();
+    })
+    .then(function(){
+      ctl=null;setBusy(false);renderStory();
+      if(next)perform(next);else{var g=lastGuide();setSub(g?splitLines(g).pop():HELLO);renderChips()}
+      if(!window.matchMedia('(pointer:coarse)').matches)msgIn.focus();
+    });
+  }
+
+  // ---------- start, resume, reset ----------
+  function begin(){
+    if(!sample||S.started)return;
+    S.name=$('nameIn').value.replace(/\s+/g,' ').trim().slice(0,30);S.started=true;
+    $('welcome').hidden=true;composer.hidden=false;renderStory();
+    send(S.name?'Hi Ali, you can call me '+S.name+'. I am ready to begin.':'Hi Ali. I would rather not give a name. I am ready to begin.');
+  }
+  function resume(){
+    $('welcome').hidden=true;composer.hidden=!sample;
+    S.turns.forEach(function(t){logAdd(t.role==='user'?'me':'guide',t.role==='user'?t.content:shown(t.content))});
+    var g=lastGuide();if(g){seq.text=g;seq.lines=splitLines(g);showLine(seq.lines.length-1)}
+    note(sealedOpen()?'Welcome back. Have you done your small action?':'Welcome back. Carry on where you left off.');
+    renderStory();renderChips();mood();
+  }
+  var resetArmed=false;
+  $('resetBtn').addEventListener('click',function(){
+    if(!resetArmed){resetArmed=true;this.textContent='Tap again to clear this story';return}
+    if(ctl)ctl.abort();hush();wipe();S={name:'',started:false,turns:[],state:blank(),chips:[]};seq.text='';seq.lines=[];
+    log.textContent='';log.appendChild(node('p','muted','Nothing said yet.')).id='logEmpty';
+    $('welcome').hidden=false;composer.hidden=true;$('supportBox').hidden=true;note('');setSub(HELLO);
+    resetArmed=false;this.textContent='Start over';renderStory();renderChips();mood();closeSide();
+  });
+  $('beginBtn').addEventListener('click',begin);
+  $('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();begin()}});
+  $('sendForm').addEventListener('submit',function(e){e.preventDefault();send(msgIn.value)});
+  msgIn.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send(msgIn.value)}});
+  function autosize(){msgIn.style.height='auto';msgIn.style.height=Math.min(msgIn.scrollHeight,140)+'px'}
+  msgIn.addEventListener('input',autosize);
+  stopBtn.addEventListener('click',function(){if(ctl)ctl.abort()});
+
+  // ---------- panels ----------
+  function dlg(id,open){var d=$(id);if(open){if(d.showModal)d.showModal();else d.setAttribute('open','')}else{if(d.close)d.close();else d.removeAttribute('open')}}
+  $('helpBtn').addEventListener('click',function(){dlg('help',true)});
+  $('helpClose').addEventListener('click',function(){dlg('help',false)});
+  $('logBtn').addEventListener('click',function(){dlg('logDlg',true);log.scrollTop=log.scrollHeight});
+  $('logClose').addEventListener('click',function(){dlg('logDlg',false)});
+  function closeSide(){$('side').classList.remove('open');$('scrim').hidden=true}
+  $('storyBtn').addEventListener('click',function(){$('side').classList.add('open');$('scrim').hidden=false;$('sideClose').focus()});
+  $('sideClose').addEventListener('click',function(){closeSide();$('storyBtn').focus()});
+  $('scrim').addEventListener('click',closeSide);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('side').classList.contains('open')){e.preventDefault();closeSide()}});
+
   // ---------- speak your reply ----------
   var micBtn=$('micBtn');
   micBtn.addEventListener('click',function(){
     if(!dict)return;
     if(dict.active()){dict.stop().catch(function(){});return}
-    hush();
+    if(seq.active){quiet();finish()}
     dict.start().catch(function(e){var c=e&&e.code;if(c==='not_granted'||c==='unavailable'){micBtn.hidden=true;hear.textContent='The microphone is not available here. You can type instead.'}else if(c!=='stopped'&&c!=='dismissed')hear.textContent='The microphone could not start. You can type instead.'});
   });
 
   // ---------- boot ----------
   var saved=load();if(saved&&saved.started){S=saved;if(!S.chips)S.chips=[]}
-  if(window.matchMedia('(max-width:860px)').matches)$('story').open=false;
   renderStory();mood();
   function unavailable(){
-    var b=$('beginBtn');b.hidden=true;
-    $('aiNote').textContent='The AI guide runs inside Claude, for people signed in to their own Claude account. It is not available in this view.';
-    var r=node('div','rowb');var a=node('a','btn btn-line','Play the scripted preview');a.href=PREVIEW;a.target='_blank';a.rel='noopener';r.appendChild(a);$('welcome').appendChild(r);
-    if(S.started)addNote('The guide is not available in this view, so you can read your story but not continue it here.');
+    $('beginBtn').hidden=true;
+    $('aiNote').textContent='Ali runs inside Claude, for people signed in to their own Claude account. He is not available in this view.';
+    var a=node('a','btn btn-line','Play the scripted preview');a.href=PREVIEW;a.target='_blank';a.rel='noopener';$('beginRow').appendChild(a);
+    if(S.started)note('Ali is not available in this view, so you can read your story but not continue it here.');
   }
   var c=window.claude;
   if(!c||typeof c.use!=='function'){if(S.started)resume();unavailable();return}
@@ -475,7 +539,7 @@
     sample=s;
     if(S.started)resume();
     if(!s){unavailable();return}
-    var b=$('beginBtn');b.disabled=false;b.textContent='Begin the session';
+    var b=$('beginBtn');b.disabled=false;b.textContent='Begin';
   });
   c.use('tts').then(initVoice);
   c.use('dictation').then(function(d){
