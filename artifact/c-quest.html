@@ -11,6 +11,7 @@
     --ok:#2F7D5B; --ok-soft:#E1F0E7; --warn-soft:#FBE7E2; --warn-ink:#7A2414; --warn-line:#F1B9AD;
     --shadow:0 18px 40px -26px rgba(31,26,58,.5); --glow:#FFE9A8; --ring:#F4B205;
     --cap:15,10,35; --on-cap:#FFFFFF; --on-cap-dim:#D9D3EE;
+    --wall:#F4E7D3; --wall-2:#EBD9BE; --floor:#C99E72; --floor-2:#B48A5F; --wood:#A97448; --wood-2:#7F5230; --chair:#5B4A9E; --chair-2:#46387F; --chair-3:#6E5DB5; --leaf:#4C9A73; --leaf-2:#2F7D5B; --pot:#D98E4A; --shade:#F4B205; --sky:#CFE6F5; --curtain:#E4DCF4; --inkl:#2A2140; --paper:#FFFDF7; --glowc:244,178,5; --glowa:.26;
     --display:"Outfit","Segoe UI",Helvetica,Arial,sans-serif; --text:"Figtree","Segoe UI",Helvetica,Arial,sans-serif;
   }
   @media (prefers-color-scheme: dark){
@@ -20,7 +21,8 @@
       --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#463A12; --gold-ink:#F7CF5A;
       --ok:#7FD0A8; --ok-soft:#1D3A2E; --warn-soft:#45201B; --warn-ink:#F6C3B8; --warn-line:#7A3A30;
       --shadow:0 18px 40px -26px rgba(0,0,0,.8); --glow:#4A3C86; --ring:#F4B205;
-      --cap:8,5,22; --on-cap:#FFFFFF; --on-cap-dim:#D9D3EE; color-scheme:dark;
+      --cap:8,5,22; --on-cap:#FFFFFF; --on-cap-dim:#D9D3EE;
+      --wall:#2C2552; --wall-2:#251F47; --floor:#4A3A30; --floor-2:#3B2D25; --wood:#6B4A30; --wood-2:#4A3120; --chair:#6453AE; --chair-2:#3F3276; --chair-3:#7867C2; --leaf:#3C8A66; --leaf-2:#27634A; --pot:#B8733A; --shade:#F7C948; --sky:#1B2447; --curtain:#3A3168; --inkl:#0F0A23; --paper:#E9E3F5; --glowc:247,201,72; --glowa:.4; color-scheme:dark;
     }
   }
   :root[data-theme="dark"]{
@@ -29,7 +31,8 @@
     --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#463A12; --gold-ink:#F7CF5A;
     --ok:#7FD0A8; --ok-soft:#1D3A2E; --warn-soft:#45201B; --warn-ink:#F6C3B8; --warn-line:#7A3A30;
     --shadow:0 18px 40px -26px rgba(0,0,0,.8); --glow:#4A3C86; --ring:#F4B205;
-    --cap:8,5,22; --on-cap:#FFFFFF; --on-cap-dim:#D9D3EE; color-scheme:dark;
+    --cap:8,5,22; --on-cap:#FFFFFF; --on-cap-dim:#D9D3EE;
+    --wall:#2C2552; --wall-2:#251F47; --floor:#4A3A30; --floor-2:#3B2D25; --wood:#6B4A30; --wood-2:#4A3120; --chair:#6453AE; --chair-2:#3F3276; --chair-3:#7867C2; --leaf:#3C8A66; --leaf-2:#27634A; --pot:#B8733A; --shade:#F7C948; --sky:#1B2447; --curtain:#3A3168; --inkl:#0F0A23; --paper:#E9E3F5; --glowc:247,201,72; --glowa:.4; color-scheme:dark;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -55,10 +58,16 @@
   .talk{min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px}
 
   /* the stage */
-  .stage{flex:1;min-height:170px;position:relative;border-radius:20px;overflow:hidden;border:2px solid var(--line);background:radial-gradient(120% 90% at 50% 100%,var(--glow) 0,var(--surface) 80%);container-type:size;transition:border-color .2s}
+  .stage{flex:1;min-height:170px;position:relative;border-radius:20px;overflow:hidden;border:2px solid var(--line);background:var(--wall);container-type:size;transition:border-color .2s}
   .stage[data-mood="talking"],.stage[data-mood="listening"]{border-color:var(--ring)}
-  .char{--ch:520px;position:absolute;top:14px;left:calc(50% - var(--ch) * .4711 * .405);height:var(--ch);aspect-ratio:358/760;transform-origin:50% 60%;animation:breathe 4.6s ease-in-out infinite}
-  @supports (height:1cqh){ .char{--ch:clamp(330px,190cqh,840px);top:max(10px,4cqh)} }
+  .room{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .room *{vector-effect:non-scaling-stroke}
+  /* Ali and his armchair share one box so the chair stays put while he moves */
+  .fig{--ch:500px;position:absolute;top:12px;left:calc(50% - var(--ch) * .4711 * .37);height:var(--ch);aspect-ratio:358/760}
+  @supports (height:1cqh){ .fig{--ch:clamp(300px,140cqh,860px);top:max(8px,3cqh)} }
+  .seat svg{position:absolute;left:-10%;top:13.5%;width:96%;height:auto;overflow:visible}
+  .arms svg{position:absolute;left:-21%;top:45.5%;width:118%;height:auto;overflow:visible}
+  .char{transform-origin:50% 60%;animation:breathe 4.6s ease-in-out infinite}
   .char img{display:block;width:100%;height:100%;max-width:none}
   .mouth{position:absolute;left:45.2%;top:24.5%;width:7.4%;height:1.9%;border-radius:50%;background:radial-gradient(ellipse at 50% 92%,#C6605C 0 34%,#2A0F12 38%);transform:translate(-50%,-50%) scaleY(0);opacity:0}
   .stage[data-mood="talking"] .char{animation:talk .9s ease-in-out infinite}
@@ -77,7 +86,7 @@
   .stage[data-mood="talking"] .bars i{animation:bar .7s ease-in-out infinite} .bars i:nth-child(2){animation-delay:.15s} .bars i:nth-child(3){animation-delay:.3s}
   .sbtn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:var(--on-cap);border-radius:999px;padding:5px 12px;font-weight:600;font-size:.8rem;cursor:pointer;min-height:32px}
   .subs :focus-visible{outline-color:var(--gold)}
-  @container (max-height:300px){ .subs{padding-top:22px;gap:4px} #subTxt{min-height:0;font-size:1rem;line-height:1.3} .char{top:4px} }
+  @container (max-height:300px){ .subs{padding-top:22px;gap:4px} #subTxt{min-height:0;font-size:1rem;line-height:1.3} .fig{top:4px} }
   @keyframes breathe{50%{transform:translateY(-.35%) scale(1.004)}}
   @keyframes talk{25%{transform:translateY(-.5%) rotate(-.5deg)}60%{transform:translateY(.1%) rotate(.45deg)}}
   @keyframes think{50%{transform:rotate(-1.1deg)}}
@@ -85,11 +94,6 @@
   @keyframes bar{50%{height:14px}}
 
   /* under the stage */
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
-  .welcome{flex:none;display:grid;gap:10px}
-  .welcome h1{font-size:clamp(1.25rem,3.6vw,1.6rem)}
-  .field{display:grid;gap:6px;font-weight:600;font-size:.9rem}
-  .start{display:flex;flex-wrap:wrap;gap:8px} .start input{flex:1 1 160px;min-width:0;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:1rem}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;padding:12px 18px;border-radius:12px;border:2px solid transparent;cursor:pointer;min-height:46px;text-decoration:none}
   .btn-gold{background:var(--gold);color:var(--on-gold)} .btn-line{background:var(--surface);border-color:var(--line);color:var(--ink)}
   .btn:disabled{opacity:.5;cursor:not-allowed}
@@ -138,7 +142,7 @@
 
   @media (max-width:860px){
     .shell{grid-template-columns:minmax(0,1fr);padding-block:10px 8px}
-    .logo span{display:none} .welcome h1{display:none} .welcome{gap:8px;padding:14px} .stage{min-height:150px}
+    .logo span{display:none} .stage{min-height:150px}
     .side{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:80%;background:var(--bg);border-radius:18px 18px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.35);transform:translateY(105%);visibility:hidden;transition:transform .22s,visibility .22s;
       padding:14px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
     .side.open{transform:none;visibility:visible}
@@ -158,39 +162,73 @@
 
 <div class="shell gut">
   <main class="talk">
-    <section class="stage" id="stage" data-mood="idle" aria-label="Ali, your AI guide">
+    <section class="stage" id="stage" data-mood="idle" aria-label="Ali, your AI guide, in his room">
       <div class="stagetop">
         <span class="nametag">Ali <span>· AI guide</span></span><span class="sp"></span>
         <button class="pill" type="button" id="storyBtn">Story 0/6</button>
         <button class="pill" type="button" id="logBtn">Transcript</button>
       </div>
-      <div class="char"><img src="guide.webp" width="358" height="760" alt="Ali, a cartoon man with dark hair and a beard, in a dark jacket, gesturing with one hand"><span class="mouth" aria-hidden="true"></span></div>
+      <svg class="room" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" fill="none" stroke="var(--inkl)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <defs><radialGradient id="lampGlow"><stop offset="0" stop-color="rgba(var(--glowc),var(--glowa))"/><stop offset="1" stop-color="rgba(var(--glowc),0)"/></radialGradient></defs>
+        <rect width="1200" height="800" fill="var(--wall)" stroke="none"/>
+        <rect y="470" width="1200" height="142" fill="var(--wall-2)" stroke="none"/><path d="M0 470H1200"/>
+        <rect y="612" width="1200" height="188" fill="var(--floor)" stroke="none"/><path d="M0 612H1200"/><path d="M0 672H1200M0 738H1200M180 612v60M520 672v66M860 612v60M1040 672v66" stroke="var(--floor-2)"/>
+        <!-- window -->
+        <rect x="84" y="128" width="132" height="236" rx="6" fill="var(--sky)"/><path d="M150 128V364M84 246H216"/>
+        <path d="M58 110h56c-2 108-20 196-52 270h-4z" fill="var(--curtain)"/><path d="M242 110h-56c2 108 20 196 52 270h4z" fill="var(--curtain)"/><path d="M44 108H256" stroke-width="6"/>
+        <!-- bookshelf -->
+        <rect x="250" y="150" width="136" height="462" rx="6" fill="var(--wood)"/>
+        <g fill="var(--wood-2)"><rect x="262" y="164" width="112" height="96"/><rect x="262" y="274" width="112" height="96"/><rect x="262" y="384" width="112" height="96"/><rect x="262" y="494" width="112" height="104"/></g>
+        <g><rect x="268" y="192" width="16" height="68" fill="#3B2E6B"/><rect x="284" y="180" width="14" height="80" fill="#F4B205"/><rect x="298" y="198" width="18" height="62" fill="#2F7D5B"/><rect x="316" y="186" width="13" height="74" fill="#C0564B"/><path d="M336 260l14-66 14 3-14 63z" fill="#EFE3CC"/>
+          <rect x="270" y="356" width="64" height="12" fill="#C0564B"/><rect x="276" y="344" width="54" height="12" fill="#EFE3CC"/><rect x="272" y="332" width="48" height="12" fill="#3B2E6B"/><circle cx="352" cy="352" r="16" fill="#F4B205"/>
+          <rect x="268" y="410" width="14" height="70" fill="#2F7D5B"/><rect x="282" y="402" width="18" height="78" fill="#3B2E6B"/><rect x="300" y="416" width="13" height="64" fill="#EFE3CC"/><rect x="313" y="406" width="16" height="74" fill="#F4B205"/><rect x="329" y="420" width="14" height="60" fill="#C0564B"/>
+          <rect x="272" y="536" width="92" height="62" rx="4" fill="var(--wall-2)"/><path d="M304 556h28"/></g>
+        <!-- certificate and lamp -->
+        <rect x="838" y="92" width="112" height="82" rx="4" fill="var(--paper)"/><path d="M856 116h76M856 132h54" stroke-width="2"/><circle cx="924" cy="152" r="9" fill="#F4B205"/>
+        <circle cx="892" cy="262" r="190" fill="url(#lampGlow)" stroke="none"/>
+        <path d="M892 300V606" stroke-width="5"/><ellipse cx="892" cy="610" rx="36" ry="8" fill="var(--wood-2)"/><path d="M852 300l18-84h44l18 84z" fill="var(--shade)"/>
+        <!-- side table, mug, notebook, plant -->
+        <path d="M1040 536V648" stroke-width="7"/><ellipse cx="1040" cy="652" rx="42" ry="8" fill="var(--wood-2)"/><ellipse cx="1040" cy="526" rx="74" ry="14" fill="var(--wood)"/>
+        <rect x="1002" y="484" width="30" height="34" rx="5" fill="var(--paper)"/><path d="M1032 494c12 0 12 16 0 16M1010 474c-4-8 4-10 0-18M1022 474c-4-8 4-10 0-18" stroke-width="2"/>
+        <rect x="1046" y="506" width="50" height="10" rx="2" fill="#3B2E6B"/>
+        <path d="M1118 566h76l-12 84h-52z" fill="var(--pot)"/>
+        <g fill="var(--leaf)"><path d="M1156 566c-8-70-48-104-78-112 6 50 30 92 78 112z"/><path d="M1156 566c8-78 44-120 70-132 4 58-18 104-70 132z" fill="var(--leaf-2)"/><path d="M1156 566c-2-96 14-150 34-176 20 54 8 122-34 176z"/><path d="M1156 566c-30-40-72-50-102-40 22 34 60 46 102 40z" fill="var(--leaf-2)"/></g>
+        <!-- small plant by the shelf -->
+        <path d="M296 612h60l-8 58h-44z" fill="var(--pot)"/><g fill="var(--leaf)"><path d="M326 612c-6-52-30-74-50-80 4 36 20 64 50 80z"/><path d="M326 612c6-56 28-82 46-90 2 40-12 70-46 90z" fill="var(--leaf-2)"/><path d="M326 612c-2-64 8-100 22-118 12 38 4 82-22 118z"/></g>
+      </svg>
+      <div class="fig seat" aria-hidden="true"><svg viewBox="0 0 300 620" fill="none" stroke="var(--inkl)" stroke-width="3" stroke-linejoin="round">
+        <path d="M34 300C12 300 4 322 4 356v264h60V300z" fill="var(--chair-2)"/><path d="M266 300c22 0 30 22 30 56v264h-60V300z" fill="var(--chair-2)"/>
+        <path d="M40 620V172C40 82 88 30 150 30s110 52 110 142v448z" fill="var(--chair)"/>
+        <path d="M68 620V190c0-72 36-116 82-116s82 44 82 116v430z" fill="var(--chair-3)" stroke="none"/>
+        <g fill="var(--chair-2)" stroke="none"><circle cx="112" cy="188" r="6"/><circle cx="188" cy="188" r="6"/><circle cx="150" cy="252" r="6"/><circle cx="112" cy="316" r="6"/><circle cx="188" cy="316" r="6"/></g>
+      </svg></div>
+      <div class="fig char"><img src="guide.webp" width="358" height="760" alt="Ali, a cartoon man with dark hair and a beard, sitting in an armchair in a cosy room and gesturing with one hand"><span class="mouth" aria-hidden="true"></span></div>
+      <div class="fig arms" aria-hidden="true"><svg viewBox="0 0 248 260" fill="none" stroke="var(--inkl)" stroke-width="3" stroke-linejoin="round">
+        <path d="M50 260V78c0-12 10-20 22-20h104c12 0 22 8 22 20v182z" fill="var(--chair-2)"/><path d="M64 74h120" stroke="var(--chair-3)" stroke-width="4" stroke-linecap="round"/>
+        <path d="M4 260V34C4 16 16 6 32 6s28 10 28 28v226z" fill="var(--chair)"/><path d="M16 30c2-10 10-14 18-14" stroke="var(--chair-3)" stroke-width="4" stroke-linecap="round"/>
+        <path d="M188 260V34c0-18 12-28 28-28s28 10 28 28v226z" fill="var(--chair)"/><path d="M200 30c2-10 10-14 18-14" stroke="var(--chair-3)" stroke-width="4" stroke-linecap="round"/>
+      </svg></div>
       <div class="subs">
-        <p id="subTxt" aria-live="polite">Hi, I’m Ali, your AI guide. Add your name if you like, then press Begin.</p>
-        <div class="subrow"><span class="status"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="moodTxt">Ready when you are</span></span><span class="sp"></span><button class="sbtn" type="button" id="replayBtn" hidden>Replay</button><button class="sbtn" type="button" id="skipBtn" hidden>Skip</button></div>
+        <p id="subTxt" aria-live="polite">Hey, I’m Ali. How can I help you today?</p>
+        <div class="subrow"><span class="status"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="moodTxt">Your turn</span></span><span class="sp"></span><button class="sbtn" type="button" id="replayBtn" hidden>Replay</button><button class="sbtn" type="button" id="skipBtn" hidden>Skip</button></div>
       </div>
     </section>
 
     <div class="alert" id="supportBox" role="alert" hidden><b>You deserve support from a person today.</b><span>These lines are free. Please call one, or tell someone you trust.</span><span class="nums">Lifeline 13 11 14 · Kids Helpline 1800 55 1800 · headspace 1800 650 890 · 000 if you are in danger</span></div>
     <p class="notice" id="notice" role="status" hidden></p>
 
-    <section class="card welcome" id="welcome">
-      <h1>A career story you talk through with Ali.</h1>
-      <label class="field" for="nameIn">What should Ali call you? (optional)</label>
-      <div class="start" id="beginRow"><input id="nameIn" type="text" maxlength="30" autocomplete="given-name" placeholder="First name or nickname"><button class="btn btn-gold" type="button" id="beginBtn" disabled>Getting Ali ready…</button></div>
-      <p class="fine" id="voiceNote" hidden></p>
-      <p class="fine" id="aiNote">Ali is an AI character powered by Claude, not a real person. What you type is sent to Claude and uses your own Claude account. Saved in this browser only. Not therapy and not an emergency service.</p>
-    </section>
+    <p class="notice" id="offline" hidden></p>
 
-    <div class="composer" id="composer" hidden>
+    <div class="composer" id="composer">
       <div class="chips" id="chips"></div>
       <form class="send" id="sendForm">
-        <textarea id="msgIn" rows="1" maxlength="1200" placeholder="Say it in your own words…" aria-label="Your reply"></textarea>
+        <textarea id="msgIn" rows="1" maxlength="1200" placeholder="Or say it in your own words…" aria-label="Your reply"></textarea>
         <button class="ico" type="button" id="micBtn" aria-pressed="false" aria-label="Speak your reply" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
         <button class="btn btn-gold" type="submit" id="sendBtn">Send</button>
         <button class="btn btn-line" type="button" id="stopBtn" hidden>Stop</button>
       </form>
       <div class="hear" id="hear" aria-live="polite"></div>
+      <p class="fine" id="aiNote">Ali is an AI character powered by Claude, not a real person. What you type goes to Claude. Not therapy.</p>
     </div>
   </main>
 
@@ -223,7 +261,7 @@
     <div class="numrow"><span>headspace</span><b>1800 650 890</b></div>
     <div class="numrow"><span>In danger</span><b>000</b></div>
   </div>
-  <p class="small muted">Ali is an AI character, not a real person. This version cannot connect you to a person. In the full product, asking for one tells a named person at your school, uni or service.</p>
+  <p class="small muted">Ali is an AI character powered by Claude, not a real person. What you type is sent to Claude and uses your own Claude account; your story is saved in this browser only. This version cannot connect you to a person. In the full product, asking for one tells a named person at your school, uni or service.</p>
   <div class="rowb" style="margin-top:14px"><button class="btn btn-gold" type="button" id="helpClose">Back to my story</button></div>
 </dialog>
 
@@ -250,10 +288,13 @@
 '- Snooze Button: "I will deal with it later." Helps by protecting them from pressure. Holds them back by letting time slip. Answered by Curiosity or Courage.',
 'The eight Leader skills (use these names only): Calm (staying steady when things feel stressful), Curiosity (wanting to find out instead of assuming), Clarity (seeing the situation as it is), Compassion (being kind to yourself and others), Confidence (trusting yourself to handle it), Courage (acting even when it feels scary), Creativity (finding new ways around a problem), Connectedness (feeling part of something and reaching out).',
 '',
+'HOW IT STARTS',
+'The page has already greeted the person for you with: "Hey, I am Ali. How can I help you today?" and offered these to tap: "I feel stuck", "I have got an interview coming up", "I keep getting rejected", "I do not know what I want to do". They can also type anything. Their first message is their answer. Do not greet them again or introduce yourself again.',
+'',
 'THE ARC. Move through it in order, one small step per message. Never skip ahead and never rush.',
-'1. WELCOME. Greet them, by name if they gave one, and say you are Ali, their AI guide. In one sentence say what will happen. Ask what kind of work they would like to try on, and offer three everyday examples only, such as retail, hospitality or office work. If they are unsure, suggest one.',
-'2. SETTING. Ask one light question that makes the story theirs, for example what the place is like or what they would be doing there. Use their answer.',
-'3. SCENE. Write a short scene of 40 to 70 words, in second person and present tense, in that workplace, where something ordinary but slightly uncomfortable happens: being asked to do something at short notice, a chance to put a hand up, a task that keeps getting put off, a busy moment, someone else seeming ahead, a message that is hard to send. Keep it realistic and entry-level. Do not invent technical details you are unsure of. End by asking what goes through their head.',
+'1. LISTEN. Respond to what they came with in one warm, casual sentence. Then ask one easy question about what is going on for them this week. If they are just having a look, ask what kind of work they would like to try on, and offer three everyday examples such as retail, hospitality or office work.',
+'2. SETTING. Settle where the story happens, with one more question at most. If they named something real, such as the job they are interviewing for or the place they work or want to work, use that. Otherwise use the kind of work they picked.',
+'3. SCENE. Offer it lightly, for example "Want to try something? Picture this." Then tell a short scene of 40 to 70 words, in second person and present tense, set there and close to what they told you, where something ordinary but slightly uncomfortable happens: being asked to do something at short notice, a chance to put a hand up, a task that keeps getting put off, a busy moment, someone else seeming ahead, a message that is hard to send. Keep it realistic and entry-level. Do not invent technical details you are unsure of. End by asking what goes through their head.',
 '4. VOICE. From what THEY said, reflect which of the six voices it sounds like, quoting their own words as the reason, in one or two sentences. Say what that voice is trying to do for them. Ask whether that fits. If they say no, ask what fits better or offer one other voice. They decide.',
 '5. KIND REPLY. Invite them to thank the voice and answer it kindly in their own words. If they are stuck, offer one example and ask them to change it so it sounds like them.',
 '6. LEADER SKILL. Offer two Leader skills that could help here, including one that answers their voice, each with a few plain words. Ask which they want to call on.',
@@ -263,8 +304,8 @@
 '10. SEAL. Tell them the prediction is sealed and you will open it together when they come back after doing the action. Sum up in three short lines: the voice, their kind reply, their small action. Then stop.',
 '11. DEBRIEF. Only when they come back. If they did it: read the prediction back, ask what actually happened, then compare the two honestly. If the voice was right, say that happens, and that they acted with the voice there, which took the skill. If they did not do it: no judgement. Ask what got in the way and offer to make the action smaller.',
 '',
-'HOW YOU WRITE',
-'Everything you write is spoken aloud and shown as subtitles, so write the way a person talks. Short: two or three short sentences per message, under 45 words, except the scene. Never give more than three examples. One question at a time, always at the end. Plain words a 15-year-old reads easily. Australian spelling. No headings, no lists, no markdown, no emojis. Use their words back to them. Warm and matter-of-fact, never gushing. Never shame. Never tell them what they should feel. If they say they do not know, or seem stuck, slow down, say that is fine, and offer two concrete options. If they go off track, answer briefly and kindly, then return to the step you were on.',
+'HOW YOU TALK',
+'This is a relaxed chat, like a friendly mate who happens to be good at this, sitting across from them in a comfy chair. Everything you say is spoken aloud and shown as subtitles, so talk the way a person talks: contractions, everyday words, and the odd "yeah", "fair enough" or "no worries" where it fits. Never sound like a form, a script or a clinician. Short: two or three short sentences per message, under 45 words, except the scene. Never give more than three examples. One question at a time, always at the end. Plain words a 15-year-old reads easily. Australian spelling. No headings, no lists, no markdown, no emojis. Use their words back to them. Warm and easygoing, never gushing. Never shame. Never tell them what they should feel. If they say they do not know, or seem stuck, slow down, say that is fine, and offer two concrete options. If they go off track, answer briefly and kindly, then come back to the step you were on.',
 '',
 'LINES YOU DO NOT CROSS',
 '- Stay on this week and this task. Never ask where a voice came from, or about childhood, family history, trauma or past events that shaped them. If they bring it up, acknowledge it in one sentence, say this session is for the work side of things, and suggest talking with someone they trust.',
@@ -282,7 +323,7 @@
   // ---------- state ----------
   var KEY='cquest-session-v1';
   function blank(){return {step:0,setting:null,voice:null,fits:null,reply:null,skill:null,action:null,prediction:null,sealed:false,support:false}}
-  var S={name:'',started:false,turns:[],state:blank(),chips:[]};
+  var S={started:false,turns:[],state:blank(),chips:[]};
   function load(){try{var v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.turns)&&v.state)return v}catch(e){}return null}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
   function wipe(){try{localStorage.removeItem(KEY)}catch(e){}}
@@ -291,7 +332,8 @@
   var sample=null,tts=null,dict=null,busy=false,ctl=null;
   var voiceMode=null,voiceOn=false,voiceName=null,listening=false,primed=false;
   var seq={lines:[],text:'',i:0,token:0,active:false,driver:null,timer:0};
-  var HELLO='Hi, I’m Ali, your AI guide. Add your name if you like, then press Begin.';
+  var HELLO='Hey, I’m Ali. How can I help you today?';
+  var OPENERS=[['I feel stuck','I feel stuck'],['Interview coming up','I’ve got an interview coming up'],['Rejected again','I keep getting rejected'],['Not sure what I want','I don’t know what I want to do']];
 
   // ---------- helpers ----------
   function shown(t){var i=t.indexOf('@@');if(i>=0)t=t.slice(0,i);return t.replace(/@+\s*$/,'').replace(/\s+$/,'')}
@@ -330,14 +372,14 @@
   function renderChips(){
     chipsEl.textContent='';
     if(busy||seq.active||!sample)return;
-    var list=S.chips.map(function(c){return [c,c]});
+    var list=S.started?S.chips.map(function(c){return [c,c]}):OPENERS;
     if(sealedOpen())list=[['I have done it','I did my small action. Let’s open the prediction.',1],['Not yet','I have not done my small action yet.']];
     list.forEach(function(c){var b=node('button','chip'+(c[2]?' strong':''),c[0]);b.type='button';b.addEventListener('click',function(){send(c[1])});chipsEl.appendChild(b)});
   }
   function mood(){
     var m=listening?'listening':seq.active?'talking':busy?'thinking':'idle';
     $('stage').dataset.mood=m;
-    $('moodTxt').textContent=m==='listening'?'Listening':m==='talking'?'Speaking':m==='thinking'?'Thinking':(S.started?'Your turn':'Ready when you are');
+    $('moodTxt').textContent=m==='listening'?'Listening':m==='talking'?'Speaking':m==='thinking'?'Thinking':'Your turn';
     $('skipBtn').hidden=!(seq.active&&seq.lines.length>1);
     $('replayBtn').hidden=seq.active||busy||!seq.text;
   }
@@ -404,8 +446,6 @@
   function prime(){if(primed||voiceMode!=='browser'||!voiceOn)return;primed=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;window.speechSynthesis.speak(u)}catch(e){}}
   function renderVoice(){
     voiceBtn.hidden=!voiceMode;voiceBtn.setAttribute('aria-pressed',voiceOn);voiceBtn.textContent=voiceOn?'Voice on':'Voice off';
-    var n=$('voiceNote');n.hidden=!voiceMode;
-    n.textContent=!voiceMode?'':voiceOn?'Voice is on. Tap “Voice on” at the top to mute Ali; his subtitles stay.':voiceMode==='browser'?'Tap “Voice off” at the top to hear Ali in this browser’s own voice.':'Voice is off. Tap “Voice off” at the top to hear Ali.';
   }
   function voiceGone(){voiceMode=null;voiceOn=false;$('voicePick').hidden=true;renderVoice()}
   voiceBtn.addEventListener('click',function(){
@@ -433,7 +473,7 @@
 
   // ---------- talking to Ali ----------
   function buildInput(){
-    var head=RULES+'\n\nSTATE SO FAR, kept by the page: '+JSON.stringify(S.state)+(S.name?'\nThe person asked to be called: '+S.name:'');
+    var head=RULES+'\n\nSTATE SO FAR, kept by the page: '+JSON.stringify(S.state);
     return [{role:'user',content:head}].concat(S.turns.slice(-24));
   }
   var COPY={
@@ -445,6 +485,7 @@
   function send(text){
     text=(text||'').replace(/\s+$/,'').trim();if(!text||busy||!sample)return;
     if(dict&&dict.active())dict.stop().catch(function(){});
+    if(!S.started){S.started=true;$('aiNote').hidden=true;logAdd('guide',HELLO)}
     hush();prime();logAdd('me',text);msgIn.value='';autosize();hear.textContent='';note('');
     setSub('You: “'+clip(text,110)+'”','you');
     if(crisis(text))$('supportBox').hidden=false;
@@ -474,14 +515,8 @@
   }
 
   // ---------- start, resume, reset ----------
-  function begin(){
-    if(!sample||S.started)return;
-    S.name=$('nameIn').value.replace(/\s+/g,' ').trim().slice(0,30);S.started=true;
-    $('welcome').hidden=true;composer.hidden=false;renderStory();
-    send(S.name?'Hi Ali, you can call me '+S.name+'. I am ready to begin.':'Hi Ali. I would rather not give a name. I am ready to begin.');
-  }
   function resume(){
-    $('welcome').hidden=true;composer.hidden=!sample;
+    composer.hidden=!sample;$('aiNote').hidden=true;logAdd('guide',HELLO);
     S.turns.forEach(function(t){logAdd(t.role==='user'?'me':'guide',t.role==='user'?t.content:shown(t.content))});
     var g=lastGuide();if(g){seq.text=g;seq.lines=splitLines(g);showLine(seq.lines.length-1)}
     note(sealedOpen()?'Welcome back. Have you done your small action?':'Welcome back. Carry on where you left off.');
@@ -490,13 +525,11 @@
   var resetArmed=false;
   $('resetBtn').addEventListener('click',function(){
     if(!resetArmed){resetArmed=true;this.textContent='Tap again to clear this story';return}
-    if(ctl)ctl.abort();hush();wipe();S={name:'',started:false,turns:[],state:blank(),chips:[]};seq.text='';seq.lines=[];
+    if(ctl)ctl.abort();hush();wipe();S={started:false,turns:[],state:blank(),chips:[]};seq.text='';seq.lines=[];
     log.textContent='';log.appendChild(node('p','muted','Nothing said yet.')).id='logEmpty';
-    $('welcome').hidden=false;composer.hidden=true;$('supportBox').hidden=true;note('');setSub(HELLO);
+    composer.hidden=!sample;$('aiNote').hidden=false;$('supportBox').hidden=true;note('');setSub(HELLO);
     resetArmed=false;this.textContent='Start over';renderStory();renderChips();mood();closeSide();
   });
-  $('beginBtn').addEventListener('click',begin);
-  $('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();begin()}});
   $('sendForm').addEventListener('submit',function(e){e.preventDefault();send(msgIn.value)});
   msgIn.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send(msgIn.value)}});
   function autosize(){msgIn.style.height='auto';msgIn.style.height=Math.min(msgIn.scrollHeight,140)+'px'}
@@ -528,10 +561,8 @@
   var saved=load();if(saved&&saved.started){S=saved;if(!S.chips)S.chips=[]}
   renderStory();mood();
   function unavailable(){
-    $('beginBtn').hidden=true;
-    $('aiNote').textContent='Ali runs inside Claude, for people signed in to their own Claude account. He is not available in this view.';
-    var a=node('a','btn btn-line','Play the scripted preview');a.href=PREVIEW;a.target='_blank';a.rel='noopener';$('beginRow').appendChild(a);
-    if(S.started)note('Ali is not available in this view, so you can read your story but not continue it here.');
+    composer.hidden=true;var o=$('offline');o.hidden=false;o.textContent=(S.started?'Ali is not available in this view, so you can read your story but not continue it here. ':'Ali runs inside Claude, for people signed in to their own Claude account. He is not available in this view. ');
+    var a=node('a','linkb','Play the scripted preview');a.href=PREVIEW;a.target='_blank';a.rel='noopener';o.appendChild(a);
   }
   var c=window.claude;
   if(!c||typeof c.use!=='function'){if(S.started)resume();unavailable();return}
@@ -539,7 +570,7 @@
     sample=s;
     if(S.started)resume();
     if(!s){unavailable();return}
-    var b=$('beginBtn');b.disabled=false;b.textContent='Begin';
+    renderChips();
   });
   c.use('tts').then(initVoice);
   c.use('dictation').then(function(d){
