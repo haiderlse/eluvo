@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>C-Quest · A career story where you lead</title>
+<meta name="description" content="C-Quest is a short career story for young people. Find your loudest inner voice, call on a Leader skill, try one small real action, and see whether the voice was right. Free, no sign-up.">
+<meta name="theme-color" content="#3B2E6B">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Eluvo">
+<meta property="og:title" content="C-Quest · A career story where you lead">
+<meta property="og:description" content="Find your loudest voice, try one small real action, and see whether the voice was right.">
+<meta property="og:image" content="https://haiderlse.github.io/eluvo/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --ink:#1F1A3A; --plum:#3B2E6B; --gold:#F4B205; --gold-deep:#8A6100; --gold-tint:#FFF1C2;
+    --fern:#2F7D5B; --fern-tint:#E1F0E7; --coral:#C0392B; --coral-tint:#FBE7E2;
+    --paper:#FBF9F5; --slate:#5A5670; --line:#E7E3DA; --tint:#ECE9F5; --pin:#D1452C;
+    --display:"Outfit","Segoe UI",Helvetica,Arial,sans-serif; --sans:"Figtree","Segoe UI",Helvetica,Arial,sans-serif; --r:16px;
+  }
+  *{box-sizing:border-box}
+  html{font-size:100%} html.big{font-size:118%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1.0625rem;line-height:1.55;-webkit-font-smoothing:antialiased}
+  p{margin:0} button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
+  h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.1;margin:0;letter-spacing:-.02em;text-wrap:balance}
+  h1{font-size:clamp(2.1rem,7vw,3.1rem)} h2{font-size:clamp(1.55rem,5vw,2rem)} h3{font-size:1.15rem;font-weight:700}
+  h1:focus,h2:focus{outline:none}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px}
+  .eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep)}
+  .muted{color:var(--slate)} .small{font-size:.9rem}
+  :focus-visible{outline:3px solid var(--plum);outline-offset:3px;border-radius:6px}
+  .top :focus-visible,.chrome :focus-visible{outline-color:var(--gold)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;padding:13px 20px;border-radius:12px;border:2px solid transparent;cursor:pointer;text-decoration:none;min-height:48px}
+  .btn-gold{background:var(--gold);color:var(--ink)} .btn-gold:hover{background:#FFC533}
+  .btn-plum{background:var(--plum);color:#fff}
+  .btn-line{background:#fff;border-color:var(--line);color:var(--ink)} .btn-line:hover{border-color:var(--plum)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .link{background:none;border:0;padding:0;color:var(--plum);font-weight:700;text-decoration:underline;cursor:pointer}
+  .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px} .row .btn{flex:1 1 180px}
+  .chrome{background:#141028;color:#C9C4DC;font-size:.8rem}
+  .chrome .wrap{max-width:1200px;display:flex;align-items:center;gap:14px;min-height:42px}
+  .chrome .mk{background:var(--pin);color:#fff;font-weight:800;letter-spacing:.12em;font-size:.65rem;padding:3px 8px;border-radius:4px;text-transform:uppercase;flex:none}
+  .chrome .sp{flex:1} .chrome a{color:#C9C4DC}
+  .top{background:var(--plum);color:#fff}
+  .top .wrap{max-width:1200px;display:flex;align-items:center;gap:12px;min-height:60px}
+  .logo{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:1.25rem;color:#fff;text-decoration:none}
+  .logo svg{width:26px;height:26px} .logo span{font-weight:600;opacity:.85;font-size:1rem}
+  .top .sp{flex:1}
+  .tool{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:7px 13px;font-weight:600;font-size:.85rem;cursor:pointer;min-height:38px}
+  .tool[aria-pressed=true]{background:#fff;color:var(--plum)}
+  .prog{display:flex;gap:6px;margin:22px 0 6px;list-style:none;padding:0}
+  .prog li{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);border-top:4px solid var(--line);padding-top:6px}
+  .prog li.on{border-color:var(--gold);color:var(--ink)} .prog li.done{border-color:var(--plum)}
+  #stage{padding:16px 0 120px}
+  .lede{font-size:1.15rem;color:var(--slate);margin-top:12px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-top:16px}
+  .story{font-size:1.2rem;line-height:1.55}
+  .says{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:var(--tint);border-radius:var(--r);padding:16px 18px;margin-top:16px}
+  .says q{font-family:var(--display);font-weight:700;font-size:1.25rem;line-height:1.25;quotes:"“" "”"} .says small{display:block;font-weight:700;color:var(--slate);margin-bottom:2px}
+  .tok{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--gold-tint);color:var(--ink)}
+  .tok svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .tok.sm{width:38px;height:38px} .tok.sm svg{width:21px;height:21px}
+  .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;font-weight:700;cursor:pointer;min-height:56px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:2px 8px;min-width:0}
+  .tile:hover:not(:disabled){border-color:var(--plum)} .tile:disabled{color:var(--slate);background:transparent;cursor:not-allowed} .tile small{font-weight:600;color:var(--slate)}
+  .tile[aria-pressed=true]{background:var(--plum);border-color:var(--plum);color:#fff}
+  .v{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center}
+  .v h3{grid-column:2} .v q{grid-column:2;color:var(--slate);quotes:"“" "”"}
+  .seg{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+  .seg button{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 4px;font-weight:600;font-size:.9rem;cursor:pointer;min-height:44px}
+  .seg button[aria-pressed=true]{background:var(--plum);border-color:var(--plum);color:#fff}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px} .two div{background:var(--paper);border-radius:12px;padding:12px 14px} .two b{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+  .two .ok b{color:var(--fern)} .two .no b{color:var(--gold-deep)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 14px;cursor:pointer;text-align:left;min-height:48px}
+  .chip b{display:block} .chip small{color:var(--slate)} .chip:hover{border-color:var(--plum)}
+  .chip[aria-pressed=true]{background:var(--plum);border-color:var(--plum);color:#fff} .chip[aria-pressed=true] small{color:rgba(255,255,255,.82)}
+  .chip.sug{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+  .grid8{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px} .grid8 .chip{width:100%}
+  .opts{display:grid;gap:10px;margin-top:16px} .opts .btn{justify-content:flex-start;text-align:left;font-weight:600}
+  .field{display:block;margin-top:14px;font-weight:700;font-size:.9rem} .field input,.field textarea{display:block;width:100%;margin-top:6px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:400;font-size:1rem}
+  .stepn{display:flex;align-items:center;gap:10px;margin-top:22px;font-family:var(--display);font-weight:700;font-size:1.1rem}
+  .stepn i{font-style:normal;width:30px;height:30px;border-radius:9px;background:var(--gold);display:grid;place-items:center;font-weight:800;font-size:.95rem;flex:none}
+  .note{background:var(--fern-tint);color:#1E5A40;border-radius:12px;padding:12px 14px;margin-top:12px;font-weight:600}
+  .seal{background:var(--ink);color:#fff;border-radius:var(--r);padding:18px 20px;margin-top:16px} .seal small{display:block;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.72rem;color:var(--gold)} .seal p{font-family:var(--display);font-weight:700;font-size:1.2rem;margin-top:4px}
+  .quest{background:var(--gold-tint);border-radius:var(--r);padding:18px 20px;margin-top:16px} .quest small{display:block;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.72rem;color:var(--gold-deep)} .quest p{font-family:var(--display);font-weight:700;font-size:1.25rem;line-height:1.25;margin-top:4px;overflow-wrap:anywhere}
+  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px} .pgrid .card{margin:0} .pgrid .full{grid-column:1/-1}
+  .card small.k{display:block;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:6px}
+  .skill{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line)} .skill:first-of-type{border-top:0}
+  .pips{display:flex;gap:4px} .pips i{width:12px;height:12px;border-radius:4px;background:var(--line)} .pips i.on{background:var(--gold)}
+  .lock{color:var(--slate);border-style:dashed}
+  .logrow{padding:10px 0;border-top:1px solid var(--line)} .logrow:first-of-type{border-top:0} .logrow b{display:block}
+  .tag{display:inline-block;font-size:.75rem;font-weight:700;border-radius:999px;padding:3px 9px;background:var(--tint);color:var(--plum)} .tag.ok{background:var(--fern-tint);color:var(--fern)} .tag.gold{background:var(--gold-tint);color:var(--gold-deep)}
+  .supwrap{position:sticky;bottom:16px;z-index:30;display:flex;justify-content:flex-end;margin-top:-72px;padding-bottom:16px;pointer-events:none}
+  .sup{pointer-events:auto;background:#fff;border:2px solid var(--plum);color:var(--plum);border-radius:999px;padding:12px 18px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px -12px rgba(31,26,58,.5);min-height:48px}
+  .scrim{position:fixed;inset:0;background:rgba(20,15,40,.5);z-index:40;display:none;align-items:flex-end;justify-content:center} .scrim.on{display:flex}
+  .sheet{background:#fff;width:min(560px,100%);max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:22px 20px 26px}
+  .sheet h2{font-size:1.5rem} .lines{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px} .lines li{background:var(--paper);border-radius:12px;padding:10px 14px} .lines a{font-weight:700;color:var(--ink)}
+  .alert{background:var(--coral-tint);border:1px solid #F1B9AD;color:#7A2414;border-radius:12px;padding:12px 14px;margin-top:12px;font-weight:600}
+  footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.85rem;color:var(--slate)} footer p+p{margin-top:8px} footer a{color:inherit}
+  [hidden]{display:none!important}
+  @media (min-width:700px){ .scrim{align-items:center} .sheet{border-radius:20px} .tiles{grid-template-columns:repeat(3,minmax(0,1fr))} }
+  @media (max-width:480px){ .prog li:not(.on){font-size:0} .prog li.on{flex:2.4} }
+  @media (max-width:420px){ .two,.pgrid,.grid8{grid-template-columns:1fr} .seg button{font-size:.8rem} .chrome .ttl{display:none} .logo span{display:none} }
+</style>
+</head>
+<body>
+
+<div class="chrome"><div class="wrap">
+  <span class="mk">Prototype</span><span class="ttl">C-Quest · Level 1 · retail only · scripted, no AI yet</span><span class="sp"></span>
+  <a href="index.html">Eluvo home</a>
+</div></div>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="index.html" aria-label="Eluvo home"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#B9AEE6"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#fff"/></svg>eluvo <span>C-Quest</span></a>
+  <span class="sp"></span>
+  <button class="tool" type="button" id="listen" aria-pressed="false" hidden>Listen</button>
+  <button class="tool" type="button" id="bigger" aria-pressed="false" aria-label="Larger text">A+</button>
+</div></header>
+
+<main class="wrap">
+  <ol class="prog" id="prog" aria-label="Progress"></ol>
+  <section id="stage"></section>
+  <div class="supwrap"><button class="sup" type="button" id="supBtn">Ask for support</button></div>
+</main>
+
+<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="supH" id="sheet"></div></div>
+
+<footer><div class="wrap">
+  <p>C-Quest is a career and reflection tool. It is not therapy, it does not diagnose anything, and it is not an emergency service. If you are in danger call 000.</p>
+  <p>The idea of inner voices led by a calm Leader, and the eight Leader skills, draw on Internal Family Systems, developed by Richard C. Schwartz. C-Quest is independent and is not affiliated with or endorsed by the IFS Institute.</p>
+  <p>Your answers are saved on this device only. <button class="link" type="button" id="wipe">Clear my answers</button></p>
+</div></footer>
+
+<script>
+(function(){
+  // ---------- content ----------
+  var ICON={
+    over:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/></svg>',
+    whelm:'<svg viewBox="0 0 24 24"><path d="M4 8c2-2 4 2 6 0s4 2 6 0 3 1 4 0M4 13c2-2 4 2 6 0s4 2 6 0 3 1 4 0M4 18c2-2 4 2 6 0s4 2 6 0 3 1 4 0"/></svg>',
+    please:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14c1.2 1.6 2.5 2.3 4 2.3s2.8-.7 4-2.3M9 9.5v.1M15 9.5v.1"/></svg>',
+    doubt:'<svg viewBox="0 0 24 24"><path d="M8.5 9a3.5 3.5 0 1 1 5.6 2.8c-1.2.9-2.1 1.6-2.1 3.2M12 19v.1"/></svg>',
+    compare:'<svg viewBox="0 0 24 24"><path d="M7 20v-7M17 20V5M4 20h16"/></svg>',
+    snooze:'<svg viewBox="0 0 24 24"><path d="M19 14.5A7.5 7.5 0 0 1 9.5 5 7.5 7.5 0 1 0 19 14.5Z"/></svg>'
+  };
+  var VOICES=[
+    {id:'over',name:'Over-thinker',says:'I just need to think about this a little more.',helped:'Keeps you careful and prepared. You notice problems early.',holds:'Keeps you circling. You research and rehearse long after you have enough, and decisions wait.',cs:['calm','clarity']},
+    {id:'whelm',name:'Overwhelmed',says:'It’s all too much right now.',helped:'Tells you when you are stretched and protects your energy.',holds:'Makes everything feel the same size, so you freeze or step away from things that are small enough to do.',cs:['calm']},
+    {id:'please',name:'Pleaser',says:'What will they think?',helped:'Makes you thoughtful and easy to work with. You care about not letting people down.',holds:'Steers you toward what others expect. You say yes to things that do not fit you.',cs:['courage']},
+    {id:'doubt',name:'Doubter',says:'Who am I to go for that?',helped:'Keeps you humble and honest about what you know. You put in the work.',holds:'Talks you out of things before you try. You skip applications or play down what you have done.',cs:['confidence']},
+    {id:'compare',name:'Comparer',says:'Everyone else is further ahead.',helped:'Shows you what is possible and pushes you to aim higher.',holds:'Leaves you feeling behind, and you lose sight of what you want.',cs:['compassion','connected']},
+    {id:'snooze',name:'Snooze Button',says:'I’ll deal with it later.',helped:'Protects you from pressure and makes room for rest.',holds:'Lets time slip. Small tasks grow and deadlines creep up.',cs:['curiosity','courage']}
+  ];
+  var CS=[
+    {id:'calm',name:'Calm',plain:'Staying steady when things feel stressful'},
+    {id:'curiosity',name:'Curiosity',plain:'Wanting to find out instead of assuming'},
+    {id:'clarity',name:'Clarity',plain:'Seeing the situation as it is'},
+    {id:'compassion',name:'Compassion',plain:'Being kind to yourself and to others'},
+    {id:'confidence',name:'Confidence',plain:'Trusting yourself to handle it'},
+    {id:'courage',name:'Courage',plain:'Acting even when it feels scary'},
+    {id:'creativity',name:'Creativity',plain:'Finding new ways around a problem'},
+    {id:'connected',name:'Connectedness',plain:'Feeling part of something and reaching out'}
+  ];
+  var IND=[['retail','Retail',1],['hosp','Hospitality'],['health','Health'],['trades','Trades'],['edu','Education'],['it','IT'],['office','Office work'],['transport','Transport'],['creative','Creative'],['public','Public service']];
+  var SETTING='You are three weeks into a casual job at Harbour Home, a homewares shop. Dee is your manager.';
+  var SCENES={
+    please:{beat:'Friday, 4 pm. Dee stops you at the counter. “Can you cover tomorrow, 8 till 4? Sam has called in sick.” You have a family lunch tomorrow.',line:'Just say yes, or she will think you are not keen.',
+      opts:[['Say yes straight away.','You say yes. Dee looks relieved. On the bus home you work out how to tell your family. Nothing terrible happened, and you did not get to say what works for you.'],
+            ['Ask what the shift involves, then say what works.','“What time would you need me till?” Dee says the morning rush is the problem. You offer 8 till 12. She takes it, and thanks you for being straight with her.'],
+            ['Say you will check and tell her within the hour.','You check your plans and message her at 4:40. You can do 8 till 12. She replies with a thumbs up.']],
+      replies:['Thanks for caring what Dee thinks. I can still ask a question first.','I hear you. Being reliable matters to me, and so does being honest.'],
+      quest:'Before I say yes to one thing this week, I will ask one question first.',preds:['They will think I am difficult.','They will be annoyed with me.']},
+    doubt:{beat:'Dee is at the staff board. “I need someone to learn the end-of-day close. It is a step up. Who wants it?” Nobody speaks. You have watched it done twice.',line:'Who am I to go for that? I have only been here three weeks.',
+      opts:[['Look at the floor and let someone else take it.','Jas puts a hand up. Dee nods. You wonder all afternoon whether you could have done it.'],
+            ['Say “I would like to learn it”, and add what you already know.','“I have watched it twice, and I would like to learn.” Dee smiles. “Good. Thursday, with me.” Your stomach flips, and you are in.'],
+            ['Ask Dee afterwards what it involves.','You catch Dee at the door. She walks you through it in two minutes and says there will be another chance next month.']],
+      replies:['Thanks for keeping me honest. Three weeks is enough to learn the next thing.','I hear you. I do not have to be an expert to put my hand up.'],
+      quest:'I will tell one person one thing I did well this week.',preds:['They will think I am showing off.','They will not be interested.']},
+    over:{beat:'Dee has asked everyone to send their availability for next month by tonight. You have written the message four times. It is 9 pm and it is still in drafts.',line:'Read it once more. What if you have a date wrong?',
+      opts:[['Check it against your calendar again.','It is 10:15. The message is the same as it was at 9. You send it at 10:40, and Dee has already done the roster.'],
+            ['Read it once, then send it as it is.','You read it once and press send at 9:04. Dee replies, “Thanks, first one in.”'],
+            ['Send it with one extra line: “Tell me if any of these clash.”','Sent. Dee replies in the morning: all fine. The line you added meant you did not need to be certain.']],
+      replies:['Thanks for keeping me careful. I have checked enough.','I hear you. A good message sent beats a perfect one in drafts.'],
+      quest:'I will send one message I have been redrafting, as it is, within ten minutes.',preds:['There will be a mistake and it will look bad.','They will think I rushed it.']},
+    whelm:{beat:'Saturday, 11 am. A delivery has arrived, three people are waiting at the counter and the phone is ringing. Dee is on her break.',line:'It is all too much. You cannot do any of it properly.',
+      opts:[['Go out the back and start on the delivery.','Out the back it is quieter. When you come out, the queue is longer and one customer has left.'],
+            ['Take one breath, then serve the first person in the queue.','One customer. Then the next. You let the phone ring out. By the time Dee is back the queue is gone. The delivery is where it was, which is fine.'],
+            ['Tell the queue “I will be with you in a moment” and call Dee.','Dee comes out, takes the phone and points you to the counter. “Good call,” she says later.']],
+      replies:['Thanks for telling me I am stretched. I only need to do the next thing.','I hear you. It is a lot, and one thing at a time is allowed.'],
+      quest:'I will write down everything on my mind, circle the smallest thing, and do only that.',preds:['I will not be able to pick one.','Doing one small thing will not help.']},
+    compare:{beat:'Jas started the same week as you. Today Jas is on the register, laughing with a regular. You are still on shelves.',line:'Jas is miles ahead. You are behind already.',
+      opts:[['Keep your head down and avoid Jas.','You stack shelves faster and say nothing. The feeling follows you home.'],
+            ['Ask Jas at lunch how they got onto the register.','“I just asked Dee to show me,” Jas says. “Want me to run you through it?” Ten minutes later you have done two sales.'],
+            ['Count what you have learned in three weeks, then ask Dee what is next for you.','You count: stock, returns, the opening routine. Dee says the register is next week’s plan for you anyway.']],
+      replies:['Thanks for showing me what is possible. I am on my own track.','I hear you. Jas being good at this takes nothing from me.'],
+      quest:'I will message one person who is a step ahead of me and ask how they started.',preds:['They will not reply.','They will think it is a silly question.']},
+    snooze:{beat:'The online safety induction is due Friday. It takes forty minutes. It is Wednesday night, and you have opened it twice and closed it.',line:'Later. You have until Friday.',
+      opts:[['Close the laptop. There is still time.','Friday, 4 pm. You do it on your phone in the stockroom, and Dee notices.'],
+            ['Do the first ten minutes now, just to see what it is like.','Ten minutes in, it is easier than you thought. You finish it in thirty and tell Dee in the morning.'],
+            ['Put it in your calendar for 7 pm tomorrow and tell a friend.','Thursday, 7 pm, your phone buzzes. Your friend messages, “Done yet?” You do it.']],
+      replies:['Thanks for protecting my rest. Ten minutes will not take that away.','I hear you. I can stop after five minutes if I want to.'],
+      quest:'I will pick the thing I have put off longest and do five minutes of it today.',preds:['Five minutes will turn into hours.','It will be as bad as I think.']}
+  };
+  var HELP={
+    intro:'This is a short story. You answer a few questions about yourself, play one scene, then try one small thing in real life.',
+    industry:'Pick a kind of work to try on, like trying on a jacket. It is only the setting for the story. You can change it later.',
+    quiz:'Everyone has these six voices. For each one, tap how loud it has been for you lately. There are no wrong answers.',
+    tie:'Two or more voices came out equal. Pick the one you have heard most this week.',
+    voice:'This is the voice that seems loudest for you. It is trying to help. Tell us if it fits, or pick a different one.',
+    kit:'Leader skills are things you can already do a bit. Pick the three that sound most like you. Then pick one you want to get better at.',
+    beat:'Read what is happening. Then read what the voice says. Nothing to decide yet.',
+    inside:'Three small steps: say which voice it is, say something kind back to it, and pick a skill to use.',
+    choose:'Pick what you would do. No answer is wrong, and nothing is scored.',
+    outcome:'This is what happened in the story after your choice.',
+    quest:'Now one small thing in real life. Change the words so it fits you. Then write what the voice thinks will happen.',
+    wait:'Do your small action when you are ready. Then come back and tell us how it went.',
+    debrief:'Compare what the voice said would happen with what really happened.',
+    profile:'This page shows what you have built so far and what is still to come.'
+  };
+  var V={},C={};VOICES.forEach(function(v){V[v.id]=v});CS.forEach(function(c){C[c.id]=c});
+
+  // ---------- state ----------
+  var KEY='eluvo-quest',mem=null,S;
+  function fresh(){return {v:1,step:'intro',industry:null,ratings:{},voice:null,fit:null,kit:[],build:null,scene:null,runs:{},growth:{}}}
+  function load(){try{var x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&x.v===1&&HELP[x.step])return x}catch(e){}return mem}
+  function save(){mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+  S=load()||fresh();
+  var tmp={};  // unsaved choices on the current screen
+  function run(){var r=S.runs[S.scene];if(!r)r=S.runs[S.scene]={};return r}
+  function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+  function tok(id,sm){return '<span class="tok'+(sm?' sm':'')+'" aria-hidden="true">'+ICON[id]+'</span>'}
+  function crisis(t){return /suicid|kill myself|end it all|self[- ]harm|hurt myself|don.?t want to be here|want to die/i.test(t||'')}
+  function resumeStep(){if(!S.voice)return 'industry';if(!S.fit)return 'voice';if(S.kit.length<3||!S.build)return 'kit';var r=S.runs[S.scene]||{};return r.outcome?'profile':r.prediction?'wait':'beat'}
+  function grow(c){if(c)S.growth[c]=(S.growth[c]||0)+1}
+
+  // ---------- render ----------
+  var stage=document.getElementById('stage'),STAGES=[['Start',['intro','industry']],['Voices',['quiz','tie','voice']],['Kit',['kit']],['Scene',['beat','inside','choose','outcome']],['Real world',['quest','wait','debrief']],['Profile',['profile']]];
+  function go(step){S.step=step;tmp={};save();render(true)}
+  function render(focus){
+    var si=0;STAGES.forEach(function(s,i){if(s[1].indexOf(S.step)>=0)si=i});
+    document.getElementById('prog').innerHTML=STAGES.map(function(s,i){return '<li class="'+(i<si?'done':i===si?'on':'')+'"'+(i===si?' aria-current="step"':'')+'>'+s[0]+'</li>'}).join('');
+    stage.innerHTML=VIEW[S.step]();
+    stopListen();
+    if(focus){var h=stage.querySelector('h1,h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}window.scrollTo(0,0)}
+  }
+  var VIEW={
+    intro:function(){
+      var back=S.voice?'<div class="note">Welcome back. Your answers are still here. <button class="link" data-act="resume">Carry on</button></div>':'';
+      return '<p class="eyebrow">C-Quest · Grow forward</p><h1 data-read>A career story where you lead.</h1><p class="lede" data-read>When something matters, like applying for a job, a few voices speak up inside. In this short story you find your loudest one, play a scene at work, then try one small thing in real life.</p>'+back+
+        '<div class="card" data-read><b>About six minutes.</b> Free, no sign-up, nothing is scored. You can stop at any point and ask for support with the button at the bottom.</div>'+
+        '<div class="row"><button class="btn btn-gold" data-act="start">Start the story</button><a class="btn btn-line" href="index.html">Something on this week? Talk it through</a></div>';
+    },
+    industry:function(){
+      return '<p class="eyebrow">Step 1</p><h2 data-read>Try on an industry</h2><p class="lede" data-read>Pick one as a trial. It is only the setting for your story, and you can switch later.</p>'+
+        '<div class="tiles">'+IND.map(function(i){return '<button class="tile" data-act="ind" data-id="'+i[0]+'"'+(i[2]?'':' disabled')+'>'+i[1]+(i[2]?'':' <small>Soon</small>')+'</button>'}).join('')+'</div>';
+    },
+    quiz:function(){
+      var n=Object.keys(S.ratings).length;
+      return '<p class="eyebrow">Step 2 · Voices</p><h2 data-read>You spot a job you would like. Then the voices start.</h2><p class="lede" data-read>Everyone has all six at times, and each one is trying to help. How loud has each been for you lately?</p>'+
+        VOICES.map(function(v){return '<div class="card v">'+tok(v.id)+'<h3>'+v.name+'</h3><q>'+v.says+'</q><div class="seg" role="group" aria-label="How loud is the '+v.name+'">'+['Quiet','Sometimes','Often','Loud'].map(function(l,i){return '<button data-act="rate" data-id="'+v.id+'" data-n="'+i+'" aria-pressed="'+(S.ratings[v.id]===i)+'">'+l+'</button>'}).join('')+'</div></div>'}).join('')+
+        '<div class="row"><button class="btn btn-gold" data-act="quizdone"'+(n<6?' disabled':'')+'>'+(n<6?n+' of 6 answered':'See my loudest voice')+'</button></div>';
+    },
+    tie:function(){
+      return '<p class="eyebrow">Step 2 · Voices</p><h2 data-read>These are about as loud as each other.</h2><p class="lede" data-read>Which one have you heard most this week?</p><div class="opts">'+tmp.tied.map(function(id){return '<button class="btn btn-line" data-act="pickvoice" data-id="'+id+'">'+tok(id,1)+V[id].name+': “'+V[id].says+'”</button>'}).join('')+'</div>';
+    },
+    voice:function(){
+      var v=V[S.voice];
+      if(tmp.pick)return '<p class="eyebrow">Step 2 · Voices</p><h2 data-read>Which voice fits better?</h2><div class="opts">'+VOICES.filter(function(x){return x.id!==S.voice}).map(function(x){return '<button class="btn btn-line" data-act="pickvoice" data-id="'+x.id+'" data-fit="picked">'+tok(x.id,1)+x.name+': “'+x.says+'”</button>'}).join('')+'</div>';
+      return '<p class="eyebrow">Your loudest voice</p><h2 data-read>The '+v.name+'</h2><div class="says">'+tok(v.id)+'<div><small>It tends to say</small><q data-read>'+v.says+'</q></div></div>'+
+        '<div class="two"><div class="ok"><b>How it has helped</b><span data-read>'+v.helped+'</span></div><div class="no"><b>How it holds you back</b><span data-read>'+v.holds+'</span></div></div>'+
+        '<p class="lede" data-read>It is not a flaw, and you are not “a '+v.name+'”. It is one voice, and you can lead it. Does this fit?</p>'+
+        '<div class="row"><button class="btn btn-gold" data-act="fit">Yes, that fits</button><button class="btn btn-line" data-act="nofit">Not quite</button></div>';
+    },
+    kit:function(){
+      var v=V[S.voice],k=tmp.kit||S.kit.slice(),b=tmp.build||S.build,full=k.length===3;tmp.kit=k;
+      var sug=v.cs.filter(function(c){return k.indexOf(c)<0})[0]||null;
+      if(full&&!b&&sug){b=sug;} tmp.build=full?b:null;
+      return '<p class="eyebrow">Step 3 · Leader skills</p><h2 data-read>Pick your kit</h2><p class="lede" data-read>Under the voices there is a calm, steady part of you. Call it the Leader. It has eight skills, and you already have some. Pick your strongest three.</p>'+
+        '<div class="grid8">'+CS.map(function(c){var on=k.indexOf(c.id)>=0;return '<button class="chip" data-act="kit" data-id="'+c.id+'" aria-pressed="'+on+'"'+(!on&&full?' disabled':'')+'><b>'+c.name+'</b><small>'+c.plain+'</small></button>'}).join('')+'</div>'+
+        (full?'<div class="stepn"><i>+</i>One skill to build</div><p class="muted" data-read>'+(sug?C[sug].name+' answers the '+v.name+', so we suggest that one. You can choose another.':'You already count '+v.cs.map(function(c){return C[c].name}).join(' and ')+' as a strength, which helps with the '+v.name+'. Pick any other skill you would like to build.')+'</p><div class="chips">'+CS.filter(function(c){return k.indexOf(c.id)<0}).map(function(c){return '<button class="chip'+(c.id===sug?' sug':'')+'" data-act="build" data-id="'+c.id+'" aria-pressed="'+(b===c.id)+'"><b>'+c.name+'</b></button>'}).join('')+'</div>':'<p class="muted small" style="margin-top:10px">'+k.length+' of 3 chosen</p>')+
+        '<div class="row"><button class="btn btn-gold" data-act="kitdone"'+(full&&b?'':' disabled')+'>Start my scene</button></div>';
+    },
+    beat:function(){
+      var sc=SCENES[S.scene],v=V[S.scene];
+      return '<p class="eyebrow">Retail · Scene</p><h2 data-read>Three weeks in</h2><p class="muted" data-read style="margin-top:8px">'+SETTING+'</p><div class="card story" data-read>'+sc.beat+'</div>'+
+        '<div class="says">'+tok(v.id)+'<div><small>A voice speaks up</small><q data-read>'+sc.line+'</q></div></div>'+
+        '<div class="row"><button class="btn btn-gold" data-act="pause">Pause and notice the voice</button></div>';
+    },
+    inside:function(){
+      var sc=SCENES[S.scene],v=V[S.scene],r=run(),mine=S.kit.concat(S.kit.indexOf(S.build)<0?[S.build]:[]);
+      var h='<p class="eyebrow">Inside step</p><h2 data-read>Lead the voice</h2><div class="says">'+tok(v.id,1)+'<div><q>'+sc.line+'</q></div></div>';
+      h+='<div class="stepn"><i>1</i>Whose voice is that?</div><div class="chips">'+VOICES.map(function(x){return '<button class="chip" data-act="name" data-id="'+x.id+'" aria-pressed="'+(tmp.named===x.id)+'"><b>'+x.name+'</b></button>'}).join('')+'</div>';
+      if(tmp.named)h+='<div class="note" role="status">'+(tmp.named===v.id?'That is your '+v.name+' talking. Noticing it is the first skill.':'Could be. Here it sounds most like the '+v.name+'. Either way, you noticed a voice, and that is the first skill.')+'</div>';
+      if(tmp.named){
+        h+='<div class="stepn"><i>2</i>Thank it, then answer kindly</div><div class="opts">'+sc.replies.map(function(t,i){return '<button class="btn btn-line" data-act="reply" data-i="'+i+'" aria-pressed="'+(tmp.reply===t)+'" style="'+(tmp.reply===t?'border-color:var(--plum);background:var(--tint)':'')+'">'+t+'</button>'}).join('')+'</div><label class="field">Or in your own words<input id="ownreply" type="text" maxlength="160" value="'+esc(tmp.own||'')+'" placeholder="Thanks, and…"></label>';
+        h+='<div class="stepn"><i>3</i>Call on a Leader skill</div><div class="chips">'+mine.map(function(c){return '<button class="chip'+(c===S.build?' sug':'')+'" data-act="callc" data-id="'+c+'" aria-pressed="'+(tmp.c===c)+'"><b>'+C[c].name+'</b><small>'+(c===S.build?'The one you are building':C[c].plain)+'</small></button>'}).join('')+'</div>';
+        h+='<div class="row"><button class="btn btn-gold" data-act="insidedone">Back to the scene</button></div>';
+      }
+      return h;
+    },
+    choose:function(){
+      var sc=SCENES[S.scene],r=run();
+      return '<p class="eyebrow">Retail · Scene</p><h2 data-read>What do you do?</h2><div class="card story" data-read>'+sc.beat+'</div><p class="muted" data-read style="margin-top:12px">You answered the voice: “'+esc(r.reply)+'” You are calling on '+C[r.c].name+'.</p>'+
+        '<div class="opts">'+sc.opts.map(function(o,i){return '<button class="btn btn-line" data-act="choose" data-i="'+i+'">'+o[0]+'</button>'}).join('')+'<button class="btn btn-line" data-act="support" style="border-style:dashed">I don’t know</button></div>';
+    },
+    outcome:function(){
+      var sc=SCENES[S.scene],r=run();
+      return '<p class="eyebrow">Retail · Scene</p><h2 data-read>What happened</h2><div class="card story" data-read>'+sc.opts[r.choice][1]+'</div><div class="note">You noticed the voice and called on '+C[r.c].name+'. That counts as practice.</div>'+
+        '<p class="lede" data-read>That was the story. Now the same move in real life, with something small.</p><div class="row"><button class="btn btn-gold" data-act="toquest">Set my small real action</button></div>';
+    },
+    quest:function(){
+      var sc=SCENES[S.scene],v=V[S.scene],r=run();
+      return '<p class="eyebrow">Real world</p><h2 data-read>One small action</h2><p class="lede" data-read>Small on purpose. The '+v.name+' will probably be there while you do it, and that is the point.</p>'+
+        '<label class="field">Your action. Change the words so it fits you.<textarea id="questtxt" rows="3" maxlength="200">'+esc(tmp.quest||r.quest||sc.quest)+'</textarea></label>'+
+        '<div class="stepn"><i>?</i>What does the '+v.name+' say will happen?</div><p class="muted" data-read>We seal this now and open it after you have done the action.</p><div class="opts">'+sc.preds.map(function(t,i){return '<button class="btn btn-line" data-act="pred" data-i="'+i+'" style="'+(tmp.pred===t?'border-color:var(--plum);background:var(--tint)':'')+'">'+t+'</button>'}).join('')+'</div><label class="field">Or in your own words<input id="ownpred" type="text" maxlength="160" value="'+esc(tmp.ownpred||'')+'" placeholder="It says…"></label>'+
+        '<div class="row"><button class="btn btn-gold" data-act="seal">Seal the prediction</button></div>';
+    },
+    wait:function(){
+      var v=V[S.scene],r=run();
+      return '<p class="eyebrow">Real world</p><h2 data-read>'+(tmp.fresh?'Your action is set':'How did it go?')+'</h2><div class="quest"><small>Your small action</small><p data-read>'+esc(r.quest)+'</p></div><div class="seal"><small>The '+v.name+'’s prediction</small><p>Sealed until you have done it</p></div>'+
+        (tmp.later?'<div class="note" role="status">No stress. It will be here when you come back. If it feels too big, make it smaller.</div>':'')+
+        '<div class="row"><button class="btn btn-gold" data-act="done">I have done it</button><button class="btn btn-line" data-act="later">Not yet</button></div><p class="small muted" style="margin-top:14px"><button class="link" data-act="smaller">Make it smaller</button> · <button class="link" data-act="toprofile">See my profile</button></p>';
+    },
+    debrief:function(){
+      var v=V[S.scene],r=run();
+      if(r.outcome){
+        var msg={better:'It went better than the voice said. Remember that the next time the '+v.name+' speaks up. This time you led it.',same:'It went about how the voice said, and you did it anyway. That is the skill: acting with the voice there.',right:'The voice was right this time. That happens, and it does not mean it is always right. You acted while it was loud, and that took '+C[r.c].name+'.'}[r.outcome];
+        return '<p class="eyebrow">Debrief</p><h2 data-read>You did it with the voice there.</h2><div class="card story" data-read>'+msg+'</div><div class="note">'+C[r.c].name+' has grown. It is on your profile.</div><div class="row"><button class="btn btn-gold" data-act="toprofile">See my profile</button></div>';
+      }
+      return '<p class="eyebrow">Debrief</p><h2 data-read>Open the prediction</h2><div class="seal"><small>The '+v.name+' said</small><p data-read>“'+esc(r.prediction)+'”</p></div><div class="quest"><small>What you did</small><p>'+esc(r.quest)+'</p></div>'+
+        '<div class="stepn"><i>=</i>What actually happened?</div><div class="opts"><button class="btn btn-line" data-act="out" data-o="better">It went better than the voice said</button><button class="btn btn-line" data-act="out" data-o="same">About what the voice said</button><button class="btn btn-line" data-act="out" data-o="right">The voice was right</button></div><label class="field">Anything you want to remember (optional)<input id="outnote" type="text" maxlength="200"></label>';
+    },
+    profile:function(){
+      var v=V[S.voice],r0=S.runs[S.voice]||{},mine=S.kit.concat(S.kit.indexOf(S.build)<0?[S.build]:[]);
+      var logs=VOICES.filter(function(x){return S.runs[x.id]&&S.runs[x.id].prediction}).map(function(x){var r=S.runs[x.id];return '<div class="logrow"><b>'+x.name+': “'+esc(r.prediction)+'”</b>'+(r.outcome?'<span class="tag '+(r.outcome==='right'?'gold':'ok')+'">'+({better:'Went better',same:'About the same',right:'Voice was right'}[r.outcome])+'</span>':'<span class="tag">Still sealed</span>')+(r.note?' <span class="muted small">'+esc(r.note)+'</span>':'')+'</div>'}).join('');
+      var pending=VOICES.filter(function(x){return S.runs[x.id]&&S.runs[x.id].prediction&&!S.runs[x.id].outcome})[0];
+      var others=VOICES.filter(function(x){return !(S.runs[x.id]&&S.runs[x.id].prediction)});
+      return '<p class="eyebrow">Your living profile</p><h2 data-read>What you have built, and what is next</h2>'+
+        '<div class="pgrid">'+
+        '<div class="card full"><small class="k">Loudest voice</small><div class="v" style="grid-template-columns:auto 1fr">'+tok(v.id)+'<h3>'+v.name+'</h3><q>'+v.says+'</q></div>'+(r0.reply?'<p style="margin-top:12px"><b>Your kind reply:</b> “'+esc(r0.reply)+'”</p>':'')+'</div>'+
+        '<div class="card"><small class="k">Your kit and skill to build</small>'+mine.map(function(c){var n=Math.min(S.growth[c]||0,4);return '<div class="skill"><span><b>'+C[c].name+'</b>'+(c===S.build?' <span class="tag gold">Building</span>':'')+'</span><span class="pips" role="img" aria-label="Practised '+n+' times">'+[0,1,2,3].map(function(i){return '<i'+(i<n?' class="on"':'')+'></i>'}).join('')+'</span></div>'}).join('')+'</div>'+
+        '<div class="card"><small class="k">Voice predictions against reality</small>'+(logs||'<p class="muted">Nothing sealed yet.</p>')+'</div>'+
+        '<div class="card lock"><small class="k">Values</small>Not built yet. Opens in the workshop.</div><div class="card lock"><small class="k">Why and goals</small>Not built yet. Opens in the workshop.</div>'+
+        '<div class="card full"><small class="k">Trying on</small><b>Retail</b> <span class="muted">· Level 1, Foundations</span></div></div>'+
+        '<div class="row">'+(pending?'<button class="btn btn-gold" data-act="resumewait" data-id="'+pending.id+'">Back to my small action</button>':'')+(others.length?'<button class="btn '+(pending?'btn-line':'btn-gold')+'" data-act="another">Play another voice’s scene</button>':'')+'</div>'+
+        (tmp.another?'<div class="opts">'+others.map(function(x){return '<button class="btn btn-line" data-act="scene" data-id="'+x.id+'">'+tok(x.id,1)+x.name+'</button>'}).join('')+'</div>':'');
+    }
+  };
+
+  // ---------- actions ----------
+  function val(id){var e=document.getElementById(id);return e?e.value.replace(/\s+/g,' ').trim():''}
+  function keepInputs(){['ownreply','questtxt','ownpred'].forEach(function(id){var e=document.getElementById(id);if(e)tmp[{ownreply:'own',questtxt:'quest',ownpred:'ownpred'}[id]]=e.value})}
+  stage.addEventListener('click',function(e){
+    var b=e.target.closest('[data-act]');if(!b||b.disabled)return;var a=b.dataset.act,id=b.dataset.id,r;
+    if(a==='support'){openSupport();return}
+    keepInputs();
+    if(a==='start'||a==='resume')go(resumeStep());
+    else if(a==='ind'){S.industry=id;go('quiz')}
+    else if(a==='rate'){S.ratings[id]=+b.dataset.n;save();render(false);var again=stage.querySelector('[data-act=rate][data-id="'+id+'"][data-n="'+b.dataset.n+'"]');if(again)again.focus({preventScroll:true})}
+    else if(a==='quizdone'){var max=Math.max.apply(null,VOICES.map(function(v){return S.ratings[v.id]})),tied=VOICES.filter(function(v){return S.ratings[v.id]===max}).map(function(v){return v.id});if(tied.length>1){S.step='tie';save();tmp={tied:tied};render(true)}else{S.voice=tied[0];S.fit=null;go('voice')}}
+    else if(a==='pickvoice'){S.voice=id;S.fit=b.dataset.fit||null;if(S.fit){S.scene=id;go('kit')}else go('voice')}
+    else if(a==='fit'){S.fit='yes';S.scene=S.voice;go('kit')}
+    else if(a==='nofit'){tmp.pick=true;render(true)}
+    else if(a==='kit'){var k=tmp.kit,i=k.indexOf(id);if(i>=0)k.splice(i,1);else if(k.length<3)k.push(id);tmp.build=null;render(false)}
+    else if(a==='build'){tmp.build=id;render(false)}
+    else if(a==='kitdone'){S.kit=tmp.kit.slice();S.build=tmp.build;S.scene=S.scene||S.voice;go('beat')}
+    else if(a==='pause')go('inside')
+    else if(a==='name'){tmp.named=id;render(false)}
+    else if(a==='reply'){tmp.reply=SCENES[S.scene].replies[+b.dataset.i];tmp.own='';render(false)}
+    else if(a==='callc'){tmp.c=id;render(false)}
+    else if(a==='insidedone'){var own=(tmp.own||'').replace(/\s+/g,' ').trim(),rep=own||tmp.reply;if(crisis(own)){openSupport(true);return}
+      if(!rep||!tmp.c){alertMsg(!rep?'Choose a kind reply, or write your own.':'Pick the Leader skill you are calling on.');return}
+      r=run();r.reply=rep;r.c=tmp.c;grow(r.c);go('choose')}
+    else if(a==='choose'){run().choice=+b.dataset.i;go('outcome')}
+    else if(a==='toquest')go('quest')
+    else if(a==='pred'){tmp.pred=SCENES[S.scene].preds[+b.dataset.i];tmp.ownpred='';render(false)}
+    else if(a==='seal'){var q=(tmp.quest||'').replace(/\s+/g,' ').trim(),op=(tmp.ownpred||'').replace(/\s+/g,' ').trim(),p=op||tmp.pred;if(crisis(q+' '+op)){openSupport(true);return}
+      if(!q||!p){alertMsg(!q?'Write your small action first.':'Choose what the voice predicts, or write it in your own words.');return}
+      r=run();r.quest=q;r.prediction=p;r.sealedAt=Date.now();r.outcome=null;S.step='wait';save();tmp={fresh:true};render(true)}
+    else if(a==='done')go('debrief')
+    else if(a==='later'){tmp.later=true;render(false)}
+    else if(a==='smaller'){tmp={quest:run().quest};S.step='quest';save();render(true)}
+    else if(a==='out'){var n=val('outnote');if(crisis(n)){openSupport(true);return}r=run();r.outcome=b.dataset.o;r.note=n;r.doneAt=Date.now();grow(r.c);save();render(true)}
+    else if(a==='toprofile')go('profile')
+    else if(a==='another'){tmp.another=true;render(false)}
+    else if(a==='scene'){S.scene=id;go('beat')}
+    else if(a==='resumewait'){S.scene=id;go('wait')}
+  });
+  function alertMsg(t){var old=stage.querySelector('.alert');if(old)old.remove();var d=document.createElement('div');d.className='alert';d.setAttribute('role','alert');d.textContent=t;stage.appendChild(d);d.scrollIntoView({block:'center'})}
+
+  // ---------- support ----------
+  var scrim=document.getElementById('scrim'),sheet=document.getElementById('sheet'),lastFocus=null;
+  function openSupport(urgent){
+    lastFocus=document.activeElement;
+    sheet.innerHTML='<h2 id="supH" tabindex="-1">'+(urgent?'Let’s pause here.':'Let’s slow down.')+'</h2>'+
+      (urgent?'<div class="alert">It sounds like things are really heavy right now. You deserve support from a person today. Please call one of the numbers below, or tell someone you trust.</div>':'<p class="lede" style="font-size:1rem">There is no rush and no wrong answer. Here are some ways forward.</p>')+
+      '<div class="opts"><button class="btn btn-line" data-s="plain">Say this step another way</button><button class="btn btn-line" data-s="person">I would like a person to follow up</button></div><div id="supOut"></div>'+
+      '<ul class="lines"><li><a href="tel:131114">Lifeline 13 11 14</a> · any time</li><li><a href="tel:1800551800">Kids Helpline 1800 55 1800</a> · ages 5 to 25</li><li><a href="tel:1800650890">headspace 1800 650 890</a></li><li><a href="tel:000">000</a> if you are in danger</li></ul>'+
+      '<div class="row"><button class="btn btn-plum" data-s="close">Back to the story</button></div>';
+    scrim.classList.add('on');sheet.querySelector('h2').focus();
+  }
+  function closeSupport(){scrim.classList.remove('on');if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+  sheet.addEventListener('click',function(e){var b=e.target.closest('[data-s]');if(!b)return;var o=document.getElementById('supOut');
+    if(b.dataset.s==='close')closeSupport();
+    else if(b.dataset.s==='plain')o.innerHTML='<div class="note" role="status">'+HELP[S.step]+'</div>';
+    else o.innerHTML='<div class="note" role="status">In the full product this tells a named person at your school, uni or service, and you are told when they have seen it. This prototype does not send anything.</div>';
+  });
+  scrim.addEventListener('click',function(e){if(e.target===scrim)closeSupport()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&scrim.classList.contains('on'))closeSupport()});
+  document.getElementById('supBtn').addEventListener('click',function(){openSupport()});
+
+  // ---------- tools ----------
+  var bigBtn=document.getElementById('bigger');
+  function setBig(on){document.documentElement.classList.toggle('big',on);bigBtn.setAttribute('aria-pressed',on);try{localStorage.setItem('eluvo-quest-big',on?'1':'0')}catch(e){}}
+  var bg=null;try{bg=localStorage.getItem('eluvo-quest-big')}catch(e){}setBig(bg==='1');
+  bigBtn.addEventListener('click',function(){setBig(!document.documentElement.classList.contains('big'))});
+  var listenBtn=document.getElementById('listen'),synth=window.speechSynthesis;
+  function stopListen(){if(synth){synth.cancel()}listenBtn.setAttribute('aria-pressed','false');listenBtn.textContent='Listen'}
+  if(synth&&window.SpeechSynthesisUtterance){listenBtn.hidden=false;listenBtn.addEventListener('click',function(){
+    if(listenBtn.getAttribute('aria-pressed')==='true'){stopListen();return}
+    var t=[].map.call(stage.querySelectorAll('[data-read]'),function(n){return n.textContent}).join('. ');if(!t)return;
+    var u=new SpeechSynthesisUtterance(t);u.lang='en-AU';u.rate=.95;u.onend=u.onerror=function(){listenBtn.setAttribute('aria-pressed','false');listenBtn.textContent='Listen'};
+    synth.cancel();synth.speak(u);listenBtn.setAttribute('aria-pressed','true');listenBtn.textContent='Stop';
+  })}
+  document.getElementById('wipe').addEventListener('click',function(){mem=null;try{localStorage.removeItem(KEY)}catch(e){}S=fresh();tmp={};render(true)});
+
+  // returning with an action waiting → straight to "How did it go?"
+  if(S.step==='tie'||(S.step==='voice'&&!S.voice))S.step=S.voice?'voice':'quiz';
+  render(false);
+})();
+</script>
+</body>
+</html>
