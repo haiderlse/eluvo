@@ -9,7 +9,7 @@
     --band:#3B2E6B; --on-band:#FFFFFF; --accent:#3B2E6B; --bubble:#3B2E6B; --on-bubble:#FFFFFF;
     --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#FFF1C2; --gold-ink:#8A6100;
     --ok:#2F7D5B; --ok-soft:#E1F0E7; --warn-soft:#FBE7E2; --warn-ink:#7A2414; --warn-line:#F1B9AD;
-    --shadow:0 18px 40px -26px rgba(31,26,58,.5);
+    --shadow:0 18px 40px -26px rgba(31,26,58,.5); --glow:#FFE9A8; --floor:rgba(31,26,58,.2); --ring:#F4B205;
     --display:"Outfit","Segoe UI",Helvetica,Arial,sans-serif; --text:"Figtree","Segoe UI",Helvetica,Arial,sans-serif;
   }
   @media (prefers-color-scheme: dark){
@@ -18,7 +18,7 @@
       --band:#241C47; --on-band:#FFFFFF; --accent:#C3B8F0; --bubble:#4A3C86; --on-bubble:#FFFFFF;
       --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#463A12; --gold-ink:#F7CF5A;
       --ok:#7FD0A8; --ok-soft:#1D3A2E; --warn-soft:#45201B; --warn-ink:#F6C3B8; --warn-line:#7A3A30;
-      --shadow:0 18px 40px -26px rgba(0,0,0,.8); color-scheme:dark;
+      --shadow:0 18px 40px -26px rgba(0,0,0,.8); --glow:#4A3C86; --floor:rgba(0,0,0,.55); --ring:#F4B205; color-scheme:dark;
     }
   }
   :root[data-theme="dark"]{
@@ -26,7 +26,7 @@
     --band:#241C47; --on-band:#FFFFFF; --accent:#C3B8F0; --bubble:#4A3C86; --on-bubble:#FFFFFF;
     --gold:#F4B205; --on-gold:#1F1A3A; --gold-soft:#463A12; --gold-ink:#F7CF5A;
     --ok:#7FD0A8; --ok-soft:#1D3A2E; --warn-soft:#45201B; --warn-ink:#F6C3B8; --warn-line:#7A3A30;
-    --shadow:0 18px 40px -26px rgba(0,0,0,.8); color-scheme:dark;
+    --shadow:0 18px 40px -26px rgba(0,0,0,.8); --glow:#4A3C86; --floor:rgba(0,0,0,.55); --ring:#F4B205; color-scheme:dark;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -85,6 +85,26 @@
   .fine{font-size:.78rem;color:var(--muted)}
 
   .side{min-height:0;overflow:auto}
+  /* the guide: one picture, cropped to a portrait, with a mouth that opens while he speaks */
+  .stage{display:grid;gap:8px;margin-bottom:12px}
+  .spot{--ch:500px;position:relative;height:228px;border-radius:16px;overflow:hidden;border:2px solid var(--line);background:radial-gradient(120% 95% at 50% 100%,var(--glow) 0,var(--surface) 78%);transition:border-color .2s}
+  .char{position:absolute;top:10px;left:calc(50% - var(--ch) * .4711 * .405);height:var(--ch);aspect-ratio:358/760;transform-origin:50% 60%;animation:breathe 4.6s ease-in-out infinite}
+  .char img{display:block;width:100%;height:100%;max-width:none}
+  .mouth{position:absolute;left:45.2%;top:24.5%;width:7.4%;height:1.9%;border-radius:50%;background:radial-gradient(ellipse at 50% 92%,#C6605C 0 34%,#2A0F12 38%);transform:translate(-50%,-50%) scaleY(0);opacity:0}
+  .stage[data-mood="talking"] .char{animation:talk .9s ease-in-out infinite}
+  .stage[data-mood="talking"] .mouth{opacity:1;animation:mouth .62s steps(1,end) infinite}
+  .stage[data-mood="talking"] .spot,.stage[data-mood="listening"] .spot{border-color:var(--ring)}
+  .stage[data-mood="thinking"] .char{animation:think 2.4s ease-in-out infinite}
+  .mood{justify-self:center;display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid transparent;border-radius:999px;padding:6px 14px;font-weight:600;font-size:.85rem;color:var(--ink);min-height:34px}
+  .mood:not(:disabled){cursor:pointer;border-color:var(--ring)} .mood:disabled{opacity:1}
+  .bars{display:inline-flex;align-items:flex-end;gap:2px;height:14px} .bars i{width:3px;height:4px;border-radius:2px;background:var(--gold-ink)}
+  .stage[data-mood="talking"] .bars i{animation:bar .7s ease-in-out infinite} .bars i:nth-child(2){animation-delay:.15s} .bars i:nth-child(3){animation-delay:.3s}
+  @keyframes breathe{50%{transform:translateY(-.35%) scale(1.004)}}
+  @keyframes talk{25%{transform:translateY(-.5%) rotate(-.5deg)}60%{transform:translateY(.1%) rotate(.45deg)}}
+  @keyframes think{50%{transform:rotate(-1.1deg)}}
+  @keyframes mouth{0%{transform:translate(-50%,-50%) scaleY(.25)}16%{transform:translate(-50%,-50%) scaleY(1)}33%{transform:translate(-50%,-50%) scaleY(.5)}50%{transform:translate(-50%,-50%) scaleY(.95)}66%{transform:translate(-50%,-50%) scaleY(.2)}83%{transform:translate(-50%,-50%) scaleY(.75)}}
+  @keyframes bar{50%{height:14px}}
+  .pick{display:grid;gap:4px;font-size:.82rem;font-weight:600} .pick select{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font:inherit;font-weight:400}
   .story{background:var(--surface);border:1px solid var(--line);border-radius:16px}
   .story summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-family:var(--display);font-weight:700}
   .story summary::-webkit-details-marker{display:none}
@@ -103,17 +123,19 @@
   @media (max-width:860px){
     .shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:10px;padding-block:10px 8px}
     .side{order:-1;overflow:visible} .guide{font-size:1.02rem} .logo span{display:none}
+    .stage{grid-template-columns:auto 1fr;align-items:center;gap:12px;margin-bottom:8px} .mood{justify-self:start}
+    .spot{--ch:212px;width:68px;height:68px;border-radius:50%} .char{top:calc(50% - var(--ch) * .158)}
     .story[open]{max-height:46vh;overflow:auto}
   }
   @media (max-width:400px){ .tool{padding:6px 10px;font-size:.78rem} .tool .lg{display:none} .tool .sm{display:inline} .btn{padding:12px 14px} }
   @media (min-width:861px){ .story summary{cursor:default;pointer-events:none} }
-  @media (prefers-reduced-motion:reduce){ .log{scroll-behavior:auto} }
+  @media (prefers-reduced-motion:reduce){ .log{scroll-behavior:auto} .char,.stage[data-mood] .char,.stage[data-mood] .mouth,.stage[data-mood] .bars i{animation:none} .stage[data-mood="talking"] .mouth{transform:translate(-50%,-50%) scaleY(.7)} }
 </style>
 
 <header class="bar"><div class="in gut">
   <div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="20" width="8" height="10" rx="2.2" fill="#F4B205"/><rect x="12" y="12" width="8" height="18" rx="2.2" fill="#B9AEE6"/><rect x="22" y="3" width="8" height="27" rx="2.2" fill="#FFFFFF"/></svg>eluvo <span>C-Quest</span></div>
   <span class="sp"></span>
-  <button class="tool" type="button" id="voiceBtn" aria-pressed="false" hidden>Read aloud</button>
+  <button class="tool" type="button" id="voiceBtn" aria-pressed="false" hidden>Voice off</button>
   <button class="tool" type="button" id="helpBtn" aria-label="Need a hand? Open support"><span class="lg">Need a hand?</span><span class="sm">Help</span></button>
 </div></header>
 
@@ -127,6 +149,7 @@
         <label class="field" for="nameIn">What should the guide call you? (optional)
           <input id="nameIn" type="text" maxlength="30" autocomplete="given-name" placeholder="First name or nickname"></label>
         <div class="rowb"><button class="btn btn-gold" type="button" id="beginBtn" disabled>Getting the guide ready…</button></div>
+        <p class="small" id="voiceNote" hidden></p>
         <p class="notice" id="aiNote">The guide is Claude, an AI. What you type is sent to Claude to write your story, and it uses your own Claude account. Your session is saved in this browser only. It is a career and reflection tool, not therapy and not an emergency service.</p>
       </section>
     </div>
@@ -143,11 +166,16 @@
   </main>
 
   <aside class="side">
+    <div class="stage" id="stage" data-mood="idle">
+      <div class="spot"><div class="char"><img src="guide.webp" width="358" height="760" alt="Your guide: a cartoon man with dark hair and a beard, in a dark jacket, gesturing with one hand"><span class="mouth" aria-hidden="true"></span></div></div>
+      <button class="mood" type="button" id="moodBtn" disabled><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="moodTxt">Ready when you are</span></button>
+    </div>
     <details class="story" id="story" open>
       <summary><span>Your story so far</span><span class="count" id="count">0 of 6</span></summary>
       <div class="slots" id="slots"></div>
       <div class="foot">
         <div class="rowb" id="sealActs" hidden><button class="btn btn-gold" type="button" id="doneBtn">I have done it</button><button class="btn btn-line" type="button" id="notYetBtn">Not yet</button></div>
+        <label class="pick" for="voiceSel" id="voicePick" hidden>The guide's voice<select id="voiceSel"></select></label>
         <button class="linkb small" type="button" id="resetBtn" hidden>Start over</button>
         <p class="fine">The voices and Leader skills draw on Internal Family Systems, developed by Richard C. Schwartz. C-Quest is independent and is not affiliated with or endorsed by the IFS Institute.</p>
       </div>
@@ -230,7 +258,8 @@
   function wipe(){try{localStorage.removeItem(KEY)}catch(e){}}
   var $=function(id){return document.getElementById(id)};
   var log=$('log'),composer=$('composer'),chipsEl=$('chips'),msgIn=$('msgIn'),sendBtn=$('sendBtn'),stopBtn=$('stopBtn'),hear=$('hear');
-  var sample=null,tts=null,dict=null,busy=false,ctl=null,voiceOn=false;
+  var sample=null,tts=null,dict=null,busy=false,ctl=null;
+  var voiceMode=null,voiceOn=false,voiceName=null,speaking=false,listening=false,streaming=false,tail=0;
 
   // ---------- helpers ----------
   function shown(t){var i=t.indexOf('@@');if(i>=0)t=t.slice(0,i);return t.replace(/@+\s*$/,'').replace(/\s+$/,'')}
@@ -286,7 +315,14 @@
     if(busy)return;
     S.chips.forEach(function(c){var b=node('button','chip',c);b.type='button';b.addEventListener('click',function(){send(c)});chipsEl.appendChild(b)});
   }
-  function setBusy(on){busy=on;sendBtn.hidden=on;stopBtn.hidden=!on;msgIn.disabled=false;log.setAttribute('aria-busy',on);renderChips();renderStory()}
+  function setBusy(on){busy=on;sendBtn.hidden=on;stopBtn.hidden=!on;msgIn.disabled=false;log.setAttribute('aria-busy',on);renderChips();renderStory();mood()}
+  // the picture follows what is happening: listening, talking, thinking or waiting
+  function mood(){
+    var m=listening?'listening':(speaking||streaming||Date.now()<tail)?'talking':busy?'thinking':'idle';
+    $('stage').dataset.mood=m;
+    $('moodTxt').textContent=m==='listening'?'Listening…':m==='talking'?(speaking?'Speaking · tap to stop':'Speaking'):m==='thinking'?'Thinking…':(S.started?'Your turn':'Ready when you are');
+    $('moodBtn').disabled=!speaking;
+  }
 
   // ---------- talking to the guide ----------
   function buildInput(){
@@ -302,18 +338,18 @@
   function send(text){
     text=(text||'').replace(/\s+$/,'').trim();if(!text||busy||!sample)return;
     if(dict&&dict.active())dict.stop().catch(function(){});
-    addMe(text);msgIn.value='';autosize();hear.textContent='';
+    hush();addMe(text);msgIn.value='';autosize();hear.textContent='';
     if(crisis(text))supportCard();
     S.turns.push({role:'user',content:text});save();
     var bubble=addGuide('Thinking…',true);ctl=new AbortController();setBusy(true);
-    sample(buildInput(),{cache:false,modelTier:'quick',signal:ctl.signal,onText:function(u){bubble.classList.remove('wait');bubble.textContent=shown(u.text);scrollDown()}})
+    sample(buildInput(),{cache:false,modelTier:'quick',signal:ctl.signal,onText:function(u){if(!streaming){streaming=true;mood()}bubble.classList.remove('wait');bubble.textContent=shown(u.text);scrollDown()}})
     .then(function(res){
       var full=res.text,say=shown(full)||'…';bubble.classList.remove('wait');bubble.textContent=say;
       S.turns.push({role:'assistant',content:full});applyState(parseState(full));save();
       if(res.truncated)addNote('That reply was cut short. Ask the guide to carry on.');
       if(S.state.support)supportCard();
       if(S.state.sealed&&S.state.step<11&&!log.querySelector('.sealed'))sealedCard();
-      speak(say);
+      streaming=false;if(voiceOn&&voiceMode)speak(say);else{tail=Date.now()+900;setTimeout(mood,950)}
     })
     .catch(function(e){
       var code=e&&e.code,keep=e&&e.text?shown(e.text):'';
@@ -325,7 +361,7 @@
       else if(code!=='refused')addNote(COPY[code]||COPY.upstream_error);
       save();
     })
-    .then(function(){ctl=null;setBusy(false);scrollDown();if(!window.matchMedia('(pointer:coarse)').matches)msgIn.focus()});
+    .then(function(){ctl=null;streaming=false;setBusy(false);scrollDown();if(!window.matchMedia('(pointer:coarse)').matches)msgIn.focus()});
   }
   function sealedCard(){
     var c=node('div','sealed');c.appendChild(node('b',null,'Your prediction is sealed.'));
@@ -350,9 +386,9 @@
   var resetArmed=false;
   $('resetBtn').addEventListener('click',function(){
     if(!resetArmed){resetArmed=true;this.textContent='Tap again to clear this story';return}
-    if(ctl)ctl.abort();wipe();S={name:'',started:false,turns:[],state:blank(),chips:[]};
+    if(ctl)ctl.abort();hush();wipe();S={name:'',started:false,turns:[],state:blank(),chips:[]};
     [].slice.call(log.children).forEach(function(c){if(c.id!=='welcome')c.remove()});
-    $('welcome').hidden=false;composer.hidden=true;resetArmed=false;this.textContent='Start over';renderStory();renderChips();
+    $('welcome').hidden=false;composer.hidden=true;resetArmed=false;this.textContent='Start over';renderStory();renderChips();mood();
   });
   $('beginBtn').addEventListener('click',begin);
   $('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();begin()}});
@@ -369,27 +405,64 @@
   $('helpBtn').addEventListener('click',function(){if(help.showModal)help.showModal();else help.setAttribute('open','')});
   $('helpClose').addEventListener('click',function(){if(help.close)help.close();else help.removeAttribute('open')});
 
-  // ---------- read aloud ----------
+  // ---------- the guide's voice ----------
   var voiceBtn=$('voiceBtn');
-  function speak(t){if(!voiceOn||!tts||!t)return;tts.speak(t.slice(0,1900)).catch(function(e){if(e&&(e.code==='not_granted'||e.code==='unavailable')){voiceOn=false;voiceBtn.hidden=true}})}
+  function renderVoice(){
+    voiceBtn.hidden=!voiceMode;voiceBtn.setAttribute('aria-pressed',voiceOn);voiceBtn.textContent=voiceOn?'Voice on':'Voice off';
+    var n=$('voiceNote');n.hidden=!voiceMode;
+    n.textContent=!voiceMode?'':voiceOn?'Voice is on, so the guide will speak. Tap “Voice on” at the top to turn it off.':voiceMode==='browser'?'Tap “Voice off” at the top to hear the guide in this browser’s own voice.':'Voice is off. Tap “Voice off” at the top to hear the guide speak.';
+  }
+  function voiceGone(){voiceMode=null;voiceOn=false;speaking=false;$('voicePick').hidden=true;renderVoice();mood()}
+  function speak(t){
+    if(!voiceOn||!voiceMode||!t)return;
+    if(voiceMode==='claude'){
+      tts.speak(t.slice(0,1900),voiceName?{voice:voiceName}:undefined).catch(function(e){var c=e&&e.code;if(c==='not_granted'||c==='unavailable')voiceGone()});
+    }else{
+      try{var sy=window.speechSynthesis;sy.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-AU';
+        u.onstart=function(){speaking=true;mood()};u.onend=u.onerror=function(){speaking=false;mood()};sy.speak(u)}catch(e){voiceGone()}
+    }
+  }
+  function hush(){
+    if(voiceMode==='claude'&&tts)tts.stop().catch(function(){});
+    else if(voiceMode==='browser'){try{window.speechSynthesis.cancel()}catch(e){}}
+    if(speaking){speaking=false;mood()}
+  }
   voiceBtn.addEventListener('click',function(){
-    voiceOn=!voiceOn;voiceBtn.setAttribute('aria-pressed',voiceOn);voiceBtn.textContent=voiceOn?'Reading aloud':'Read aloud';
-    if(!voiceOn&&tts)tts.stop().catch(function(){});
-    else if(voiceOn){var g=log.querySelectorAll('.guide');if(g.length)speak(g[g.length-1].textContent)}
+    voiceOn=!voiceOn;try{localStorage.setItem('cquest-voice',voiceOn?'1':'0')}catch(e){}
+    renderVoice();
+    if(!voiceOn)hush();
+    else{var g=log.querySelectorAll('.guide');if(g.length&&!busy)speak(g[g.length-1].textContent)}
   });
+  $('moodBtn').addEventListener('click',hush);
+  $('voiceSel').addEventListener('change',function(){voiceName=this.value;try{localStorage.setItem('cquest-voice-name',voiceName)}catch(e){}});
+  function initVoice(t){
+    var pref=null,name=null;try{pref=localStorage.getItem('cquest-voice');name=localStorage.getItem('cquest-voice-name')}catch(e){}
+    if(t){
+      tts=t;voiceMode='claude';voiceOn=pref!=='0';
+      t.onState(function(e){speaking=e.state==='speaking'||e.state==='starting';mood();if(e.state==='idle'&&(e.reason==='not_granted'||e.reason==='unavailable'))voiceGone()});
+      if(typeof t.voices==='function')t.voices().then(function(list){
+        if(!Array.isArray(list)||list.length<2)return;var sel=$('voiceSel');sel.textContent='';
+        list.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v.charAt(0).toUpperCase()+v.slice(1);sel.appendChild(o)});
+        if(name&&list.indexOf(name)>=0){voiceName=name;sel.value=name}else voiceName=list[0];
+        $('voicePick').hidden=false;
+      }).catch(function(){});
+    }else if('speechSynthesis' in window&&window.SpeechSynthesisUtterance){voiceMode='browser';voiceOn=pref==='1'}
+    renderVoice();
+  }
 
   // ---------- speak your reply ----------
   var micBtn=$('micBtn');
   micBtn.addEventListener('click',function(){
     if(!dict)return;
     if(dict.active()){dict.stop().catch(function(){});return}
+    hush();
     dict.start().catch(function(e){var c=e&&e.code;if(c==='not_granted'||c==='unavailable'){micBtn.hidden=true;hear.textContent='The microphone is not available here. You can type instead.'}else if(c!=='stopped'&&c!=='dismissed')hear.textContent='The microphone could not start. You can type instead.'});
   });
 
   // ---------- boot ----------
   var saved=load();if(saved&&saved.started){S=saved;if(!S.chips)S.chips=[]}
   if(window.matchMedia('(max-width:860px)').matches)$('story').open=false;
-  renderStory();
+  renderStory();mood();
   function unavailable(){
     var b=$('beginBtn');b.hidden=true;
     $('aiNote').textContent='The AI guide runs inside Claude, for people signed in to their own Claude account. It is not available in this view.';
@@ -404,12 +477,12 @@
     if(!s){unavailable();return}
     var b=$('beginBtn');b.disabled=false;b.textContent='Begin the session';
   });
-  c.use('tts').then(function(t){if(!t)return;tts=t;voiceBtn.hidden=false});
+  c.use('tts').then(initVoice);
   c.use('dictation').then(function(d){
     if(!d)return;dict=d;micBtn.hidden=false;
     d.onPartial(function(e){hear.textContent=e.text?'Hearing: '+e.text:''});
     d.onFinal(function(e){var t=e.text||'';msgIn.value=msgIn.value?msgIn.value+t:t.replace(/^\s+/,'');autosize()});
-    d.onState(function(e){var on=e.state!=='idle';micBtn.setAttribute('aria-pressed',on);micBtn.setAttribute('aria-label',on?'Stop listening':'Speak your reply');if(!on)hear.textContent=''});
+    d.onState(function(e){var on=e.state!=='idle';listening=on;mood();micBtn.setAttribute('aria-pressed',on);micBtn.setAttribute('aria-label',on?'Stop listening':'Speak your reply');if(!on)hear.textContent=''});
   });
 })();
 </script>
