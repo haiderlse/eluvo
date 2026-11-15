@@ -1,0 +1,17 @@
+{
+  "name": "eluvo-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Small server for the Eluvo site: Ali's replies, voice and speech-to-text. Holds the API keys so they never reach the browser.",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0"
+  }
+}

@@ -73,6 +73,8 @@
   .stage[data-mood="talking"] .char{animation:talk .9s ease-in-out infinite}
   .stage[data-mood="talking"] .mouth{opacity:1;animation:mouth .62s steps(1,end) infinite}
   .stage[data-mood="thinking"] .char{animation:think 2.4s ease-in-out infinite}
+  .stage[data-lip="live"] .mouth{animation:none!important;opacity:1;transform:translate(-50%,-50%) scaleY(var(--mo,.2))}
+  .codeform{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px} .codeform input{flex:1 1 140px;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
   .stagetop{position:absolute;top:10px;left:10px;right:10px;display:flex;align-items:center;gap:8px;z-index:2}
   .nametag{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-weight:700;font-size:.82rem}
   .nametag span{font-weight:500;color:var(--muted)}
@@ -261,7 +263,7 @@
     <div class="numrow"><span>headspace</span><b>1800 650 890</b></div>
     <div class="numrow"><span>In danger</span><b>000</b></div>
   </div>
-  <p class="small muted">Ali is an AI character powered by Claude, not a real person. What you type is sent to Claude and uses your own Claude account; your story is saved in this browser only. This version cannot connect you to a person. In the full product, asking for one tells a named person at your school, uni or service.</p>
+  <p class="small muted" id="helpNote">Ali is an AI character powered by Claude, not a real person. What you type is sent to Claude and uses your own Claude account; your story is saved in this browser only. This version cannot connect you to a person. In the full product, asking for one tells a named person at your school, uni or service.</p>
   <div class="rowb" style="margin-top:14px"><button class="btn btn-gold" type="button" id="helpClose">Back to my story</button></div>
 </dialog>
 
@@ -271,6 +273,7 @@
   var VOICES=['Over-thinker','Overwhelmed','Pleaser','Doubter','Comparer','Snooze Button'];
   var SKILLS=['Calm','Curiosity','Clarity','Compassion','Confidence','Courage','Creativity','Connectedness'];
   var PREVIEW='https://haiderlse.github.io/eluvo/quest-preview.html';
+  var IN_CLAUDE='https://claude.ai/artifact/JZMMFAqmiBjt3LBfHMrdu1';
   var RULES=[
 'You are Ali, the on-screen guide for C-Quest, a short interactive career story for a young person in Australia, about 18 to 25. Ali is an AI character. You are not a real person, not a coach and not a therapist, and you say so plainly if asked.',
 '',
@@ -331,7 +334,8 @@
   var log=$('log'),composer=$('composer'),chipsEl=$('chips'),msgIn=$('msgIn'),sendBtn=$('sendBtn'),stopBtn=$('stopBtn'),hear=$('hear'),subTxt=$('subTxt');
   var sample=null,tts=null,dict=null,busy=false,ctl=null;
   var voiceMode=null,voiceOn=false,voiceName=null,listening=false,primed=false;
-  var seq={lines:[],text:'',i:0,token:0,active:false,driver:null,timer:0};
+  var seq={lines:[],text:'',i:0,token:0,active:false,driver:null,timer:0,loading:false};
+  var site={base:null,code:''},player=null,actx=null,analyser=null,lipRaf=0;
   var HELLO='Hey, I’m Ali. How can I help you today?';
   var OPENERS=[['I feel stuck','I feel stuck'],['Interview coming up','I’ve got an interview coming up'],['Rejected again','I keep getting rejected'],['Not sure what I want','I don’t know what I want to do']];
 
@@ -377,7 +381,7 @@
     list.forEach(function(c){var b=node('button','chip'+(c[2]?' strong':''),c[0]);b.type='button';b.addEventListener('click',function(){send(c[1])});chipsEl.appendChild(b)});
   }
   function mood(){
-    var m=listening?'listening':seq.active?'talking':busy?'thinking':'idle';
+    var m=listening?'listening':(seq.active&&!seq.loading)?'talking':(busy||seq.loading)?'thinking':'idle';
     $('stage').dataset.mood=m;
     $('moodTxt').textContent=m==='listening'?'Listening':m==='talking'?'Speaking':m==='thinking'?'Thinking':'Your turn';
     $('skipBtn').hidden=!(seq.active&&seq.lines.length>1);
@@ -399,6 +403,8 @@
     clearTimeout(seq.timer);
     if(voiceMode==='claude'&&tts)tts.stop().catch(function(){});
     else if(voiceMode==='browser'){try{window.speechSynthesis.cancel()}catch(e){}}
+    else if(voiceMode==='server'&&player){try{player.pause()}catch(e){}}
+    lipStop();seq.loading=false;
   }
   function finish(){if(!seq.active)return;seq.active=false;seq.driver=null;clearTimeout(seq.timer);showLine(seq.lines.length-1);mood();renderChips()}
   function hush(){seq.token++;seq.active=false;seq.driver=null;quiet();mood()}
@@ -436,6 +442,7 @@
           if(c==='stopped')finish();else timed(my,seq.i);
         });
     }else if(voiceOn&&voiceMode==='browser'){seq.driver='browser';browserSay(my,0)}
+    else if(voiceOn&&voiceMode==='server'){seq.driver='server';serverSay(my)}
     else timed(my,0);
   }
   $('skipBtn').addEventListener('click',function(){quiet();finish()});
@@ -443,7 +450,55 @@
 
   // ---------- Ali's voice ----------
   var voiceBtn=$('voiceBtn');
-  function prime(){if(primed||voiceMode!=='browser'||!voiceOn)return;primed=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;window.speechSynthesis.speak(u)}catch(e){}}
+  function prime(){
+    if(voiceMode==='server'){
+      if(actx&&actx.state==='suspended')actx.resume().catch(function(){});
+      if(player||!voiceOn)return;
+      player=new Audio();player.preload='auto';
+      try{var AC=window.AudioContext||window.webkitAudioContext;if(AC){actx=new AC();analyser=actx.createAnalyser();analyser.fftSize=256;actx.createMediaElementSource(player).connect(analyser);analyser.connect(actx.destination)}}catch(e){analyser=null}
+      // a moment of silence, started by this tap, so later replies are allowed to play on phones
+      player.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';var p=player.play();if(p&&p.catch)p.catch(function(){});
+      return;
+    }
+    if(primed||voiceMode!=='browser'||!voiceOn)return;primed=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;window.speechSynthesis.speak(u)}catch(e){}
+  }
+  // the website voice: one clip per reply, subtitles and mouth follow the sound
+  function lipStop(){cancelAnimationFrame(lipRaf);lipRaf=0;$('stage').removeAttribute('data-lip')}
+  function lipStart(my,starts){
+    var data=analyser?new Uint8Array(analyser.fftSize):null,mouth=document.querySelector('.mouth');
+    if(data)$('stage').dataset.lip='live';
+    (function frame(){
+      if(seq.token!==my||seq.driver!=='server'||!seq.active){lipStop();return}
+      if(starts){var t=player.currentTime,k=0;for(var i=0;i<starts.length;i++)if(t>=starts[i]-.04)k=i;if(k!==seq.i)showLine(k)}
+      if(data){analyser.getByteTimeDomainData(data);var sum=0;for(var j=0;j<data.length;j++){var v=(data[j]-128)/128;sum+=v*v}
+        mouth.style.setProperty('--mo',Math.max(.12,Math.min(1,Math.sqrt(sum/data.length)*6)).toFixed(2))}
+      lipRaf=requestAnimationFrame(frame);
+    })();
+  }
+  function serverSay(my){
+    var text=seq.lines.join(' ');seq.loading=true;mood();
+    function live(){return seq.token===my&&seq.driver==='server'&&seq.active}
+    function silent(){if(live()){seq.loading=false;mood();timed(my,seq.i)}}
+    siteFetch('/api/tts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text:text})})
+    .then(function(r){return r.ok?r.json():Promise.reject()})
+    .then(function(j){
+      if(!live())return;
+      if(!player){silent();return}
+      var bin=atob(j.audio),buf=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)buf[i]=bin.charCodeAt(i);
+      if(player._url)URL.revokeObjectURL(player._url);
+      player._url=URL.createObjectURL(new Blob([buf],{type:j.mime||'audio/mpeg'}));
+      var offs=[],pos=0;seq.lines.forEach(function(l){offs.push(pos);pos+=l.length+1});
+      var starts=(j.starts&&j.starts.length>=text.length-2)?offs.map(function(o){return j.starts[Math.min(o,j.starts.length-1)]}):null;
+      player.onloadedmetadata=function(){if(!starts&&isFinite(player.duration)&&player.duration>0)starts=offs.map(function(o){return player.duration*o/text.length})};
+      player.onplaying=function(){if(!live())return;seq.loading=false;mood();lipStop();lipStart(my,starts)};
+      player.ontimeupdate=function(){if(!live()||lipRaf||!starts)return;var t=player.currentTime,k=0;for(var i=0;i<starts.length;i++)if(t>=starts[i]-.04)k=i;if(k!==seq.i)showLine(k)};
+      player.onended=function(){if(live())finish()};
+      player.onerror=silent;
+      player.src=player._url;
+      var p=player.play();if(p&&p.catch)p.catch(silent);
+    })
+    .catch(silent);
+  }
   function renderVoice(){
     voiceBtn.hidden=!voiceMode;voiceBtn.setAttribute('aria-pressed',voiceOn);voiceBtn.textContent=voiceOn?'Voice on':'Voice off';
   }
@@ -451,7 +506,7 @@
   voiceBtn.addEventListener('click',function(){
     voiceOn=!voiceOn;try{localStorage.setItem('cquest-voice',voiceOn?'1':'0')}catch(e){}
     renderVoice();prime();
-    if(seq.active){var at=seq.i,my=seq.token;quiet();if(voiceOn)perform(seq.text);else timed(my,at)}
+    if(seq.active){var at=seq.i,my=seq.token;quiet();if(voiceOn)perform(seq.text);else{seq.driver='timed';timed(my,at)}}
     else if(voiceOn&&seq.text&&!busy)perform(seq.text);
   });
   $('voiceSel').addEventListener('change',function(){voiceName=this.value;try{localStorage.setItem('cquest-voice-name',voiceName)}catch(e){}});
@@ -516,7 +571,7 @@
 
   // ---------- start, resume, reset ----------
   function resume(){
-    composer.hidden=!sample;$('aiNote').hidden=true;logAdd('guide',HELLO);
+    composer.hidden=!sample;$('aiNote').hidden=true;if(!log.querySelector('.guide'))logAdd('guide',HELLO);
     S.turns.forEach(function(t){logAdd(t.role==='user'?'me':'guide',t.role==='user'?t.content:shown(t.content))});
     var g=lastGuide();if(g){seq.text=g;seq.lines=splitLines(g);showLine(seq.lines.length-1)}
     note(sealedOpen()?'Welcome back. Have you done your small action?':'Welcome back. Carry on where you left off.');
@@ -557,15 +612,89 @@
     dict.start().catch(function(e){var c=e&&e.code;if(c==='not_granted'||c==='unavailable'){micBtn.hidden=true;hear.textContent='The microphone is not available here. You can type instead.'}else if(c!=='stopped'&&c!=='dismissed')hear.textContent='The microphone could not start. You can type instead.'});
   });
 
+  function initDictation(d){
+    if(!d)return;dict=d;micBtn.hidden=false;
+    d.onPartial(function(e){hear.textContent=e.text?(e.plain?e.text:'Hearing: '+e.text):''});
+    d.onFinal(function(e){var t=e.text||'';msgIn.value=msgIn.value?msgIn.value+t:t.replace(/^\s+/,'');autosize()});
+    d.onState(function(e){var on=e.state==='listening'||e.state==='starting';listening=on;mood();micBtn.setAttribute('aria-pressed',on);micBtn.setAttribute('aria-label',on?'Stop listening':'Speak your reply');if(e.state==='idle'&&!e.keep)hear.textContent=''});
+  }
+
+  // ---------- on the Eluvo website: brain, voice and ears come from the Eluvo server ----------
+  function siteFetch(pathname,opts){opts=opts||{};opts.headers=Object.assign({},opts.headers||{},site.code?{'x-eluvo-code':site.code}:{});return fetch(site.base+pathname,opts)}
+  function siteSample(input,opts){   // same promise shape as Claude's sample()
+    return siteFetch('/api/chat',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({turns:S.turns.slice(-24),state:S.state}),signal:opts&&opts.signal})
+      .then(function(r){return r.json().catch(function(){return {}}).then(function(j){return {r:r,j:j}})},function(e){throw {code:e&&e.name==='AbortError'?'cancelled':'upstream_error'}})
+      .then(function(x){
+        if(x.r.status===429)throw {code:'rate_limited'};
+        if(!x.r.ok)throw {code:'upstream_error'};
+        if(x.j.refused)throw {code:'refused'};
+        if(!x.j.text)throw {code:'upstream_error'};
+        return {text:x.j.text,truncated:!!x.j.truncated};
+      });
+  }
+  function recorderDictation(){   // record, send, get the words back: same shape as Claude's dictation
+    var rec=null,chunks=[],stream=null,on={},state='idle',cap=0;
+    function set(st,extra){state=st;if(on.state)on.state(Object.assign({state:st},extra||{}))}
+    return {
+      active:function(){return state!=='idle'},
+      onPartial:function(f){on.partial=f},onFinal:function(f){on.final=f},onState:function(f){on.state=f},
+      start:function(){
+        return navigator.mediaDevices.getUserMedia({audio:true}).then(function(st){
+          stream=st;chunks=[];rec=new MediaRecorder(st);
+          rec.ondataavailable=function(e){if(e.data&&e.data.size)chunks.push(e.data)};
+          rec.onstop=function(){
+            clearTimeout(cap);stream.getTracks().forEach(function(t){t.stop()});
+            var blob=new Blob(chunks,{type:(rec.mimeType||'audio/webm').split(';')[0]}),failed=false;
+            set('finishing');if(on.partial)on.partial({text:'Working out what you said…',plain:true});
+            siteFetch('/api/stt',{method:'POST',headers:{'content-type':blob.type},body:blob})
+              .then(function(r){return r.ok?r.json():Promise.reject()})
+              .then(function(j){if(j.text){if(on.final)on.final({text:j.text})}else failed=true},function(){failed=true})
+              .then(function(){if(on.partial)on.partial({text:failed?'I could not make that out. Try again, or type instead.':'',plain:true});set('idle',{reason:'stopped',keep:failed})});
+          };
+          rec.start();set('listening');cap=setTimeout(function(){if(rec.state!=='inactive')rec.stop()},60000);
+        },function(){throw {code:'not_granted'}});
+      },
+      stop:function(){if(rec&&rec.state!=='inactive')rec.stop();return Promise.resolve()}
+    };
+  }
+  function siteReady(h){
+    sample=siteSample;composer.hidden=false;$('offline').hidden=true;
+    $('aiNote').textContent='Ali is an AI character, not a real person. What you say is sent to AI services to work. Not therapy.';
+    $('helpNote').textContent='Ali is an AI character, not a real person. What you type or say is sent to AI services (Anthropic for his replies, and a voice service when voice or the microphone is used). Your story is saved in this browser only. This version cannot connect you to a person.';
+    if(h.tts){var pref=null;try{pref=localStorage.getItem('cquest-voice')}catch(e){}voiceMode='server';voiceOn=pref!=='0';renderVoice()}else initVoice(null);
+    if(h.stt&&navigator.mediaDevices&&window.MediaRecorder)initDictation(recorderDictation());
+    if(S.started)resume();else renderChips();
+  }
+  function askCode(wrong){
+    composer.hidden=true;var o=$('offline');o.hidden=false;o.textContent=wrong?'That code is not right. Try again.':'This preview is by invitation. Enter your access code to talk to Ali.';
+    var f=node('form','codeform'),i=node('input'),b=node('button','btn btn-gold','Enter');i.type='password';i.id='codeIn';i.autocomplete='off';i.setAttribute('aria-label','Access code');b.type='submit';f.appendChild(i);f.appendChild(b);o.appendChild(f);
+    f.addEventListener('submit',function(e){e.preventDefault();var v=i.value.trim();if(!v)return;
+      fetch(site.base+'/api/unlock',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code:v})}).then(function(r){
+        if(!r.ok){askCode(true);return}
+        site.code=v;try{sessionStorage.setItem('eluvo-code',v)}catch(x){}siteReady(site.health);
+      },function(){askCode(true)});
+    });
+  }
+  function bootSite(){
+    if(typeof window.ELUVO_API!=='string'){unavailable();return}
+    site.base=window.ELUVO_API.replace(/\/+$/,'');try{site.code=sessionStorage.getItem('eluvo-code')||''}catch(e){}
+    siteFetch('/api/health').then(function(r){return r.ok?r.json():Promise.reject()}).then(function(h){
+      if(!h||!h.chat){unavailable();return}
+      site.health=h;if(h.locked&&!h.unlocked)askCode();else siteReady(h);
+    }).catch(unavailable);
+  }
+
   // ---------- boot ----------
   var saved=load();if(saved&&saved.started){S=saved;if(!S.chips)S.chips=[]}
   renderStory();mood();
   function unavailable(){
-    composer.hidden=true;var o=$('offline');o.hidden=false;o.textContent=(S.started?'Ali is not available in this view, so you can read your story but not continue it here. ':'Ali runs inside Claude, for people signed in to their own Claude account. He is not available in this view. ');
+    composer.hidden=true;var o=$('offline'),web=!window.claude;o.hidden=false;
+    o.textContent=web?'Ali is not switched on for this site yet. You can talk to him inside Claude, or play the scripted preview. ':(S.started?'Ali is not available in this view, so you can read your story but not continue it here. ':'Ali runs inside Claude, for people signed in to their own Claude account. He is not available in this view. ');
+    if(web){setSub('I’m not switched on here yet.');$('moodTxt').textContent='Offline';var l=node('a','linkb','Talk to Ali in Claude');l.href=IN_CLAUDE;l.target='_blank';l.rel='noopener';o.appendChild(l);o.appendChild(document.createTextNode(' · '))}
     var a=node('a','linkb','Play the scripted preview');a.href=PREVIEW;a.target='_blank';a.rel='noopener';o.appendChild(a);
   }
   var c=window.claude;
-  if(!c||typeof c.use!=='function'){if(S.started)resume();unavailable();return}
+  if(!c||typeof c.use!=='function'){bootSite();return}
   c.use('sample').then(function(s){
     sample=s;
     if(S.started)resume();
@@ -573,11 +702,6 @@
     renderChips();
   });
   c.use('tts').then(initVoice);
-  c.use('dictation').then(function(d){
-    if(!d)return;dict=d;micBtn.hidden=false;
-    d.onPartial(function(e){hear.textContent=e.text?'Hearing: '+e.text:''});
-    d.onFinal(function(e){var t=e.text||'';msgIn.value=msgIn.value?msgIn.value+t:t.replace(/^\s+/,'');autosize()});
-    d.onState(function(e){var on=e.state!=='idle';listening=on;mood();micBtn.setAttribute('aria-pressed',on);micBtn.setAttribute('aria-label',on?'Stop listening':'Speak your reply');if(!on)hear.textContent=''});
-  });
+  c.use('dictation').then(initDictation);
 })();
 </script>

@@ -5,7 +5,10 @@ Grow forward.
 Static mockups for Eluvo, a coaching marketplace: verified coaches, each with an AI version of themselves. Students chat free and book the real coach when it matters.
 
 - `index.html` – coach directory mockup with Kim Ali as co-founder and a Coach Kim AI chat. On GitHub Pages the chat uses scripted demo replies; the live AI version runs inside claude.ai.
-- `artifact/c-quest.html` – C-Quest AI session. A conversation with an AI guide that builds the story from what the person says, reflects their loudest voice, and ends with one small real action and a sealed prediction. It runs as a Claude artifact (https://claude.ai/artifact/JZMMFAqmiBjt3LBfHMrdu1), where the guide is live; it is not served from GitHub Pages.
+- `quest.html` – "Talk to Ali": the C-Quest session on the website. Ali, an AI character, sits in his room, speaks with subtitles and listens. It needs the small server in `server/` for his replies, voice and hearing; without it the page says so and links to the Claude-hosted version and the scripted preview. Generated from `artifact/c-quest.html` by `node tools/build-site.mjs`.
+- `artifact/c-quest.html` – the one source file for the session. It also runs as a Claude artifact (https://claude.ai/artifact/JZMMFAqmiBjt3LBfHMrdu1), where Claude itself provides the replies and voice.
+- `server/` – the server that holds the API keys (Anthropic, ElevenLabs, optionally OpenAI Whisper). See `server/README.md`.
+- `config.js` – where the website looks for that server.
 - `quest-preview.html` – scripted C-Quest preview with no AI: voices quiz, Leader skills kit, one retail scene per voice, small real action, debrief and profile.
 - `coaches.html` – pitch page for coaches: how the AI coach is trained, what coaches keep, waitlist.
 - `providers.html` – pitch page for employment providers and universities, with an example cohort dashboard.
