@@ -1,6 +1,7 @@
 // Eluvo server: gives Ali a brain (Claude), a voice (ElevenLabs) and ears (ElevenLabs or OpenAI Whisper).
 // The API keys live here, in server/.env or the host's settings, and never reach the browser.
-// Run it:  cd server && npm install && npm start     then open http://localhost:8787/quest.html
+// Run it on your own computer:  node tools/start.mjs  (or double-click start.bat / start.command)
+// Run it on a host:              cd server && npm install && npm start
 
 import http from "node:http";
 import fs from "node:fs";
@@ -15,6 +16,7 @@ const siteRoot = path.resolve(here, "..");
 loadEnvFile(path.join(here, ".env"));
 const env = process.env;
 const PORT = Number(env.PORT || 8787);
+const HOST = env.HOST || ""; // empty: reachable from other machines, which a host needs. tools/start.mjs sets 127.0.0.1.
 const MODEL = env.ANTHROPIC_MODEL || "claude-opus-5-5";
 const EFFORT = env.ANTHROPIC_EFFORT || "low"; // low keeps replies quick for a spoken chat
 const EL_KEY = env.ELEVENLABS_API_KEY || "";
@@ -319,10 +321,19 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`Eluvo server on http://localhost:${PORT}/quest.html`);
-  console.log(`  Ali's brain  (Claude ${MODEL}): ${hasChat ? "ready" : "MISSING: set ANTHROPIC_API_KEY"}`);
-  console.log(`  Ali's voice  (ElevenLabs):     ${hasTts ? "ready" : "off: set ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID"}`);
-  console.log(`  Ali's ears   (${STT_PROVIDER || "none"}):${" ".repeat(Math.max(1, 16 - (STT_PROVIDER || "none").length))}${hasStt ? "ready" : "off: set ELEVENLABS_API_KEY or OPENAI_API_KEY"}`);
-  console.log(`  Access code: ${ACCESS_CODE ? "on" : "off"}   Allowed sites: ${ORIGINS.join(", ")}`);
+server.on("error", (err) => {
+  if (err.code === "EADDRINUSE") console.error(`\nPort ${PORT} is already in use. Eluvo may already be running: try http://localhost:${PORT}/\nIf it is something else, add PORT=8788 to server/.env and start again.\n`);
+  else console.error("\nThe server could not start:", err.message, "\n");
+  process.exit(1);
+});
+// Resolves with the port once the server is listening. tools/start.mjs waits for this before opening the browser.
+export const started = new Promise((resolve) => {
+  server.listen({ port: PORT, host: HOST || undefined }, () => {
+    console.log(`Eluvo server on http://localhost:${PORT}/quest.html`);
+    console.log(`  Ali's brain  (Claude ${MODEL}): ${hasChat ? "ready" : "MISSING: set ANTHROPIC_API_KEY"}`);
+    console.log(`  Ali's voice  (ElevenLabs):     ${hasTts ? "ready" : "off: set ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID"}`);
+    console.log(`  Ali's ears   (${STT_PROVIDER || "none"}):${" ".repeat(Math.max(1, 16 - (STT_PROVIDER || "none").length))}${hasStt ? "ready" : "off: set ELEVENLABS_API_KEY or OPENAI_API_KEY"}`);
+    console.log(`  Access code: ${ACCESS_CODE ? "on" : "off"}   Allowed sites: ${ORIGINS.join(", ")}   Reachable from: ${HOST === "127.0.0.1" || HOST === "localhost" ? "this computer only" : "any computer that can reach this one"}`);
+    resolve(PORT);
+  });
 });

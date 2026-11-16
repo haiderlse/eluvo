@@ -290,7 +290,7 @@
   'use strict';
   var VOICES=['Over-thinker','Overwhelmed','Pleaser','Doubter','Comparer','Snooze Button'];
   var SKILLS=['Calm','Curiosity','Clarity','Compassion','Confidence','Courage','Creativity','Connectedness'];
-  var PREVIEW='https://haiderlse.github.io/eluvo/quest-preview.html';
+  var PREVIEW='quest-preview.html';
   var IN_CLAUDE='https://claude.ai/artifact/JZMMFAqmiBjt3LBfHMrdu1';
   var RULES=[
 'You are Ali, the on-screen guide for C-Quest, a short interactive career story for a young person in Australia, about 18 to 25. Ali is an AI character. You are not a real person, not a coach and not a therapist, and you say so plainly if asked.',
@@ -697,7 +697,7 @@
     if(typeof window.ELUVO_API!=='string'){unavailable();return}
     site.base=window.ELUVO_API.replace(/\/+$/,'');try{site.code=sessionStorage.getItem('eluvo-code')||''}catch(e){}
     siteFetch('/api/health').then(function(r){return r.ok?r.json():Promise.reject()}).then(function(h){
-      if(!h||!h.chat){unavailable();return}
+      if(!h||!h.chat){unavailable('nokey');return}
       site.health=h;if(h.locked&&!h.unlocked)askCode();else siteReady(h);
     }).catch(unavailable);
   }
@@ -705,9 +705,11 @@
   // ---------- boot ----------
   var saved=load();if(saved&&saved.started){S=saved;if(!S.chips)S.chips=[]}
   renderStory();mood();
-  function unavailable(){
+  function unavailable(why){
     composer.hidden=true;var o=$('offline'),web=!window.claude;o.hidden=false;
-    o.textContent=web?'Ali is not switched on for this site yet. You can talk to him inside Claude, or play the scripted preview. ':(S.started?'Ali is not available in this view, so you can read your story but not continue it here. ':'Ali runs inside Claude, for people signed in to their own Claude account. He is not available in this view. ');
+    // on someone's own computer, say what to do: start the server, or give it a key
+    var file=location.protocol==='file:',mine=/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+    o.textContent=web?(file?'Ali can’t talk from a file opened this way. In the Eluvo folder, open “start” and use the page it opens. ':mine&&why==='nokey'?'Ali has no Anthropic API key on this computer yet, so he can’t reply. Close the Eluvo window, open “start” again and paste the key when it asks. ':'Ali is not switched on for this site yet. ')+'You can talk to him inside Claude, or play the scripted preview. ':(S.started?'Ali is not available in this view, so you can read your story but not continue it here. ':'Ali runs inside Claude, for people signed in to their own Claude account. He is not available in this view. ');
     if(web){setSub('I’m not switched on here yet.');$('moodTxt').textContent='Offline';var l=node('a','linkb','Talk to Ali in Claude');l.href=IN_CLAUDE;l.target='_blank';l.rel='noopener';o.appendChild(l);o.appendChild(document.createTextNode(' · '))}
     var a=node('a','linkb','Play the scripted preview');a.href=PREVIEW;a.target='_blank';a.rel='noopener';o.appendChild(a);
   }

@@ -14,29 +14,26 @@ Without the voice key the page falls back to the browser's built-in voice. Witho
 
 ## Run it on your own computer
 
-You need Node.js 20 or newer.
+You need Node.js 20 or newer (the LTS version from https://nodejs.org).
+
+- Windows: double-click `start.bat` in the top folder.
+- Mac: double-click `start.command` in the top folder.
+- Any terminal, from the top folder:
 
 ```bash
-cd server
+node tools/start.mjs
 ```
 
-```bash
-npm install
-```
+The first start installs what the server needs, asks for your keys and saves them in `server/.env`, starts the server and opens http://localhost:8787/. The start-up message says which of the three parts are ready. What you paste at the prompts is hidden.
 
-```bash
-cp .env.example .env
-```
-
-Open `server/.env` in a text editor and paste in your keys. Then:
-
-```bash
-npm start
-```
-
-Open http://localhost:8787/quest.html. The start-up message says which of the three parts are ready.
+- `node tools/start.mjs --keys` asks for every key again. Pressing Enter keeps the one already saved.
+- `node tools/start.mjs --no-open` starts without opening the browser.
+- Started this way, the server answers only this computer (`HOST=127.0.0.1`), so nobody else on the network can spend your keys.
+- If port 8787 is taken, add `PORT=8788` to `server/.env`.
 
 `server/.env` is listed in `.gitignore`, so git will not upload it. Never paste keys into any other file.
+
+To do the same by hand: `cd server`, `npm install`, copy `.env.example` to `.env`, fill it in, `npm start`.
 
 ## Put it online
 
@@ -71,6 +68,7 @@ Ali's instructions live on the server (`rules.txt`), so the endpoint cannot be u
 | `STT_PROVIDER` | `elevenlabs` if that key is set, otherwise `openai` | Which service listens. |
 | `OPENAI_STT_MODEL` | `whisper-1` | The OpenAI speech-to-text model. OpenAI has announced that `whisper-1` shuts down on 26 February 2027. |
 | `PORT` | `8787` | The port to listen on. |
+| `HOST` | all addresses | Which address to listen on. `tools/start.mjs` sets `127.0.0.1` (this computer only); a host needs the default. |
 
 If a safety check declines a request, the Anthropic API retries it once on a fallback model (the `fallbacks: "default"` option). This applies to the default model and is skipped for models that do not support it.
 
@@ -84,4 +82,4 @@ node tools/build-site.mjs
 
 ## What has and has not been tested
 
-The server and page were tested end to end against stand-in services that imitate Anthropic, ElevenLabs and OpenAI. They have not yet been run with real keys, so the first run with yours is the real test. The request formats for ElevenLabs and OpenAI were taken from their public documentation as of November 2026.
+The server and page were tested end to end against stand-in services that imitate Anthropic, ElevenLabs and OpenAI. They have not yet been run with real keys, so the first run with yours is the real test. The start program was tested on Linux; `start.bat` has not been run on Windows, nor `start.command` on a Mac. The request formats for ElevenLabs and OpenAI were taken from their public documentation as of November 2026.

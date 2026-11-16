@@ -1,0 +1,3 @@
+# Windows needs its line endings in .bat files; the Mac and Linux launcher needs the other kind.
+*.bat -text
+*.command text eol=lf

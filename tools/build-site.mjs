@@ -18,7 +18,11 @@ fs.writeFileSync(path.join(root, "server/rules.txt"), rules + "\n");
 const style = /<style>[\s\S]*?<\/style>/.exec(src)[0];
 const fonts = /<link rel="stylesheet" href="https:\/\/fonts\.googleapis\.com[^>]*>/.exec(src)[0];
 let body = src.slice(src.indexOf("</style>") + "</style>".length).trim();
+// On the site the scripted preview is the page next door, so a downloaded copy links to its own file.
+const previewLink = "var PREVIEW='https://haiderlse.github.io/eluvo/quest-preview.html'";
+if (!body.includes(previewLink)) throw new Error("Could not find the preview link in artifact/c-quest.html");
 body = body
+  .replace(previewLink, "var PREVIEW='quest-preview.html'")
   .replaceAll('src="guide.webp"', 'src="artifact/guide.webp"')
   .replace(/<div class="logo">([\s\S]*?)<\/div>/, '<a class="logo" href="index.html" aria-label="Eluvo home">$1</a>');
 
